@@ -2,25 +2,25 @@ import Styles from './styles';
 import classNames from 'classnames';
 
 export interface BtnTypes {
-  color?: 'primary' | 'secondary';
+  color: 'primary' | 'secondary';
   shape?: 'default' | 'outlined' | 'text';
   isLoading?: boolean;
   children?: React.ReactNode;
   className?: string;
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const Btn: React.FC<BtnTypes> = ({
+const Btn = ({
   children,
-  color = 'default',
+  color,
   isLoading = false,
-  onClick = () => ({}),
+  onClick,
   className,
   shape = 'default',
   type = 'button',
   ...rest
-}: BtnTypes) => {
+}: BtnTypes): JSX.Element => {
   return (
     <Styles.Btn
       aria-busy={isLoading}
