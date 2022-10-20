@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest": true
     },
     "extends": [
         "plugin:react/recommended",
@@ -10,15 +11,25 @@
         "prettier"
     ],
     "overrides": [
-    ],
+        {
+          "files": ["*.ts", "*.tsx"], 
+          "parserOptions": {
+            "project": ["./tsconfig.json"]
+          },
+          "rules": {
+            "@typescript-eslint/no-misused-promises": [
+              "error",
+              {"checksVoidReturn": {"attributes": false}}
+            ]
+         }
+        }
+      ],
     "parserOptions": {
         "ecmaVersion": "latest",
-        "project": "./tsconfig.json",
         "sourceType": "module"
     },
     "plugins": [
         "react"
-    ],
-    "rules": {
-    }
+    ]
+    
 }
