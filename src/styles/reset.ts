@@ -56,4 +56,9 @@ export const reset = `
         height: auto;
         max-width: 100%;
     }
+
+    a {
+        all: unset;
+        cursor: pointer;
+    }   
 `;

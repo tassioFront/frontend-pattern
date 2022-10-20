@@ -7,10 +7,14 @@ interface HeaderTypes {
   href?: string;
 }
 
-const Header: React.FC<HeaderTypes> = ({ children, href, ...rest }) => {
+const Header: React.FC<HeaderTypes> = ({
+  children,
+  href,
+  ...rest
+}: HeaderTypes) => {
   return (
     <Styles.Header role="banner" {...rest}>
-      <Logo href={href} />
+      <Logo />
       {children}
     </Styles.Header>
   );
