@@ -1,9 +1,8 @@
 export enum routes {
-  // public routes
-  login = '/login',
-  signUp = '/sign-up',
+  // default layout
+  login = 'login',
 
-  // private routes
+  // private layout
   dashboard = 'dashboard',
 }
 
