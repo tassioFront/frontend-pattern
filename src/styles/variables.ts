@@ -14,27 +14,27 @@ export const variables = `
     --spacing-xxxxlarge: 48px;
     --spacing-giant: 64px;
     --spacing-xgiant: 80px;
-  
+
     /* Colors
     * ------------------------- */
     --color-neutral-dark-1: #20232a;
-    --color-neutral-regular: #1F2328;
-    --color-neutral-light-1: #464F59;
-    --color-neutral-light-2: #7E8B97;
-    --color-neutral-light-3: #B9BFC6;
-    --color-neutral-light-4: #DEE1E4;
-    --color-neutral-light-5: #F1F3F3;
+    --color-neutral-regular: #1f2328;
+    --color-neutral-light-1: #464f59;
+    --color-neutral-light-2: #7e8b97;
+    --color-neutral-light-3: #b9bfc6;
+    --color-neutral-light-4: #dee1e4;
+    --color-neutral-light-5: #f1f3f3;
     --color-neutral-white: #fff;
     --text-color: var(--color-neutral-regular);
-    --color-brand-primary-regular: #42EC9A;
-    --color-brand-primary-dark-1: #0FCC7D;
+    --color-brand-primary-regular: #ed6700;
+    --color-brand-primary-dark-1: #b85000;
     --color-brand-primary-dark-2: #068751;
-    --color-brand-primary-light-1: #70ebb080;
-    --color-brand-primary-light-2: #b9fcdc80;
-    --color-brand-secondary-dark-1: #b85000;
-    --color-brand-secondary-regular: #ed6700;
-    --color-brand-secondary-light-1: #ff913d;
-    --color-brand-secondary-light-2: #fff3eb;
+    --color-brand-primary-light-1: #ff913d;
+    --color-brand-primary-light-2: #fff3eb;
+    --color-brand-secondary-dark-1: #12579b;
+    --color-brand-secondary-regular: #1976d2;
+    --color-brand-secondary-light-1: #4a9ef2;
+    --color-brand-secondary-light-2: #e4f0fc;
     --color-contextual-error-dark-1: #b60000;
     --color-contextual-error-regular: #d60000;
     --color-contextual-error-light-1: #ff0a0a;
@@ -47,31 +47,35 @@ export const variables = `
     --color-contextual-warning-regular: #ffc900;
     --color-contextual-warning-light-1: #ffda52;
     --color-contextual-warning-light-2: #fff4cc;
-  
+
     /* Fonts
     * ------------------------- */
     --font-family: 'Roboto', sans-serif;
     --font-weight-regular: 400;
     --font-weight-medium: 500;
     --font-weight-bold: 700;
-  
+
     /* Typography
     * ------------------------- */
     --title-giant: var(--font-weight-bold) 52px/68px var(--font-family);
     --title-giant-letter: 0.025em;
     --title-display: var(--font-weight-bold) 46px/60px var(--font-family);
     --title-display-letter: 0.025em;
-    --title-headline-xxlarge: var(--font-weight-bold) 42px/56px var(--font-family);
+    --title-headline-xxlarge: var(--font-weight-bold) 42px/56px
+      var(--font-family);
     --title-headline-xxlarge-letter: 0.025em;
-    --title-headline-xlarge: var(--font-weight-bold) 36px/48px var(--font-family);
+    --title-headline-xlarge: var(--font-weight-bold) 36px/48px
+      var(--font-family);
     --title-headline-xlarge-letter: 0.025em;
     --title-headline-large: var(--font-weight-bold) 32px/40px var(--font-family);
     --title-headline-large-letter: 0.025em;
-    --title-headline-medium: var(--font-weight-bold) 28px/36px var(--font-family);
+    --title-headline-medium: var(--font-weight-bold) 28px/36px
+      var(--font-family);
     --title-headline-medium-letter: 0.015em;
     --title-headline-small: var(--font-weight-bold) 26px/36px var(--font-family);
     --title-headline-small-letter: 0.015em;
-    --title-headline-xsmall: var(--font-weight-bold) 22px/28px var(--font-family);
+    --title-headline-xsmall: var(--font-weight-bold) 22px/28px
+      var(--font-family);
     --title-headline-xsmall-letter: 0.015em;
     --text-subtitle-large: var(--font-weight-bold) 20px/28px var(--font-family);
     --text-subtitle-large-letter: 0.015em;
@@ -95,13 +99,14 @@ export const variables = `
     --button-medium-letter: 0.08em;
     --text-caption: var(--font-weight-regular) 12px/20px var(--font-family);
     --text-caption-letter: 0.004em;
-    --text-caption-focused: var(--font-weight-regular) 12px/20px var(--font-family);
+    --text-caption-focused: var(--font-weight-regular) 12px/20px
+      var(--font-family);
     --text-caption-focused-letter: 0.0004em;
     --text-overline: var(--font-weight-regular) 11px/20px var(--font-family);
     --text-overline-letter: 0.014em;
     --text-badge: var(--font-weight-bold) 10px/16px var(--font-family);
     --text-badge-letter: 0.0004em;
-  
+
     /* Misc
     * ------------------------- */
     --border-radius: 4px;
@@ -111,6 +116,6 @@ export const variables = `
     --zindex-100: 100;
     --zindex-1000: 1000;
     --zindex-overlay: 10000;
-    --transition-duration: 0.25s;
+    --transition-duration: 0.35s;
   }
 `;
