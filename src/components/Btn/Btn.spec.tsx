@@ -3,8 +3,11 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import Btn from './Btn';
 
 describe('<Button />', () => {
+  const onClick = jest.fn();
+  beforeEach(() => {
+    onClick.mockClear();
+  });
   it('should render Btn with default values and behavior', () => {
-    const onClick = jest.fn();
     render(
       <Btn data-testid="btn" onClick={onClick}>
         Default
@@ -21,7 +24,7 @@ describe('<Button />', () => {
 
   it('should render Btn with primary color', () => {
     render(
-      <Btn data-testid="btn" color="primary">
+      <Btn data-testid="btn" color="primary" onClick={onClick}>
         Primary
       </Btn>
     );
@@ -31,7 +34,7 @@ describe('<Button />', () => {
 
   it('should render Btn with outlined shape', () => {
     render(
-      <Btn data-testid="btn" color="primary" shape="outlined">
+      <Btn data-testid="btn" color="primary" shape="outlined" onClick={onClick}>
         Primary
       </Btn>
     );
@@ -40,7 +43,6 @@ describe('<Button />', () => {
   });
 
   it('should not call onClick and show children when button is loading', () => {
-    const onClick = jest.fn();
     render(
       <Btn data-testid="btn" isLoading={true} onClick={onClick}>
         Loading

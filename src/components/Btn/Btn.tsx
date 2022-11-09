@@ -2,7 +2,7 @@ import Styles from './styles';
 import classNames from 'classnames';
 
 export interface BtnTypes {
-  color: 'primary' | 'secondary';
+  color?: 'primary' | 'secondary';
   shape?: 'default' | 'outlined' | 'text';
   isLoading?: boolean;
   children?: React.ReactNode;
@@ -13,7 +13,7 @@ export interface BtnTypes {
 
 const Btn = ({
   children,
-  color,
+  color = 'primary',
   isLoading = false,
   onClick,
   className,
