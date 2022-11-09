@@ -9,7 +9,7 @@ const Styles = {
     font-weight: var(--font-weight-medium);
     padding: var(--spacing-small) var(--spacing-xsmall);
     text-decoration: none;
-    will-change: text-decoration border-bottom-color;
+    will-change: border-bottom-color color;
 
     &.primary {
       color: var(--color-brand-primary-dark-1);
