@@ -1,35 +1,35 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true,
-        "jest": true
-    },
-    "extends": [
-        "plugin:react/recommended",
-        "standard-with-typescript",
-        "plugin:react/jsx-runtime",
-        "prettier"
+  "env": {
+      "browser": true,
+      "es2021": true,
+      "jest": true
+  },
+  "extends": [
+      "plugin:react/recommended",
+      "standard-with-typescript",
+      "plugin:react/jsx-runtime",
+      "prettier"
+  ],
+  "overrides": [
+      {
+        "files": ["*.ts", "*.tsx"], 
+        "parserOptions": {
+          "project": ["./tsconfig.json"]
+        },
+        "rules": {
+          "@typescript-eslint/no-misused-promises": [
+            "error",
+            {"checksVoidReturn": {"attributes": false}}
+          ]
+       }
+      }
     ],
-    "overrides": [
-        {
-          "files": ["*.ts", "*.tsx"], 
-          "parserOptions": {
-            "project": ["./tsconfig.json"]
-          },
-          "rules": {
-            "@typescript-eslint/no-misused-promises": [
-              "error",
-              {"checksVoidReturn": {"attributes": false}}
-            ]
-         }
-        }
-      ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
-    ]
-    
+  "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+  },
+  "plugins": [
+      "react"
+  ]
+  
 }

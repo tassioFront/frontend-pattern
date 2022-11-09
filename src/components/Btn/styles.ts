@@ -51,6 +51,16 @@ const Styles = {
           background-color: var(--color-brand-secondary-dark-1);
         }
       }
+
+      &.shape--outlined {
+        border-color: var(--color-brand-secondary-regular);
+        color: var(--color-brand-secondary-dark-1);
+        background-color: var(--color-neutral-white);
+
+        :hover {
+          background-color: var(--color-brand-secondary-light-2);
+        }
+      }
     }
   `,
   Children: styled.span`
