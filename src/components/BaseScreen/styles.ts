@@ -2,7 +2,7 @@ import { media } from '@/styles/media';
 import styled from 'styled-components';
 
 const Styles = {
-  Wrapper: styled.section`
+  Wrapper: styled.div`
     align-items: center;
     display: flex;
     height: 100%;
@@ -17,7 +17,7 @@ const Styles = {
   `,
   Header: styled.div`
     margin-bottom: var(--spacing-xlarge);
-    text-align: center;
+    text-align: left;
     width: 100%;
 
     ${media.greaterThan('tablet')`
@@ -28,6 +28,10 @@ const Styles = {
       ${media.greaterThan('tablet')`
        margin-bottom: var(--spacing-large);
     `}
+    }
+
+    p {
+      font-weight: var(--font-weight-medium);
     }
   `,
 };

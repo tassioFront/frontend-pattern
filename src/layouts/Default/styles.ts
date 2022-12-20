@@ -10,7 +10,7 @@ const Styles = {
     min-height: 100vh;
     width: 100%;
   `,
-  Content: styled.section`
+  Content: styled.main`
     max-width: ${screenSizes.desktopMax};
     margin: 0 auto;
     width: 100%;

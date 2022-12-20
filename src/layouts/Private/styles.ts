@@ -11,7 +11,7 @@ const Styles = {
     min-height: 100vh;
     width: 100%;
   `,
-  Content: styled.section`
+  Content: styled.main`
     max-width: ${screenSizes.desktopMax};
     max-width: ${screenSizes.desktopMax};
     padding: var(--spacing-xxlarge) var(--spacing-xsmall);

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import Section from './';
+import Section from './Section';
 
 describe('<Section />', () => {
   const onClick = jest.fn();
