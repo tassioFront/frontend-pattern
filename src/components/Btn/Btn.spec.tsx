@@ -14,7 +14,7 @@ describe('<Button />', () => {
       </Btn>
     );
     const btn = screen.getByTestId('btn');
-    expect(btn).toHaveClass('default shape--default');
+    expect(btn).toHaveClass('primary shape--default');
     expect(btn).toHaveAttribute('type', 'button');
     expect(btn.querySelector('.isLoading')).not.toBeInTheDocument();
     expect(btn.firstChild?.textContent).toBe('Default');
