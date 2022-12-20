@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const Styles = {
   Wrapper: styled.section`
-    align-items: center;
     display: flex;
     height: 100%;
     width: 100%;

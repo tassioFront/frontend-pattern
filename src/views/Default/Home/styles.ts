@@ -1,8 +1,8 @@
-import ImgLazyLoad from '@/components/ImgLazyLoad/ImgLazyLoad';
+import BtnLink from '@/components/BtnLink/BtnLink';
 import styled from 'styled-components';
 
 export default {
-  ImgLazyLoad: styled(ImgLazyLoad)`
-    border-radius: 50%;
+  BtnLink: styled(BtnLink)`
+    align-self: center;
   `,
 };

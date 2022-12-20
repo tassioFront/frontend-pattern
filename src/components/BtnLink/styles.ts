@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 
 const Styles = {
   Link: styled(Link)`
+    align-items: center;
     border-bottom: 1px solid transparent;
     color: var(--color-brand-primary-dark-1);
     cursor: pointer;
+    display: flex;
+    gap: var(--spacing-xxsmall);
     font-weight: var(--font-weight-medium);
     padding: var(--spacing-small) var(--spacing-xsmall);
     text-decoration: none;
