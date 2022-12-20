@@ -9,6 +9,7 @@ const BtnLink = ({
   return (
     <Styles.Link to={to} {...rest} className={className}>
       {children}
+      <i className="fa fa-external-link" aria-hidden="true"></i>
     </Styles.Link>
   );
 };
