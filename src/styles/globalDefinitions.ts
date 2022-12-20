@@ -14,8 +14,8 @@ export const globalDefinitions = `
   }
 
   h1 {
-    font: var(--title-headline-large);
-    letter-spacing: var(--title-headline-large-letter);
+    font: var(--title-headline-xlarge);
+    letter-spacing: var(--title-headline-xlarge-letter);
     margin: var(--spacing-small);
   }
 
@@ -34,9 +34,21 @@ export const globalDefinitions = `
   p {
     font: var(--text-body-medium);
     letter-spacing: var(--text-body-medium-letter);
+    margin-top: var(--spacing-xxsmall);
+    margin-bottom: var(--spacing-xxsmall);
+
+    @media (min-width: ${screenSizes.tablet}) {
+      margin-top: var(--spacing-small);
+      margin-bottom: var(--spacing-small);
+    }
   }
 
   strong {
     margin: var(--spacing-xxsmall);
+  }
+  
+  em {
+    font-weight: var(--font-weight-medium);
+    font-style: normal;
   }
 `;
