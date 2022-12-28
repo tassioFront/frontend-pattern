@@ -15,12 +15,12 @@ const Home = (): JSX.Element => {
   ];
   return (
     <BaseScreen heading={texts.heading} description={texts.description}>
-      <Section heading2="So, what will I find here?">
+      <Section heading2={texts.whatWillIFindHeading}>
         <p>{texts.whatWillIFindIntro}</p>
         <TextList list={whatWillIFindList} />
       </Section>
 
-      <Section heading2="Wanna see a example?">
+      <Section heading2={texts.wannaSeeExampleHeading}>
         <p>{texts.wannaSeeExampleIntro}</p>
         <p
           dangerouslySetInnerHTML={{ __html: texts.wannaSeeExampleExplanation }}
