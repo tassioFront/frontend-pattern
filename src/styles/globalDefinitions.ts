@@ -51,4 +51,8 @@ export const globalDefinitions = `
     font-weight: var(--font-weight-medium);
     font-style: normal;
   }
+
+  a {
+    cursor: pointer;
+  }
 `;
