@@ -5,7 +5,6 @@ const Styles = {
   Link: styled(Link)`
     align-items: center;
     border-bottom: 1px solid transparent;
-    color: var(--color-brand-primary-dark-1);
     cursor: pointer;
     display: flex;
     gap: var(--spacing-xxsmall);
