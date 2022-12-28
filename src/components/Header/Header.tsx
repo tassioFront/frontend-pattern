@@ -1,9 +1,8 @@
 import React from 'react';
-import Logo from '../Logo/Logo';
 import Styles from './styles';
 
 interface HeaderTypes {
-  children?: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
   href?: string;
 }
 
@@ -14,7 +13,6 @@ const Header: React.FC<HeaderTypes> = ({
 }: HeaderTypes) => {
   return (
     <Styles.Header role="banner" {...rest}>
-      <Logo />
       {children}
     </Styles.Header>
   );

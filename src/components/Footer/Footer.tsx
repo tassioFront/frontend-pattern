@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import BtnLink from '../BtnLink/BtnLink';
 import Styles from './styles';
 
 interface FooterTypes {
@@ -9,7 +9,7 @@ interface FooterTypes {
 const Footer = ({ children, href, ...rest }: FooterTypes): JSX.Element => {
   return (
     <Styles.Footer {...rest}>
-      <Link
+      <BtnLink
         to=""
         title="Go to web site creator GitHub"
         onClick={() => window.open('https://github.com/tassioFront', '_blank')}
@@ -18,7 +18,7 @@ const Footer = ({ children, href, ...rest }: FooterTypes): JSX.Element => {
       >
         Made with ❤️ by Tássio Jordão{' '}
         <i className="fa fa-external-link-square" aria-hidden="true"></i>
-      </Link>
+      </BtnLink>
     </Styles.Footer>
   );
 };

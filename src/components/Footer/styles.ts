@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 const Styles = {
   Footer: styled.footer`
+    display: flex;
+    justify-content: center;
     margin-top: auto;
     padding: var(--spacing-medium) var(--spacing-base);
     text-align: center;
