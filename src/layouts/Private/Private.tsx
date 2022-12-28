@@ -1,12 +1,11 @@
 import { Outlet } from 'react-router-dom';
+import Header from './components/Header/Header';
 import Styles from './styles';
 
 const Default = (): JSX.Element => {
   return (
     <Styles.Wrapper>
-      <Styles.Header>
-        <div>Private header content</div>
-      </Styles.Header>
+      <Header />
       <Styles.Content>
         <Outlet />
       </Styles.Content>
