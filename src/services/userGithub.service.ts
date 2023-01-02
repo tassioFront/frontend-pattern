@@ -1,10 +1,10 @@
 import { apiErrors } from '@/enums/home';
-import { UserGithub } from '@/models/UserGithub';
+import { IUserGithub } from '@/models/UserGithub';
 import axios, { AxiosResponse } from 'axios';
 
 export const getUserGithubByUserName = async (
   userName: string
-): Promise<AxiosResponse<UserGithub, any>> => {
+): Promise<AxiosResponse<IUserGithub, any>> => {
   try {
     return await axios.get(`https://api.github.com/users/${userName}`);
   } catch (error) {
