@@ -16,7 +16,7 @@ const BaseScreen = ({
 }: BaseScreenTypes): JSX.Element => {
   useEffect(() => {
     goToTop();
-  });
+  }, []);
 
   return (
     <Styles.Wrapper className={className}>
