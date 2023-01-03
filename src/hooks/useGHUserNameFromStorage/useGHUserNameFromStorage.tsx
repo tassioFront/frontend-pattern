@@ -2,20 +2,20 @@ import { getGHUserNameFromCache } from '@/helpers/useInfo';
 import { useEffect } from 'react';
 
 interface IUseAuthValidation {
-  onAuth?: () => void;
-  onNotAuth?: () => void;
+  onHasGHUserName?: () => void;
+  onNotHasGHUserName?: () => void;
 }
 
 interface IUseAuthValidationResponse {
   GHUserName: string | null;
 }
 export const useGHUserNameFromStorage = ({
-  onAuth,
-  onNotAuth,
+  onHasGHUserName,
+  onNotHasGHUserName,
 }: IUseAuthValidation): IUseAuthValidationResponse => {
   const GHUserName = getGHUserNameFromCache();
   useEffect(() => {
-    GHUserName !== null ? onAuth?.() : onNotAuth?.();
+    GHUserName !== null ? onHasGHUserName?.() : onNotHasGHUserName?.();
   }, [GHUserName]);
 
   return { GHUserName };
