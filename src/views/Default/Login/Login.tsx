@@ -10,6 +10,8 @@ import { getUserGithubByUserName } from '@/services/userGithub.service';
 import { userInfoActions } from '@/store/userInfo';
 import { useAppDispatch } from '@/store/helper';
 import { useNavigate } from 'react-router-dom';
+import { storageService } from '@/services/localStorage/localStorage.service';
+import { StorageKeys } from '@/enums/storage-keys';
 
 const Login = (): JSX.Element => {
   const [userName, setUserName] = useState('');
@@ -27,6 +29,7 @@ const Login = (): JSX.Element => {
       setIsLoading(true);
       const response = await getUserGithubByUserName(userName);
       dispatch(userInfoActions.setUserInfo(response.data));
+      storageService.set(StorageKeys.GHUserName, response.data.login);
       navigate(dashboardResolvedRouter);
     } catch (error) {
       // create a alert component
