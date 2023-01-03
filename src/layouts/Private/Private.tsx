@@ -1,6 +1,6 @@
 import Spinner from '@/components/Spinner/Spinner';
+import { GHUserNameFromStorage } from '@/helpers/GHUserNameFromStorage/GHUserNameFromStorage';
 import { useGetGHInfoByUserName } from '@/hooks/useGetGHInfoByUserName/useGetGHInfoByUserName';
-import { useGHUserNameFromStorage } from '@/hooks/useGHUserNameFromStorage/useGHUserNameFromStorage';
 import {
   dashboardResolvedRouter,
   loginResolvedRouter,
@@ -13,7 +13,7 @@ import Styles from './styles';
 const Default = (): JSX.Element => {
   const navigate = useNavigate();
   const onNotHasGHUserName = (): void => navigate(loginResolvedRouter);
-  const { GHUserName } = useGHUserNameFromStorage({
+  const { GHUserName } = GHUserNameFromStorage({
     onNotHasGHUserName,
   });
   const onSuccess = (): void => {
