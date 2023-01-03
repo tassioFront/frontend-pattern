@@ -10,10 +10,7 @@ import Login from '@/views/Default/Login/Login';
 import PrivateLayout from './layouts/Private/Private';
 import { routes, routesPrefix } from './routes/enums';
 
-import { useAppSelector } from '@/store/helper';
-
 function App(): JSX.Element {
-  const userInfo = useAppSelector((state) => state.userInfo);
   return (
     <Routes>
       <Route path={routesPrefix.public} element={<DefaultLayout />}>
@@ -23,10 +20,7 @@ function App(): JSX.Element {
       </Route>
       <Route path={routesPrefix.app} element={<PrivateLayout />}>
         <Route index element={<div>dashboard</div>} />
-        <Route
-          path={routes.dashboard}
-          element={<div>dashboard {userInfo.GHData?.name}</div>}
-        />
+        <Route path={routes.dashboard} element={<div>dashboard</div>} />
       </Route>
       <Route path="*" element={<div>404</div>} />
     </Routes>
