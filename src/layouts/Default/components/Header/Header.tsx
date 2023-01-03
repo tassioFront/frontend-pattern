@@ -4,7 +4,7 @@ import BtnLink from '@/components/BtnLink/BtnLink';
 import {
   homeResolvedRouter,
   aboutResolvedRouter,
-  dashboardResolvedRouter,
+  loginResolvedRouter,
 } from '@/routes/resolvedRoutes';
 
 const Header = (): JSX.Element => {
@@ -22,10 +22,10 @@ const Header = (): JSX.Element => {
       label: 'About',
     },
     {
-      title: 'Go to Dashboard page',
-      to: dashboardResolvedRouter,
+      title: 'Go to Fake Login page',
+      to: loginResolvedRouter,
       icon: 'area-chart',
-      label: 'Dashboard',
+      label: 'Fake Login',
     },
   ];
   return (
