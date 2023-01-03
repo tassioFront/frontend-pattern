@@ -9,7 +9,7 @@ interface IUseAuthValidation {
 interface IUseAuthValidationResponse {
   GHUserName: string | null;
 }
-export const useGHUserNameCache = ({
+export const useGHUserNameFromStorage = ({
   onAuth,
   onNotAuth,
 }: IUseAuthValidation): IUseAuthValidationResponse => {
