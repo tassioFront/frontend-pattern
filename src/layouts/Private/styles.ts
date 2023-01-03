@@ -12,10 +12,14 @@ const Styles = {
     width: 100%;
   `,
   Content: styled.main`
-    max-width: ${screenSizes.desktopMax};
-    max-width: ${screenSizes.desktopMax};
+    align-items: center;
+    display: flex;
+    justify-content: center;
     padding: var(--spacing-xxlarge) var(--spacing-xsmall);
     margin: 0 auto;
+    max-width: ${screenSizes.desktopMax};
+    max-width: ${screenSizes.desktopMax};
+    min-height: 100vh;
     width: 100%;
 
     ${media.greaterThan('tablet')`
