@@ -5,12 +5,18 @@ interface IUseAuthValidation {
   onAuth?: () => void;
   onNotAuth?: () => void;
 }
+
+interface IUseAuthValidationResponse {
+  GHUserName: string | null;
+}
 export const useGHUserNameCache = ({
   onAuth,
   onNotAuth,
-}: IUseAuthValidation): void => {
+}: IUseAuthValidation): IUseAuthValidationResponse => {
   const GHUserName = getGHUserNameFromCache();
   useEffect(() => {
     GHUserName !== null ? onAuth?.() : onNotAuth?.();
   }, [GHUserName]);
+
+  return { GHUserName };
 };
