@@ -1,13 +1,16 @@
 import { IUserGithub } from '@/models/UserGithub';
 import { getUserGithubByUserName } from '@/services/userGithub.service';
-import { useAppDispatch } from '@/store/helper';
-import { userInfoActions } from '@/store/userInfo';
+import { useAppDispatch, useAppSelector } from '@/store/helper';
+import { userInfoActions, userInfoSelectors } from '@/store/userInfo';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
+export interface getUserGHInfoOnSuccessParams {
+  response: AxiosResponse<IUserGithub> | { data: IUserGithub | null };
+}
 interface getUserGHInfoParams {
   userName: string;
-  onSuccess?: (response: AxiosResponse<IUserGithub>) => void;
+  onSuccess?: (response: getUserGHInfoOnSuccessParams['response']) => void;
 }
 
 interface IUseGetGHInfoByUserNameResponse {
@@ -16,8 +19,11 @@ interface IUseGetGHInfoByUserNameResponse {
 }
 
 export const useGetGHInfoByUserName = (): IUseGetGHInfoByUserNameResponse => {
+  // state
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(userInfoSelectors.getIsAuth);
+  const cachedData = useAppSelector(userInfoSelectors.getMainUserInfo);
 
   // handling
   const getUserGHInfo = async ({
@@ -26,8 +32,11 @@ export const useGetGHInfoByUserName = (): IUseGetGHInfoByUserNameResponse => {
   }: getUserGHInfoParams): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getUserGithubByUserName(userName);
-      dispatch(userInfoActions.setUserInfo(response.data));
+      let response = { data: cachedData };
+      if (!isAuth) {
+        response = await getUserGithubByUserName(userName);
+      }
+      dispatch(userInfoActions.setUserInfo(response?.data));
       onSuccess?.(response);
     } catch (error) {
       // create a alert component

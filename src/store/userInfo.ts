@@ -14,6 +14,9 @@ const selector = {
   getMainUserInfo: (state: RootState) => {
     return state.userInfo.GHData;
   },
+  getIsAuth: (state: RootState): boolean => {
+    return Boolean(state.userInfo.GHData?.login);
+  },
 };
 
 const userInfoSlice = createSlice({

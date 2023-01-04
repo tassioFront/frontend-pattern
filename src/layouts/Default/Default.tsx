@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 import Styles from './styles';
 import Footer from '@/components/Footer/Footer';
 import Header from './components/Header/Header';
@@ -6,8 +6,7 @@ import { dashboardResolvedRouter } from '@/routes/resolvedRoutes';
 import { GHUserNameFromStorage } from '@/helpers/GHUserNameFromStorage/GHUserNameFromStorage';
 
 const Default = (): JSX.Element => {
-  const navigate = useNavigate();
-  const onHasGHUserName = (): void => navigate(dashboardResolvedRouter);
+  const onHasGHUserName = (): null => Navigate({ to: dashboardResolvedRouter });
   GHUserNameFromStorage({ onHasGHUserName });
 
   return (

@@ -6,20 +6,23 @@ import {
   loginResolvedRouter,
 } from '@/routes/resolvedRoutes';
 import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, Navigate } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Styles from './styles';
 
 const Default = (): JSX.Element => {
+  // state
   const navigate = useNavigate();
-  const onNotHasGHUserName = (): void => navigate(loginResolvedRouter);
+  const { isLoading, getUserGHInfo } = useGetGHInfoByUserName();
+
+  // handling
+  const onNotHasGHUserName = (): null => Navigate({ to: loginResolvedRouter });
   const { GHUserName } = GHUserNameFromStorage({
     onNotHasGHUserName,
   });
   const onSuccess = (): void => {
     navigate(dashboardResolvedRouter);
   };
-  const { isLoading, getUserGHInfo } = useGetGHInfoByUserName();
   useEffect(() => {
     GHUserName !== null && getUserGHInfo({ userName: GHUserName, onSuccess });
   }, []);
