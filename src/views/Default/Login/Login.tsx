@@ -1,43 +1,35 @@
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
 import Section from '@/components/Section/Section';
 import Styles from './styles';
-import { dashboardResolvedRouter } from '@/routes/resolvedRoutes';
 import { texts, actions } from './enums';
 import TextInput from '@/components/TextInput/TextInput';
 import Btn from '@/components/Btn/Btn';
 import { useState } from 'react';
-import { getUserGithubByUserName } from '@/services/userGithub.service';
-import { userInfoActions } from '@/store/userInfo';
-import { useAppDispatch } from '@/store/helper';
-import { useNavigate } from 'react-router-dom';
+import {
+  useGetGHInfoByUserName,
+  getUserGHInfoOnSuccessParams,
+} from '@/hooks/useGetGHInfoByUserName/useGetGHInfoByUserName';
 import { storageService } from '@/services/localStorage/localStorage.service';
 import { StorageKeys } from '@/enums/storage-keys';
+import { useNavigate } from 'react-router-dom';
+import { dashboardResolvedRouter } from '@/routes/resolvedRoutes';
 
 const Login = (): JSX.Element => {
-  const [userName, setUserName] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useAppDispatch();
+  // state
   const navigate = useNavigate();
-
+  const [userName, setUserName] = useState('');
   const onChangeInput = (value: string): void => {
     setUserName(value);
   };
+  const onSuccess = (
+    response: getUserGHInfoOnSuccessParams['response']
+  ): void => {
+    storageService.set(StorageKeys.GHUserName, response?.data?.login);
+    navigate(dashboardResolvedRouter);
+  };
 
   // handling
-  const getUserGHInfo = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-      const response = await getUserGithubByUserName(userName);
-      dispatch(userInfoActions.setUserInfo(response.data));
-      storageService.set(StorageKeys.GHUserName, response.data.login);
-      navigate(dashboardResolvedRouter);
-    } catch (error) {
-      // create a alert component
-      alert((error as Error).message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { isLoading, getUserGHInfo } = useGetGHInfoByUserName();
 
   return (
     <BaseScreen heading={texts.heading} description={texts.description}>
@@ -49,7 +41,10 @@ const Login = (): JSX.Element => {
             value={userName}
             onChange={(e) => onChangeInput(e?.target?.value)}
           />
-          <Btn onClick={getUserGHInfo} isLoading={isLoading}>
+          <Btn
+            onClick={async () => await getUserGHInfo({ userName, onSuccess })}
+            isLoading={isLoading}
+          >
             {actions.access}
           </Btn>
         </Styles.Content>
