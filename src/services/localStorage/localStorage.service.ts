@@ -13,4 +13,7 @@ export const storageService = {
 
     localStorage.setItem(key, stringifyData);
   },
+  remove: (key: string) => {
+    localStorage.removeItem(key);
+  },
 };
