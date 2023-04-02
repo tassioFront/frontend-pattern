@@ -21,6 +21,7 @@ function App(): JSX.Element {
       <Route path={routesPrefix.app} element={<PrivateLayout />}>
         <Route index element={<div>dashboard</div>} />
         <Route path={routes.dashboard} element={<div>dashboard</div>} />
+        <Route path={routes.forbidden} element={<div>forbidden</div>} />
       </Route>
       <Route path="*" element={<div>404</div>} />
     </Routes>

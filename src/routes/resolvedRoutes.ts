@@ -7,3 +7,4 @@ export const loginResolvedRouter = `${routesPrefix.public}${routes.login}`;
 
 // private layout
 export const dashboardResolvedRouter = `${routesPrefix.app}/${routes.dashboard}`;
+export const forbiddenResolvedRouter = `${routesPrefix.app}/${routes.forbidden}`;
