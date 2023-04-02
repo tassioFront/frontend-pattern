@@ -5,6 +5,8 @@ export enum routes {
 
   // private layout
   dashboard = 'dashboard',
+
+  // default layout
   forbidden = 'forbidden',
 }
 
