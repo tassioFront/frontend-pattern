@@ -11,6 +11,7 @@ import {
 } from '@/hooks/useGetGHInfoByUserName/useGetGHInfoByUserName';
 import { storageService } from '@/services/localStorage/localStorage.service';
 import { StorageKeys } from '@/enums/storage-keys';
+import { loginCy } from '@/enums/dataCy';
 import { useNavigate } from 'react-router-dom';
 import { dashboardResolvedRouter } from '@/routes/resolvedRoutes';
 
@@ -36,12 +37,14 @@ const Login = (): JSX.Element => {
       <Section>
         <Styles.Content>
           <TextInput
+            data-cy={loginCy.userNameInput}
             label={texts.inputLabel}
             placeholder={texts.inputPlaceholder}
             value={userName}
             onChange={(e) => onChangeInput(e?.target?.value)}
           />
           <Btn
+            data-cy={loginCy.userNameBtn}
             onClick={async () => await getUserGHInfo({ userName, onSuccess })}
             isLoading={isLoading}
           >

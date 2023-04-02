@@ -1,3 +1,5 @@
+import { apiErrors } from '@/enums/home';
+import { wrapperTrycatchfy } from '@/helpers/trycatchfy/trycatchfy';
 import { IUserGithub } from '@/models/UserGithub';
 import { getUserGithubByUserName } from '@/services/userGithub.service';
 import { useAppDispatch, useAppSelector } from '@/store/helper';
@@ -30,7 +32,7 @@ export const useGetGHInfoByUserName = (): IUseGetGHInfoByUserNameResponse => {
     userName,
     onSuccess,
   }: getUserGHInfoParams): Promise<void> => {
-    try {
+    const expectedBehavior = async (): Promise<void> => {
       setIsLoading(true);
       let response = { data: cachedData };
       if (!isAuth) {
@@ -38,12 +40,15 @@ export const useGetGHInfoByUserName = (): IUseGetGHInfoByUserNameResponse => {
       }
       dispatch(userInfoActions.setUserInfo(response?.data));
       onSuccess?.(response);
-    } catch (error) {
-      // create a alert component
-      alert((error as Error).message);
-    } finally {
-      setIsLoading(false);
-    }
+    };
+    const onResourceError = (): void => {
+      alert(apiErrors.getUserGithubByUserName);
+    };
+    await wrapperTrycatchfy({
+      expectedBehavior,
+      onResourceError,
+      onEndCycle: () => setIsLoading(false),
+    });
   };
 
   return { isLoading, getUserGHInfo };

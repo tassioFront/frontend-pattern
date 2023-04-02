@@ -10,18 +10,19 @@ interface IFakeAxios {
 }
 
 const trycatchfy = initTrycatchfy();
+interface IWrapperTrycatchfy {
+  expectedBehavior: ITrycatchfyParams<IFakeAxios>['expectedBehavior'];
+  onForbiddenError?: ITrycatchfyParams<IFakeAxios>['onForbiddenError'];
+  onResourceError: ITrycatchfyParams<IFakeAxios>['onResourceError'];
+  onEndCycle: ITrycatchfyParams<IFakeAxios>['onEndCycle'];
+}
 
 export const wrapperTrycatchfy = async ({
   expectedBehavior,
   onForbiddenError,
   onResourceError,
-  onScriptError,
   onEndCycle,
-  onHttpExceptionError,
-}: Omit<
-  ITrycatchfyParams<IFakeAxios>,
-  'onUnauthorizedError' | 'onInternalServerError'
->): Promise<void | Error> => {
+}: IWrapperTrycatchfy): Promise<void | Error> => {
   const onUnauthorizedErrorDefault = (): void => {
     alert(customHttpErrors.unauthorizedError);
     fakeLogout();
