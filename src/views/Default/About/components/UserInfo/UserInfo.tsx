@@ -1,10 +1,10 @@
-import Spinner from '@/components/Spinner/Spinner';
 import { apiErrors } from '@/enums/home';
 import { wrapperTrycatchfy } from '@/helpers/trycatchfy/trycatchfy';
 import { IUserGithub } from '@/models/UserGithub';
 import { getUserGithubByUserName } from '@/services/userGithub.service';
 import { useEffect, useState } from 'react';
-import Styles, { imageSize } from './styles';
+import Loading from '@/components/Loading/Loading';
+import UserInfoContent from './UserInfoContent';
 
 const UserInfo = (): JSX.Element => {
   const [user, setUser] = useState<IUserGithub>();
@@ -26,25 +26,18 @@ const UserInfo = (): JSX.Element => {
       onEndCycle: () => setIsLoading(false),
     });
   };
-  const childrenToRender =
-    user !== undefined ? (
-      <Styles.Content>
-        <Styles.ImgLazyLoad
-          src={user.avatar_url}
-          width={imageSize}
-          height={imageSize}
-          alt="User image"
-        />
-        <h2>{user?.name}</h2>
-        <p>{user?.bio}</p>
-      </Styles.Content>
-    ) : (
-      <>{error}</>
-    );
   useEffect(() => {
     void getUserInfo();
   }, []);
-  return <>{!isLoading ? childrenToRender : <Spinner type="brand" />}</>;
+  return (
+    <>
+      {!isLoading ? (
+        <UserInfoContent user={user as IUserGithub} error={error} />
+      ) : (
+        <Loading height="50vh" />
+      )}
+    </>
+  );
 };
 
 export default UserInfo;

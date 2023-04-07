@@ -8,13 +8,12 @@ interface SectionTypes {
 }
 const Section = ({
   children,
-  className,
   heading2,
   description,
   ...rest
 }: SectionTypes): JSX.Element => {
   return (
-    <Styles.Wrapper className={className} {...rest}>
+    <Styles.Wrapper {...rest}>
       {heading2 !== undefined && (
         <Styles.Header>
           <h2>{heading2}</h2>

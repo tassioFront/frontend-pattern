@@ -3,7 +3,7 @@ export enum texts {
   description = 'This web system has been created to explore React functionalities and frontend patterns. I hope you enjoy it and learn something new.',
   whatWillIFindHeading = 'So, what will I find here?',
   whatWillIFindIntro = `The main idea of this project is to be a template project. Then, use
-  it in the future in news projects or to improve current ones. Some
+  it in the future in new projects or to improve current ones. Some
   examples would be:`,
   wannaSeeExampleHeading = 'Wanna see a example?',
   wannaSeeExampleIntro = ` This system has been created using a multi layout pattern. The idea of

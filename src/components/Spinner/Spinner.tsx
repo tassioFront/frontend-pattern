@@ -2,7 +2,6 @@ import Styles from './styles';
 
 interface ISpinnerProps {
   type?: 'default' | 'brand';
-  className?: string;
 }
 
 enum types {
@@ -10,11 +9,8 @@ enum types {
   brand = 'var(--color-brand-primary-dark-1)',
 }
 
-const Spinner = ({
-  type = 'default',
-  className,
-}: ISpinnerProps): JSX.Element => (
-  <Styles.Spinner className={className} viewBox="0 0 50 50">
+const Spinner = ({ type = 'default', ...rest }: ISpinnerProps): JSX.Element => (
+  <Styles.Spinner viewBox="0 0 50 50" {...rest}>
     <circle
       className="path"
       cx="25"
