@@ -14,21 +14,27 @@ export const globalDefinitions = `
   }
 
   h1 {
-    font: var(--title-headline-xlarge);
-    letter-spacing: var(--title-headline-xlarge-letter);
+    font: var(--title-headline-xxlarge);
+    letter-spacing: var(--title-headline-xxlarge-letter);
     margin: var(--spacing-small);
   }
 
   h2 {
+    font: var(--title-headline-large);
+    letter-spacing: var(--title-headline-large-letter);
+    margin: var(--spacing-xsmall);
+  }
+
+  h3 {
     font: var(--title-headline-medium);
     letter-spacing: var(--title-headline-medium-letter);
     margin: var(--spacing-xsmall);
   }
 
-  h3 {
-    font: var(--title-headline-small);
-    letter-spacing: var(--title-headline-small-letter);
-    margin: var(--spacing-xsmall);
+  h4 {
+    font: var(--title-headline-xsmall);
+    letter-spacing: var(--title-headline-xsmall-letter);
+    margin: var(--spacing-xxsmall);
   }
 
   p {
