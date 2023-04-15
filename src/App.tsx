@@ -20,7 +20,10 @@ function App(): JSX.Element {
         <Route path={routes.forbidden} element={<div>forbidden</div>} />
       </Route>
       <Route path={routesPrefix.app} element={<PrivateLayout />}>
-        <Route index element={<div>dashboard</div>} />
+        <Route
+          index
+          element={<div>dashboard - more things coming soon...</div>}
+        />
         <Route path={routes.dashboard} element={<div>dashboard</div>} />
       </Route>
       <Route path="*" element={<div>404</div>} />

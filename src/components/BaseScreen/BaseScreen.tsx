@@ -1,6 +1,8 @@
-import { goToTop } from '@/helpers/goToTop';
+import { goToTop } from '@/helpers/goTo';
 import { useEffect } from 'react';
 import Styles from './styles';
+import Typography from '../Typography/Typography';
+import { createIdByString } from '@/helpers/string/string';
 
 interface BaseScreenTypes {
   children: JSX.Element | JSX.Element[];
@@ -21,7 +23,7 @@ const BaseScreen = ({
   return (
     <Styles.Wrapper className={className}>
       <Styles.Header>
-        <h1>{heading}</h1>
+        <Typography tag="h1" id={createIdByString(heading)} label={heading} />
         {description !== null && <p>{description}</p>}
       </Styles.Header>
       {children}
