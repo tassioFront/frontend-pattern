@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import screenSizes from '@/styles/screenSizes';
+import { media } from '@/styles/media';
 
 const Styles = {
   Wrapper: styled.div`
@@ -14,6 +15,10 @@ const Styles = {
     margin: 0 auto;
     width: 100%;
     background-color: var(--color-neutral-light-5);
+
+    ${media.greaterThan('tablet')`
+      padding: var(--spacing-giant);
+    `}
   `,
 };
 
