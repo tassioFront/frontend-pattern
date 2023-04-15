@@ -1,3 +1,5 @@
+import { createIdByString } from '@/helpers/string/string';
+import Typography from '../Typography/Typography';
 import Styles from './styles';
 
 interface SectionTypes {
@@ -16,7 +18,12 @@ const Section = ({
     <Styles.Wrapper {...rest}>
       {heading2 !== undefined && (
         <Styles.Header>
-          <h2>{heading2}</h2>
+          <Typography
+            tag="h2"
+            id={createIdByString(heading2)}
+            label={heading2}
+          />
+
           {description !== undefined && <p>{description}</p>}
         </Styles.Header>
       )}
