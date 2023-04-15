@@ -18,7 +18,7 @@ const UserInfoContent = ({
         height={imageSize}
         alt="User image"
       />
-      <h2>{user?.name}</h2>
+      <h3>{user?.name}</h3>
       <p>{user?.bio}</p>
     </Styles.Content>
   ) : (
