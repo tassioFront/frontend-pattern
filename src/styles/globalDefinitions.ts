@@ -1,3 +1,4 @@
+import { defaultLinkStyles } from '@/components/BtnLink/styles';
 import screenSizes from './screenSizes';
 
 export const globalDefinitions = `
@@ -40,8 +41,8 @@ export const globalDefinitions = `
   p {
     font: var(--text-body-medium);
     letter-spacing: var(--text-body-medium-letter);
-    margin-top: var(--spacing-xxsmall);
-    margin-bottom: var(--spacing-xxsmall);
+    margin-top: var(--spacing-xsmall);
+    margin-bottom: var(--spacing-xsmall);
 
     @media (min-width: ${screenSizes.tablet}) {
       margin-top: var(--spacing-small);
@@ -59,6 +60,6 @@ export const globalDefinitions = `
   }
 
   a {
-    cursor: pointer;
+    ${defaultLinkStyles}
   }
 `;
