@@ -4,7 +4,7 @@ import Styles from './styles';
 import { texts, actions } from './enums';
 import TextInput from '@/components/TextInput/TextInput';
 import Btn from '@/components/Btn/Btn';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   useGetGHInfoByUserName,
   getUserGHInfoOnSuccessParams,
@@ -31,6 +31,17 @@ const Login = (): JSX.Element => {
 
   // handling
   const { isLoading, getUserGHInfo } = useGetGHInfoByUserName();
+  const onSubmit = useCallback(
+    async (event: unknown, userNameResult: string) => {
+      const key = (event as React.KeyboardEvent<HTMLImageElement>).key;
+      const isNotSubmitOrEnterKey = key !== undefined && key !== 'Enter';
+      if (isNotSubmitOrEnterKey) {
+        return;
+      }
+      await getUserGHInfo({ userName: userNameResult, onSuccess });
+    },
+    []
+  );
 
   return (
     <BaseScreen heading={texts.heading} description={texts.description}>
@@ -42,10 +53,11 @@ const Login = (): JSX.Element => {
             placeholder={texts.inputPlaceholder}
             value={userName}
             onChange={(e) => onChangeInput(e?.target?.value)}
+            onKeyDown={async (e) => await onSubmit(e, userName)}
           />
           <Btn
             data-cy={loginCy.userNameBtn}
-            onClick={async () => await getUserGHInfo({ userName, onSuccess })}
+            onClick={async (e) => await onSubmit(e, userName)}
             isLoading={isLoading}
           >
             {actions.access}

@@ -9,6 +9,7 @@ import Login from '@/views/Default/Login/Login';
 // private layout
 import PrivateLayout from './layouts/Private/Private';
 import { routes, routesPrefix } from './routes/enums';
+import Dashboard from './views/Private/Dashboard/Dashboard';
 
 function App(): JSX.Element {
   return (
@@ -20,11 +21,8 @@ function App(): JSX.Element {
         <Route path={routes.forbidden} element={<div>forbidden</div>} />
       </Route>
       <Route path={routesPrefix.app} element={<PrivateLayout />}>
-        <Route
-          index
-          element={<div>dashboard - more things coming soon...</div>}
-        />
-        <Route path={routes.dashboard} element={<div>dashboard</div>} />
+        <Route index element={<Dashboard />} />
+        <Route path={routes.dashboard} element={<Dashboard />} />
       </Route>
       <Route path="*" element={<div>404</div>} />
     </Routes>

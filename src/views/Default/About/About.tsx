@@ -47,7 +47,7 @@ const About = (): JSX.Element => {
   }, []);
 
   return (
-    <BaseScreen heading={texts.heading}>
+    <BaseScreen heading={texts.heading} description={texts.description}>
       {!isLoading ? (
         <>
           <Section heading2={texts.whoAmI}>
