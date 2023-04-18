@@ -25,7 +25,7 @@ export const variables = `
     --color-neutral-light-4: #dee1e4;
     --color-neutral-light-5: #f1f3f3;
     --color-neutral-white: #fff;
-    --text-color: var(--color-neutral-regular);
+    --text-color: var(--color-neutral-white);
     --color-brand-primary-regular: #ed6700;
     --color-brand-primary-dark-1: #b85000;
     --color-brand-primary-dark-2: #068751;

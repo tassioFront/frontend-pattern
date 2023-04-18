@@ -6,7 +6,7 @@ interface TextListTypes {
 }
 const TextList = ({
   list,
-  type = 'light',
+  type = 'dark',
   ...rest
 }: TextListTypes): JSX.Element => {
   return (

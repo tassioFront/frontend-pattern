@@ -12,7 +12,7 @@ const Styles = {
     `}
   `,
   Label: styled.label`
-    color: var(--color-neutral-light-1);
+    color: var(--text-color);
     font: var(--text-caption);
     margin-bottom: var(--spacing-xxsmall);
   `,

@@ -14,7 +14,8 @@ const Styles = {
     max-width: ${screenSizes.desktopMax};
     margin: 0 auto;
     width: 100%;
-    background-color: var(--color-neutral-light-5);
+    border: 1px solid var(--color-neutral-light-1);
+    border-radius: 4px;
 
     ${media.greaterThan('tablet')`
       padding: var(--spacing-giant);

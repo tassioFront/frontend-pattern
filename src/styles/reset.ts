@@ -11,6 +11,8 @@ export const reset = `
         scroll-behavior: smooth;
         text-rendering: optimizelegibility;
         text-size-adjust: 100%;
+        background-color: black;
+        color: white;
     }
 
     body {

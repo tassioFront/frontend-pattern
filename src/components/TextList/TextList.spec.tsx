@@ -15,13 +15,13 @@ describe('<TextList />', () => {
     liTags.forEach((li, index) => {
       expect(li?.textContent).toBe(`- ${list[index]};`);
     });
-    expect(textList).toHaveClass('light');
+    expect(textList).toHaveClass('dark');
   });
 
-  it('should render list with dark type', () => {
+  it('should render list with light type', () => {
     const list = ['item 1', 'item 2'];
-    render(<TextList data-testid="text-list" list={list} type="dark" />);
+    render(<TextList data-testid="text-list" list={list} type="light" />);
     const textList = screen.getByTestId('text-list');
-    expect(textList).toHaveClass('dark');
+    expect(textList).toHaveClass('light');
   });
 });
