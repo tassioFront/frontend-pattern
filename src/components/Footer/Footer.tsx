@@ -1,4 +1,3 @@
-import BtnLink from '../BtnLink/BtnLink';
 import Styles from './styles';
 
 interface FooterTypes {
@@ -9,16 +8,38 @@ interface FooterTypes {
 const Footer = ({ children, href, ...rest }: FooterTypes): JSX.Element => {
   return (
     <Styles.Footer {...rest}>
-      <BtnLink
-        to=""
+      <Styles.SocialMedia>
+        <a
+          href="https://github.com/tassioFront"
+          title="Go to web site creator GitHub"
+          aria-label="Web site creator GitHub"
+          className="secondary"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <i className="fa fa-github"></i>
+        </a>
+        <a
+          href="https://www.linkedin.com/in/tassio-front-end/"
+          title="Go to web site creator Linkedin"
+          aria-label="Web site creator Linkedin"
+          className="secondary"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <i className="fa fa-linkedin"></i>
+        </a>
+      </Styles.SocialMedia>
+      <a
+        href="https://github.com/tassioFront"
         title="Go to web site creator GitHub"
-        onClick={() => window.open('https://github.com/tassioFront', '_blank')}
         className="secondary"
         target="_blank"
+        rel="noreferrer"
       >
         Made with ❤️ by Tássio Jordão{' '}
         <i className="fa fa-external-link-square" aria-hidden="true"></i>
-      </BtnLink>
+      </a>
     </Styles.Footer>
   );
 };
