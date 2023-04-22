@@ -10,9 +10,9 @@ const Footer = ({ children, href, ...rest }: FooterTypes): JSX.Element => {
     <Styles.Footer {...rest}>
       <Styles.SocialMedia>
         <a
-          href="https://github.com/tassioFront"
-          title="Go to web site creator GitHub"
-          aria-label="Web site creator GitHub"
+          href="https://github.com/tassioFront/frontend-pattern"
+          title="Go to web site source-code"
+          aria-label="Web site source-code"
           className="secondary"
           target="_blank"
           rel="noreferrer"
