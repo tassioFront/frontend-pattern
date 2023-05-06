@@ -9,7 +9,7 @@ const Home = (): JSX.Element => {
   const whatWillIFindList = [
     'Frontend good practices',
     'Unit test configuration',
-    'Craco configuration',
+    'Vite and Vitest configuration',
     'Typescript configuration',
     'Project structure',
   ];
