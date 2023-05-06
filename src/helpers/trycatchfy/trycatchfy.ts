@@ -3,9 +3,10 @@ import { forbiddenResolvedRouter } from '@/routes/resolvedRoutes';
 import { initTrycatchfy } from '@open-ish/utility-trycatchfy';
 import { ITrycatchfyParams } from '@open-ish/utility-trycatchfy/src/lib/models';
 import { fakeLogout } from '../useInfo';
+import { AxiosResponse } from 'axios';
 
 interface IFakeAxios {
-  response: any;
+  response: AxiosResponse;
   status: number;
 }
 
