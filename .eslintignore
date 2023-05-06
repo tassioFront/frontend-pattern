@@ -1,2 +1,3 @@
 *.config.ts
 *.config.js
+*.spec.tsx
