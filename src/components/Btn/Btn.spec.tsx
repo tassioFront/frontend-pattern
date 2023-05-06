@@ -1,9 +1,10 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 
 import Btn from './Btn';
+import { vi } from 'vitest';
 
 describe('<Button />', () => {
-  const onClick = jest.fn();
+  const onClick = vi.fn();
   beforeEach(() => {
     onClick.mockClear();
   });

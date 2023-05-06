@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
 
 import Section from './Section';
+import { vi } from 'vitest';
 
 describe('<Section />', () => {
-  const onClick = jest.fn();
+  const onClick = vi.fn();
   beforeEach(() => {
     onClick.mockClear();
   });

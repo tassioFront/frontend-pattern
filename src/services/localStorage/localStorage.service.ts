@@ -1,1 +1,1 @@
-export * from '@open-ish/utility-storagefy';
+export { storageService } from '@open-ish/utility-storagefy'

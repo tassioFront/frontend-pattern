@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
 
 import TextList from './TextList';
+import { vi } from 'vitest';
 
 describe('<TextList />', () => {
-  const onClick = jest.fn();
+  const onClick = vi.fn();
   beforeEach(() => {
     onClick.mockClear();
   });
