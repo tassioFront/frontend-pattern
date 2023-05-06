@@ -6,6 +6,7 @@
   },
   "extends": [
       "plugin:react/recommended",
+      "standard-with-typescript",
       "plugin:react/jsx-runtime",
       "prettier"
   ],
@@ -15,9 +16,6 @@
         "parserOptions": {
           "project": ["./tsconfig.json"]
         },
-          "extends": [
-            "standard-with-typescript"
-        ],
         "rules": {
           "@typescript-eslint/no-misused-promises": [
             "error",
@@ -30,7 +28,6 @@
     ],
   "parserOptions": {
       "ecmaVersion": "latest",
-      "project": "./tsconfig.json",
       "sourceType": "module"
   },
   "plugins": [

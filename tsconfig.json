@@ -28,6 +28,6 @@
     },
     "types": ["vitest/globals"]
   },
-  "include": ["src", "tests", "**/*.config.js", "**/*.config.ts"],
+  "include": ["src", "tests", "**/*.config.js", "**/*.config.ts", "index.d.ts"],
   "exclude": ["node_modules", "**/*.spec.tsx", "**/*.spec.ts"]
 }

@@ -1,15 +1,26 @@
 import { Route, Routes } from 'react-router-dom';
+import loadable from '@loadable/component';
+
+import { routes, routesPrefix } from './routes/enums';
 
 // default layout
-import DefaultLayout from './layouts/Default/Default';
-import Home from '@/views/Default/Home/Home';
-import About from '@/views/Default/About/About';
-import Login from '@/views/Default/Login/Login';
+const DefaultLayout = loadable(
+  async () => await import('./layouts/Default/Default')
+);
+const Home = loadable(async () => await import('@/views/Default/Home/Home'));
+const About = loadable(async () => await import('@/views/Default/About/About'));
+const Login = loadable(async () => await import('@/views/Default/Login/Login'));
 
 // private layout
-import PrivateLayout from './layouts/Private/Private';
-import { routes, routesPrefix } from './routes/enums';
-import Dashboard from './views/Private/Dashboard/Dashboard';
+const PrivateLayout = loadable(
+  async () => await import('./layouts/Private/Private')
+);
+const Dashboard = loadable(
+  async () => await import('@/views/Private/Dashboard/Dashboard')
+);
+
+// @to-do[loading-page]: create a loading component to lazy loading fallback
+const LoadingPage = (): JSX.Element => <LoadingPage />;
 
 function App(): JSX.Element {
   return (
