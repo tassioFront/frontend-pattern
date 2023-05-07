@@ -10,6 +10,7 @@ const ChipGroup = ({ children, ...rest }: ChipGroupTypes): JSX.Element => {
     const hasNotAllowedComponent = children.some(
       (child) => child.type.name !== 'Chip'
     );
+    console.log(children.map((children) => children.type.name));
     if (hasNotAllowedComponent) {
       console.error(
         'Please, just use Chip components inside ChipGroup components!'
