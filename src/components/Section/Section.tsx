@@ -6,16 +6,18 @@ interface SectionTypes {
   children: JSX.Element | JSX.Element[];
   className?: string;
   heading2?: string;
+  space?: number;
   description?: string;
 }
 const Section = ({
   children,
   heading2,
   description,
+  space = 10,
   ...rest
 }: SectionTypes): JSX.Element => {
   return (
-    <Styles.Wrapper {...rest}>
+    <Styles.Wrapper {...rest} space={space}>
       {heading2 !== undefined && (
         <Styles.Header>
           <Typography

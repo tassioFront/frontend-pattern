@@ -1,5 +1,4 @@
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
-import Section from '@/components/Section/Section';
 import Styles from './styles';
 import { texts, actions } from './enums';
 import TextInput from '@/components/TextInput/TextInput';
@@ -45,25 +44,23 @@ const Login = (): JSX.Element => {
 
   return (
     <BaseScreen heading={texts.heading} description={texts.description}>
-      <Section>
-        <Styles.Content>
-          <TextInput
-            data-cy={loginCy.userNameInput}
-            label={texts.inputLabel}
-            placeholder={texts.inputPlaceholder}
-            value={userName}
-            onChange={(e) => onChangeInput(e?.target?.value)}
-            onKeyDown={async (e) => await onSubmit(e, userName)}
-          />
-          <Btn
-            data-cy={loginCy.userNameBtn}
-            onClick={async (e) => await onSubmit(e, userName)}
-            isLoading={isLoading}
-          >
-            {actions.access}
-          </Btn>
-        </Styles.Content>
-      </Section>
+      <Styles.Content>
+        <TextInput
+          data-cy={loginCy.userNameInput}
+          label={texts.inputLabel}
+          placeholder={texts.inputPlaceholder}
+          value={userName}
+          onChange={(e) => onChangeInput(e?.target?.value)}
+          onKeyDown={async (e) => await onSubmit(e, userName)}
+        />
+        <Btn
+          data-cy={loginCy.userNameBtn}
+          onClick={async (e) => await onSubmit(e, userName)}
+          isLoading={isLoading}
+        >
+          {actions.access}
+        </Btn>
+      </Styles.Content>
     </BaseScreen>
   );
 };
