@@ -26,7 +26,7 @@
           "src/*"
       ]
     },
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "vite/client"]
   },
   "include": ["src", "tests", "**/*.config.js", "**/*.config.ts"],
   "exclude": ["node_modules", "**/*.spec.tsx", "**/*.spec.ts"]
