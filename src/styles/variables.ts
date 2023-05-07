@@ -69,7 +69,7 @@ export const variables = `
     --title-headline-xlarge-letter: 0.025em;
     --title-headline-large: var(--font-weight-bold) 32px/40px var(--font-family);
     --title-headline-large-letter: 0.025em;
-    --title-headline-medium: var(--font-weight-bold) 28px/36px
+    --title-headline-medium: var(--font-weight-medium) 28px/36px
       var(--font-family);
     --title-headline-medium-letter: 0.015em;
     --title-headline-small: var(--font-weight-bold) 26px/36px var(--font-family);

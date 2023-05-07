@@ -7,11 +7,11 @@ const Styles = {
     height: 100%;
     width: 100%;
     justify-content: flex-start;
-    padding: var(--spacing-xlarge) 0;
+    margin: var(--spacing-xlarge) 0;
     flex-direction: column;
 
     ${media.greaterThan('tablet')`
-      padding: var(--spacing-xxxlarge) 0;
+    margin: var(--spacing-xxxlarge) 0;
     `}
   `,
   Header: styled.div`

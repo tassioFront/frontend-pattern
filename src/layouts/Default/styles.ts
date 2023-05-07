@@ -20,6 +20,10 @@ const Styles = {
     ${media.greaterThan('tablet')`
       padding: var(--spacing-giant);
     `}
+
+    &:empty {
+      min-height: 100vh;
+    }
   `,
 };
 
