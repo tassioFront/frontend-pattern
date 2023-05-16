@@ -142,10 +142,26 @@ export const challenges: IContent['challenges'] = [
       `That was a nice challenge to face, I could explore more webpack configurations.`,
     ],
   },
-  //   {
-  //     title: 'asds',
-  //     desc: [
-  //       `After helping the company become bigger and solving a lot of bugs, I faced another challenge: how to work with a big team. 2 years later we had (in this project) almost 16 FrontEnd developers (we had 3 when I got here).`,
-  //     ],
-  //   },
+  {
+    title: 'Migration to Vite',
+    desc: [
+      `I also faced the challenge of changing the bundler of the B2B JSM project, which was using Webpack 4 + Vue 2 + TypeScript + Nx.`,
+      `I'm glad to say ${highlighText(
+        'it was another delivery without any impact'
+      )} on the product teams, so we kept delivering business stuff while I was changing the whole project building configuration.`,
+      `${highlighText('The strategy was (in simple words)')}:`,
+      `1. Five tasks to delivering`,
+      `2. Create a reference branch from master (it makes sense on our gitflow) on the first task, let's call it build/add-vite;`,
+      `3. Create other branches from build/add-vite (like build/add-ejs-plugin). Open pull request using build/add-vite as the base: coworkers could see exactly what was delivered (step by step). The same was done in each task;`,
+      `4. Merge the ready build/add-vite branch into an HTTPS environment, and validate. Go to production.`,
+      `5. Go to production and monitoring from Sentry.`,
+      `${highlighText('The result:')}`,
+      `Webpack 4: ~3min56 in the first run and ~1min17 after changes`,
+      `Vite: ~13s (${highlighText(
+        '~94,5% faster'
+      )}) in the first run and ~1s (${highlighText(
+        '~99% faster'
+      )}) after changes`,
+    ],
+  },
 ];
