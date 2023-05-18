@@ -1,6 +1,7 @@
 import Typography from '@/components/Typography/Typography';
 import { IContent } from '../../content';
 import { createIdByString } from '@/helpers/string/string';
+import AssociatedChips from '@/components/AssociatedChips/AssociatedChips';
 
 const Challenges = ({
   challenges,
@@ -19,6 +20,9 @@ const Challenges = ({
           {challenge.desc.map((des) => (
             <p key={des} dangerouslySetInnerHTML={{ __html: des }} />
           ))}
+          {challenge.tags?.length !== undefined && (
+            <AssociatedChips options={challenge.tags} />
+          )}
         </div>
       ))}
     </>

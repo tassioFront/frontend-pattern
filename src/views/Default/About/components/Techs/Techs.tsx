@@ -6,7 +6,7 @@ const Techs = ({ techs }: { techs: IContent['techs'] }): JSX.Element => {
   return (
     <ChipGroup>
       {techs.map((tech) => (
-        <Chip key={tech} label={tech} type="--color-brand-secondary-dark-1" />
+        <Chip key={tech} label={tech} color="--color-brand-secondary-dark-1" />
       ))}
     </ChipGroup>
   );

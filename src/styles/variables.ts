@@ -17,6 +17,7 @@ export const variables = `
 
     /* Colors
     * ------------------------- */
+    --color-neutral-dark-2: #0d0d0de6;
     --color-neutral-dark-1: #20232a;
     --color-neutral-regular: #1f2328;
     --color-neutral-light-1: #464f59;

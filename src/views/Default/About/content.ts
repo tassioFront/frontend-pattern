@@ -1,6 +1,9 @@
+import { Techs } from '@/enums/techs';
+
 interface IChallenges {
   title: string;
   desc: string[];
+  tags?: string[];
 }
 export interface IContent {
   techs: string[];
@@ -9,27 +12,29 @@ export interface IContent {
 const linkBtnFromString = (text: string, link: string): string =>
   `<a href="${link}" class="secondary">${text}</a>`;
 const highlighText = (text: string): string => `<b>${text}</b>`;
+
 export const techs: IContent['techs'] = [
-  'HTML',
-  'CSS',
-  'Javascript',
-  'Vue (Vuex and VueRouter)',
-  'TypeScript',
-  'React',
-  'Sass',
-  'Vuetify',
-  'Jest',
-  'React-admin',
-  'Nx',
-  'Azure DevOps',
-  'App Service',
-  'Static Web Apps',
-  'Amplify',
-  'GitHub Actions',
-  'Sentry',
-  'Sonar Cloud',
-  'Github',
-  'Dynatrace',
+  Techs.HTML,
+  Techs.CSS,
+  Techs.JS,
+  Techs.TS,
+  Techs.Vue,
+  Techs.Nuxt,
+  Techs.React,
+  Techs.RA,
+  Techs.Sass,
+  Techs.Vuetify,
+  Techs.Jest,
+  Techs.Nx,
+  Techs.AD,
+  Techs.GHA,
+  Techs.AS,
+  Techs.SA,
+  Techs.SWA,
+  Techs.Amplify,
+  Techs.Sentry,
+  Techs.SC,
+  Techs.Akamai,
 ];
 
 export const challenges: IContent['challenges'] = [
@@ -43,6 +48,7 @@ export const challenges: IContent['challenges'] = [
     That was a game-changer in my professional life. 
     I also started studying FrontEnd stuff (HMTL, JS, CSS, and Vue) and using it - even if it wasn't in my job description at that time.`,
     ],
+    tags: [Techs.HTML, Techs.CSS, Techs.JS, Techs.Vue],
   },
   {
     title: 'First job - Recipe website',
@@ -54,6 +60,14 @@ export const challenges: IContent['challenges'] = [
         'My challenge was to face a real system and work with other developers, besides was my first experience in a Startup'
       )}.`,
       `Even with all those new things, I got my place at the company and became the main Vue Developer fastly.`,
+    ],
+    tags: [
+      Techs.HTML,
+      Techs.CSS,
+      Techs.JS,
+      Techs.Vue,
+      Techs.Sass,
+      Techs.Vuetify,
     ],
   },
   {
@@ -74,6 +88,7 @@ export const challenges: IContent['challenges'] = [
         '5x times bigger and with a great culture and focus on quality'
       )}.`,
     ],
+    tags: [Techs.Vue, Techs.TS, Techs.React, Techs.Sentry, Techs.RA],
   },
   {
     title: 'TypeScript and Unit tests',
@@ -90,6 +105,7 @@ export const challenges: IContent['challenges'] = [
       `The exciting point: nowadays, I'm a reference for Typescript and Unit tests in my Job.`,
       `Fun fact: I told the interviewer I didn't know how to test during the interview (and that was true, I was honest).`,
     ],
+    tags: [Techs.TS, Techs.Jest],
   },
   {
     title: 'Migration to a cross-team',
@@ -101,6 +117,15 @@ export const challenges: IContent['challenges'] = [
       `${highlighText(
         'My goal was to become a more independent developer and explore issues that (usually) FrontEnd developers do not take care of'
       )}. And also, to get next to people with years and years of experience. It was totally outside my comfort zone, I got happy the team accepted giving me this amazing opportunity,`,
+    ],
+    tags: [
+      Techs.AD,
+      Techs.AS,
+      Techs.SWA,
+      Techs.Amplify,
+      Techs.GHA,
+      Techs.Sentry,
+      Techs.SC,
     ],
   },
   {
@@ -117,6 +142,7 @@ export const challenges: IContent['challenges'] = [
         'https://github.com/open-ish/studying-nx#studyingnx-real-case'
       )}.`,
     ],
+    tags: [Techs.Nx],
   },
   {
     title: 'Facing server rewriting: SSG and SPA together?',
@@ -130,6 +156,7 @@ export const challenges: IContent['challenges'] = [
       )}. So, if the URL does not have /app, the application should behave as SSG, but and if the URL has the /app, the application should behave as a SPA.`,
       `Server, Akamai, and Nx were configured successfully.`,
     ],
+    tags: [Techs.AS, Techs.SWA, Techs.Akamai, Techs.SA, Techs.Nuxt, Techs.Vue],
   },
   {
     title: 'CDN and Avaibilitty',
@@ -141,6 +168,7 @@ export const challenges: IContent['challenges'] = [
       `To overcome this challenge, I had to configure our system build to use a CDN created by my teammates. Besides solving latency problems (putting our code on servers worldwide), this CDN also keeps old files available to make users using old versions will not be impacted.`,
       `That was a nice challenge to face, I could explore more webpack configurations.`,
     ],
+    tags: [Techs.Akamai, Techs.SA],
   },
   {
     title: 'Migration to Vite',
@@ -163,5 +191,6 @@ export const challenges: IContent['challenges'] = [
         '~99% faster'
       )}) after changes`,
     ],
+    tags: [Techs.Vite],
   },
 ];

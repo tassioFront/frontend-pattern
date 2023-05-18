@@ -2,12 +2,16 @@ import Styles from './styles';
 
 interface ChipTypes {
   label: string;
-  type: string;
+  color: string;
+  className?: string;
 }
 
-const Chip = ({ type, label, ...rest }: ChipTypes): JSX.Element => {
+/**
+ * @param color a string of css var name, such as: --color-brand-secondary-dark-1. It is to color flexibility
+ */
+const Chip = ({ color, label, className }: ChipTypes): JSX.Element => {
   return (
-    <Styles.Chip type={`var(${type})`} {...rest}>
+    <Styles.Chip color={`var(${color})`} className={className}>
       {label}
     </Styles.Chip>
   );
