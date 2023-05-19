@@ -37,7 +37,7 @@
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
     "styled-media-query": "^2.1.2",
-    "typescript": "*",
+    "typescript": "4.8.4",
     "uniqid": "^5.4.0",
     "vite": "^4.3.5",
     "vitest": "^0.31.0",
