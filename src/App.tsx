@@ -20,9 +20,6 @@ const Dashboard = loadable(
   async () => await import('@/views/Private/Dashboard/Dashboard')
 );
 
-// @to-do[loading-page]: create a loading component to lazy loading fallback
-const LoadingPage = (): JSX.Element => <LoadingPage />;
-
 function App(): JSX.Element {
   return (
     <Routes>
