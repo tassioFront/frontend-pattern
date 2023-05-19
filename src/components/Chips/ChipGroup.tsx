@@ -7,7 +7,11 @@ interface ChipGroupTypes {
   children: JSX.Element[];
 }
 
-const ChipGroup = ({ children, className }: ChipGroupTypes): JSX.Element => {
+const ChipGroup = ({
+  children,
+  className,
+  ...rest
+}: ChipGroupTypes): JSX.Element => {
   const validateComponentByName = useCallback(() => {
     const hasAllowedComponent =
       !isPRD &&
@@ -25,7 +29,11 @@ const ChipGroup = ({ children, className }: ChipGroupTypes): JSX.Element => {
   useEffect(() => {
     validateComponentByName();
   }, []);
-  return <Styles.ChipGroup className={className}>{children}</Styles.ChipGroup>;
+  return (
+    <Styles.ChipGroup className={className} {...rest}>
+      {children}
+    </Styles.ChipGroup>
+  );
 };
 
 export default ChipGroup;

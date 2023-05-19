@@ -10,6 +10,7 @@ interface AssociatedChipsTypes {
 const AssociatedChips = ({
   options,
   className,
+  ...rest
 }: AssociatedChipsTypes): JSX.Element => {
   useEffect(() => {
     goToTop();
@@ -17,7 +18,7 @@ const AssociatedChips = ({
   const DEFAULT_COLOR = '--color-brand-secondary-light-1';
 
   return (
-    <Styles.ChipGroup className={className}>
+    <Styles.ChipGroup className={className} {...rest}>
       {options.map((opt) => (
         <Chip key={opt} label={opt} color={DEFAULT_COLOR} type="tag" />
       ))}
