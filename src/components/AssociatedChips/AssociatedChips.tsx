@@ -1,6 +1,7 @@
 import { goToTop } from '@/helpers/goTo';
 import { useEffect } from 'react';
 import Styles from './styles';
+import Chip from '../Chips/Chip';
 
 interface AssociatedChipsTypes {
   className?: string;
@@ -13,12 +14,12 @@ const AssociatedChips = ({
   useEffect(() => {
     goToTop();
   }, []);
-  const DEFAULT_COLOR = '--color-brand-secondary-dark-1';
+  const DEFAULT_COLOR = '--color-brand-secondary-light-1';
 
   return (
     <Styles.ChipGroup className={className}>
       {options.map((opt) => (
-        <Styles.Chip key={opt} label={opt} color={DEFAULT_COLOR} />
+        <Chip key={opt} label={opt} color={DEFAULT_COLOR} type="tag" />
       ))}
     </Styles.ChipGroup>
   );

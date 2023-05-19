@@ -9,18 +9,18 @@ interface ChipGroupTypes {
 
 const ChipGroup = ({ children, className }: ChipGroupTypes): JSX.Element => {
   const validateComponentByName = useCallback(() => {
-    const hasNotAllowedComponent =
+    const hasAllowedComponent =
       !isPRD &&
       children.some((child) => {
         const name = child.type.name ?? child.type.displayName;
         return name?.includes?.('Chip');
       });
-    if (hasNotAllowedComponent) {
+    if (!hasAllowedComponent) {
       console.error(
-        'Please, just use Chip components inside ChipGroup components only!'
+        'Please, just use Chip components inside ChipGroup components!'
       );
     }
-    return hasNotAllowedComponent;
+    return hasAllowedComponent;
   }, [children]);
   useEffect(() => {
     validateComponentByName();
