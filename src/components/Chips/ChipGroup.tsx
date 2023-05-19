@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import Styles from './styles';
 import { isPRD } from '@/enums/envs';
+import { chipsTexts } from './content';
 
 interface ChipGroupTypes {
   className?: string;
@@ -20,9 +21,7 @@ const ChipGroup = ({
         return name?.includes?.('Chip');
       });
     if (!hasAllowedComponent) {
-      console.error(
-        'Please, just use Chip components inside ChipGroup components!'
-      );
+      console.error(chipsTexts.onError);
     }
     return hasAllowedComponent;
   }, [children]);
