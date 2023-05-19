@@ -168,7 +168,7 @@ export const challenges: IContent['challenges'] = [
       `To overcome this challenge, I had to configure our system build to use a CDN created by my teammates. Besides solving latency problems (putting our code on servers worldwide), this CDN also keeps old files available to make users using old versions will not be impacted.`,
       `That was a nice challenge to face, I could explore more webpack configurations.`,
     ],
-    tags: [Techs.Akamai, Techs.SA],
+    tags: [Techs.Akamai, Techs.SA, Techs.WP],
   },
   {
     title: 'Migration to Vite',

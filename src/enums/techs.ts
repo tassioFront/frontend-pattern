@@ -20,5 +20,6 @@ export enum Techs {
   Akamai = 'Akamai',
   SA = 'Storage Account',
   Vite = 'Vite',
+  WP = 'Webpack',
   Nuxt = 'Nuxt',
 }
