@@ -25,6 +25,8 @@ export const techs: IContent['techs'] = [
   Techs.Sass,
   Techs.Vuetify,
   Techs.Jest,
+  Techs.WP,
+  Techs.Vite,
   Techs.Nx,
   Techs.AD,
   Techs.GHA,
