@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 import { storageService } from '@open-ish/utility-storagefy';
 import { StorageKeys } from '@/enums/storage-keys';
 import UserInfoContent from './components/UserInfo/UserInfoContent';
-import Loading from '@/components/Loading/Loading';
 import { IContent, challenges, techs } from './content';
 import Techs from './components/Techs/Techs';
 import Challenges from './components/Challenges/Challenges';
@@ -47,26 +46,26 @@ const About = (): JSX.Element => {
   }, []);
 
   return (
-    <BaseScreen heading={texts.heading} description={texts.description}>
-      {!isLoading ? (
-        <>
-          <Section heading2={texts.whoAmI}>
-            <UserInfoContent user={user as IUserGithub} error={error} />
-          </Section>
-          {user !== undefined && (
-            <>
-              <Section heading2={texts.techsIntro}>
-                <Techs techs={user.techs} />
-              </Section>
-              <Section heading2={texts.challenges}>
-                <Challenges challenges={user.challenges} />
-              </Section>
-            </>
-          )}
-        </>
-      ) : (
-        <Loading height="50vh" />
-      )}
+    <BaseScreen
+      heading={texts.heading}
+      description={texts.description}
+      isLoading={isLoading}
+    >
+      <>
+        <Section heading2={texts.whoAmI}>
+          <UserInfoContent user={user as IUserGithub} error={error} />
+        </Section>
+        {user !== undefined && (
+          <>
+            <Section heading2={texts.techsIntro}>
+              <Techs techs={user.techs} />
+            </Section>
+            <Section heading2={texts.challenges}>
+              <Challenges challenges={user.challenges} />
+            </Section>
+          </>
+        )}
+      </>
     </BaseScreen>
   );
 };

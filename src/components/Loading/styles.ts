@@ -5,6 +5,7 @@ const Styles = {
     align-items: center;
     display: flex;
     justify-content: center;
+    padding: var(--spacing-base);
     width: 100%;
     height: ${(props) => props.height};
   `,
