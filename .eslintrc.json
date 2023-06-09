@@ -21,6 +21,7 @@
             "error",
             {"checksVoidReturn": {"attributes": false}}
           ],
+          "@typescript-eslint/explicit-function-return-type": 0,
           "@typescript-eslint/no-invalid-void-type": 0,
           "@typescript-eslint/prefer-ts-expect-error": 0
        }
