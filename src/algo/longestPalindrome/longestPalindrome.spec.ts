@@ -1,7 +1,7 @@
 import { longestPalindrome } from './longestPalindrome';
 
 describe('algo - longestPalindrome', () => {
-  it('should ', () => {
+  it('should return palindrome if there is', () => {
     expect(longestPalindrome('babad')).toBe('aba');
     expect(longestPalindrome('babbbad')).toBe('abbba');
     expect(longestPalindrome('bababad')).toBe('ababa');
