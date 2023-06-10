@@ -21,9 +21,9 @@ export const initLinkedListByText = () => {
 
   const append: initLinkedListResponse['append'] = (value) => {
     const newNode: LinkedList = { value, next: null };
-    const updateHeadOrNext =
+    const shouldBeTheFIrstItem =
       linkedList === null || value.localeCompare(linkedList.value) < 0;
-    if (updateHeadOrNext) {
+    if (shouldBeTheFIrstItem) {
       newNode.next = linkedList;
       linkedList = newNode;
       return;

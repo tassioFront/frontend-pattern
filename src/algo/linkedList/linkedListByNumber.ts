@@ -21,8 +21,8 @@ export const initLinkedList = () => {
 
   const append: initLinkedListResponse['append'] = (data) => {
     const newNode: LinkedList = { data, next: null };
-    const updateHeadOrNext = linkedList === null || linkedList.data > data;
-    if (updateHeadOrNext) {
+    const shouldBeTheFIrstItem = linkedList === null || linkedList.data > data; // check if it is the first item to insert or if it should the first item
+    if (shouldBeTheFIrstItem) {
       newNode.next = linkedList;
       linkedList = newNode;
       return;
