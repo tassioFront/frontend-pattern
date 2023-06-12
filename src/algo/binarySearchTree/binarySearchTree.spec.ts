@@ -1,8 +1,8 @@
-import { isBST, treeNodeFactory } from './binarySearchTree';
+import { isBST, treeNodeFactory, TreeNode } from './binarySearchTree';
 
 describe('algo - binarySearchTree', () => {
   it('should return isBST=true as it respects the bst rules', () => {
-    const root = treeNodeFactory(4);
+    const root = treeNodeFactory(4) as TreeNode;
     root.left = treeNodeFactory(2);
     root.right = treeNodeFactory(6);
     root.left.left = treeNodeFactory(1);
@@ -14,7 +14,7 @@ describe('algo - binarySearchTree', () => {
   });
 
   it('should return isBST=false as it does not respect the bst rules', () => {
-    const root = treeNodeFactory(4);
+    const root = treeNodeFactory(4) as TreeNode;
     root.left = treeNodeFactory(2);
     root.right = treeNodeFactory(6);
     root.left.left = treeNodeFactory(4);
