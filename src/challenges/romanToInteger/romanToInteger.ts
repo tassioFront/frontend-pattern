@@ -9,17 +9,17 @@ const refer = {
 };
 
 export const romanToInteger = (roman: string) => {
-  let numbers2 = 0;
+  let result = 0;
   roman.split('').forEach((s, index) => {
     const current: number = refer[roman[index] as keyof typeof refer];
     const next: number = refer[roman[index + 1] as keyof typeof refer] || 0;
     const isSum = current >= next;
     if (isSum) {
-      numbers2 += current;
+      result += current;
     } else {
-      numbers2 -= current;
+      result -= current;
     }
   });
 
-  return numbers2;
+  return result;
 };
