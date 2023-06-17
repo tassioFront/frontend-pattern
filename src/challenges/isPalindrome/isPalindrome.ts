@@ -1,19 +1,11 @@
 export const isPalindrome = (string: string) => {
-  const aNums = string.toLocaleLowerCase().replaceAll(/[^a-zA-Z0-9]/g, '');
+  const aNums = string.replace(/[^a-z0-9]/gi, '').toLowerCase();
   if (aNums === '') return true;
 
-  let start = 0;
-  let end = aNums.length - 1;
-  const middle = end / 2;
-  let result = true;
-
-  for (let index = start; middle > index; index++) {
-    if (aNums[start] !== aNums[end]) {
-      result = false;
-      break;
+  for (let i = 0; aNums.length / 2 > i; i++) {
+    if (aNums[i] !== aNums[aNums.length - 1 - i]) {
+      return false;
     }
-    start++;
-    end--;
   }
-  return result;
+  return true;
 };
