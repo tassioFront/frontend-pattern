@@ -20,3 +20,6 @@ Tasks list:
 - [] Files and folders should have correct indentation based on how levels deep they are
 - [] Folders can be toggled to show / hide their content
 - [] `*.server` and `*.client` files should have different colors than the rest of the files
+
+Find the challenge here:
+https:codesandbox.io/s/react-fake-interview-dtw40?file=/**tests**/count-salutes.test.ts:1423-1741
