@@ -30,11 +30,8 @@ export const twoSum2 = (nums: number[], target: number) => {
 
   for (let index = 0; result.length === 0; index++) {
     for (let i = 0; nums.length > i; i++) {
-      if (
-        i !== index &&
-        result.length === 0 &&
-        nums[index] + nums[i] === target
-      ) {
+      const isEqualTarget = nums[index] + nums[i] === target;
+      if (i !== index && isEqualTarget) {
         result.push(index, i);
         break;
       }
