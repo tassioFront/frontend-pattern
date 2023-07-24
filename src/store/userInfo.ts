@@ -1,13 +1,17 @@
 import { IUserGithub } from '@/models/UserGithub';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
+import {
+  getGHUserNameFromCache,
+  getGHUserDataFromCache,
+} from '@/helpers/useInfo';
 
 interface UserInfoStore {
   GHData: IUserGithub | null;
 }
 
 const initialState: UserInfoStore = {
-  GHData: null,
+  GHData: getGHUserNameFromCache() !== null ? getGHUserDataFromCache() : null,
 };
 
 const selector = {
