@@ -1,13 +1,17 @@
 import Logo from '@/components/Logo/Logo';
 import Styles from './styles';
-import BtnLink from '@/components/BtnLink/BtnLink';
 import {
   homeResolvedRouter,
   aboutResolvedRouter,
   loginResolvedRouter,
+  // blogResolvedRouter,
 } from '@/routes/resolvedRoutes';
+import Menu from '@/components/Menu/Menu';
+import { useEffect, useState } from 'react';
 
 const Header = (): JSX.Element => {
+  const [open, setOpen] = useState(false);
+
   const actions = [
     {
       title: 'Go to home page',
@@ -24,28 +28,22 @@ const Header = (): JSX.Element => {
     {
       title: 'Go to Fake Login page',
       to: loginResolvedRouter,
-      icon: 'area-chart',
       label: 'Fake Login',
     },
+    // @to-do[blog]: uncomment after blog view has been created
+    // {
+    //   title: 'Go to Blog page',
+    //   to: blogResolvedRouter,
+    //   icon: 'start',
+    //   label: 'Blog',
+    // },
   ];
+
+  useEffect(() => {}, [open]);
   return (
     <Styles.Header>
       <Logo />
-      <Styles.Nav>
-        {actions.map((action) => {
-          return (
-            <BtnLink
-              key={action.label}
-              title={action.title}
-              to={action.to}
-              className="secondary"
-            >
-              {action.label}{' '}
-              <i className={`fa fa-${action.icon}`} aria-hidden="true"></i>
-            </BtnLink>
-          );
-        })}
-      </Styles.Nav>
+      <Menu open={open} actions={actions} setOpen={setOpen} />
     </Styles.Header>
   );
 };
