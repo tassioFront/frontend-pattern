@@ -53,7 +53,7 @@ const Styles = {
     display: flex;
     text-align: left;
 
-    ${media.lessThan('tablet')`
+    ${media.lessThan<HandleMenu>('tablet')`
       background: var(--color-neutral-regular);
       transform: ${({ open }) =>
         open ? 'translateX(0)' : 'translateX(-100%)'};
