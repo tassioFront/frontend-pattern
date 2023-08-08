@@ -5,6 +5,7 @@ import Btn from '../Btn/Btn';
 const Styles = {
   Btn: styled(Btn)`
     bottom: var(--spacing-base);
+    cursor: pointer;
     position: fixed;
     opacity: 0;
     transition: opacity var(--transition-duration);

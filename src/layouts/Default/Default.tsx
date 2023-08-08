@@ -4,6 +4,7 @@ import Footer from '@/components/Footer/Footer';
 import Header from './components/Header/Header';
 import { dashboardResolvedRouter } from '@/routes/resolvedRoutes';
 import { GHUserNameFromStorage } from '@/helpers/GHUserNameFromStorage/GHUserNameFromStorage';
+import BtnFloat from '@/components/BtnFloat/BtnFloat';
 
 const Default = (): JSX.Element => {
   const onHasGHUserName = (): null => Navigate({ to: dashboardResolvedRouter });
@@ -16,6 +17,7 @@ const Default = (): JSX.Element => {
         <Outlet />
       </Styles.Content>
       <Footer />
+      <BtnFloat />
     </Styles.Wrapper>
   );
 };

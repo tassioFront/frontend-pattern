@@ -4,7 +4,7 @@ import BtnFloat from './BtnFloat';
 describe('BtnFloat', () => {
   it('Should show btn float when scrollY is grater than showNumber', () => {
     render(
-      <BtnFloat data-testid="btn-float-1" showNumber={500} onClick={() => {}}>
+      <BtnFloat data-testid="btn-float-1" showNumber={500}>
         btn float
       </BtnFloat>
     );
