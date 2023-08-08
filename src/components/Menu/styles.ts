@@ -72,6 +72,19 @@ const Styles = {
       }
     `}
   `,
+  OverLay: styled.div`
+    background-color: transparent;
+    transition: transform 3s ease-in-out;
+    will-change: background-color position width height z-index;
+
+    &.isOpen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: var(--zindex-1);
+      background-color: rgba(0, 0, 0, 0.75);
+    }
+  `,
 };
 
 export default Styles;

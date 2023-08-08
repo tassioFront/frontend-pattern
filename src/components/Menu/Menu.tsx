@@ -22,7 +22,7 @@ const Burger = ({ open, actions, setOpen, ...props }: MenuTypes) => {
   }, [open]);
 
   return (
-    <div>
+    <>
       <Styles.Menu open={open} aria-hidden={!isHidden} {...props}>
         {actions.map((action) => {
           return (
@@ -41,6 +41,10 @@ const Burger = ({ open, actions, setOpen, ...props }: MenuTypes) => {
           );
         })}
       </Styles.Menu>
+      <Styles.OverLay
+        className={open ? 'isOpen' : ''}
+        onClick={() => setOpen(false)}
+      />
       <Styles.Burger
         aria-label="Toggle menu"
         aria-expanded={open}
@@ -52,7 +56,7 @@ const Burger = ({ open, actions, setOpen, ...props }: MenuTypes) => {
         <span />
         <span />
       </Styles.Burger>
-    </div>
+    </>
   );
 };
 
