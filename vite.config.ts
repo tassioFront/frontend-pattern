@@ -17,7 +17,7 @@ export default defineConfig({
     /**
      * See more here: https://www.npmjs.com/package/rollup-plugin-visualizer
      */
-    // @ts-expect-error
+    // @ts-ignore
     VISUALIZER &&
       visualizer({
         open: true,
