@@ -10,6 +10,9 @@ const DefaultLayout = loadable(
 );
 const Home = loadable(async () => await import('@/views/Default/Home/Home'));
 const About = loadable(async () => await import('@/views/Default/About/About'));
+const Articles = loadable(
+  async () => await import('@/views/Default/Articles/Articles')
+);
 const Login = loadable(async () => await import('@/views/Default/Login/Login'));
 
 // private layout
@@ -19,7 +22,6 @@ const PrivateLayout = loadable(
 const Dashboard = loadable(
   async () => await import('@/views/Private/Dashboard/Dashboard')
 );
-
 function App(): JSX.Element {
   return (
     <Routes>
@@ -28,6 +30,10 @@ function App(): JSX.Element {
         <Route
           path={routes.about}
           element={<About fallback={<RouterFallback />} />}
+        />
+        <Route
+          path={routes.articles}
+          element={<Articles fallback={<RouterFallback />} />}
         />
         <Route
           path={routes.login}

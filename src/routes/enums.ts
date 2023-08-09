@@ -2,7 +2,7 @@ export enum routes {
   // default layout
   login = 'login',
   about = 'about',
-  blog = 'blog',
+  articles = 'articles',
 
   // private layout
   dashboard = 'dashboard',

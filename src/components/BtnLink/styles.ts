@@ -10,7 +10,7 @@ text-decoration: none;
 will-change: border-bottom-color color;
 
 & i {
-  margin-left: var(--spacing-small);
+  margin-left: var(--spacing-xxsmall);
 }
 
 &.primary {

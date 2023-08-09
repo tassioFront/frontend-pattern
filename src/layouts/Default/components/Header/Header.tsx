@@ -4,7 +4,7 @@ import {
   homeResolvedRouter,
   aboutResolvedRouter,
   loginResolvedRouter,
-  // blogResolvedRouter,
+  articlesResolvedRouter,
 } from '@/routes/resolvedRoutes';
 import Menu from '@/components/Menu/Menu';
 import { useEffect, useState } from 'react';
@@ -30,13 +30,12 @@ const Header = (): JSX.Element => {
       to: loginResolvedRouter,
       label: 'Fake Login',
     },
-    // @to-do[blog]: uncomment after blog view has been created
-    // {
-    //   title: 'Go to Blog page',
-    //   to: blogResolvedRouter,
-    //   icon: 'start',
-    //   label: 'Blog',
-    // },
+    {
+      title: 'Go to Articles page',
+      to: articlesResolvedRouter,
+      icon: 'star',
+      label: 'Articles',
+    },
   ];
 
   useEffect(() => {}, [open]);
