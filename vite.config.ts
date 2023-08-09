@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
 import { visualizer } from 'rollup-plugin-visualizer';
 
-const VISUALIZER = true; // change to see the current bundle.
+const VISUALIZER = false; // change to see the current bundle.
 
 // https://vitejs.dev/config/
 export default defineConfig({
