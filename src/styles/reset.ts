@@ -55,7 +55,6 @@ export const reset = `
 
     img {
         border: 0;
-        height: auto;
         max-width: 100%;
     }
 
@@ -63,4 +62,9 @@ export const reset = `
         all: unset;
         cursor: pointer;
     }   
+
+    hr {
+        width: 100%;
+        opacity: 0.15;
+    }
 `;
