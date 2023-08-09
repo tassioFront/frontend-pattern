@@ -9,6 +9,10 @@ text-align: center;
 text-decoration: none;
 will-change: border-bottom-color color;
 
+& i {
+  margin-left: var(--spacing-small);
+}
+
 &.primary {
   color: var(--color-brand-primary-dark-1);
 
