@@ -1,12 +1,17 @@
+import { useEffect, useState, Suspense, lazy } from 'react';
+
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
 import Section from '@/components/Section/Section';
 import { texts } from './enums';
 import { apiErrors } from '@/enums/home';
 import { wrapperTrycatchfy } from '@/helpers/trycatchfy/trycatchfy';
-import { useEffect, useState } from 'react';
 import { getOwnerDevArticlesByUserName } from '@/services/devPublicApi.service';
 import { IArticle } from '@/models/Article';
-import PostsContent from './components/Content/Content';
+import RouterFallback from '@/components/RouterFallback/RouterFallback';
+
+const ArticlesContent = lazy(
+  async () => await import('./components/Content/Content')
+);
 
 const Article = (): JSX.Element => {
   const [articles, setArticles] = useState<IArticle[]>([]);
@@ -38,15 +43,15 @@ const Article = (): JSX.Element => {
       description={texts.description}
       isLoading={isLoading}
     >
-      <>
-        <Section>
-          <>
-            {articles?.length > 0 && (
-              <PostsContent articles={articles} error={error} />
-            )}
-          </>
-        </Section>
-      </>
+      <Section>
+        <>
+          {articles?.length > 0 && (
+            <Suspense fallback={<RouterFallback />}>
+              <ArticlesContent articles={articles} error={error} />
+            </Suspense>
+          )}
+        </>
+      </Section>
     </BaseScreen>
   );
 };
