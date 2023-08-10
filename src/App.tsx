@@ -1,52 +1,30 @@
 import { Route, Routes } from 'react-router-dom';
-import loadable from '@loadable/component';
-
 import { routes, routesPrefix } from './routes/enums';
-import RouterFallback from './components/RouterFallback/RouterFallback';
 
 // default layout
-const DefaultLayout = loadable(
-  async () => await import('./layouts/Default/Default')
-);
-const Home = loadable(async () => await import('@/views/Default/Home/Home'));
-const About = loadable(async () => await import('@/views/Default/About/About'));
-const Articles = loadable(
-  async () => await import('@/views/Default/Articles/Articles')
-);
-const Login = loadable(async () => await import('@/views/Default/Login/Login'));
+import Home from './views/Default/Home';
+import About from './views/Default/About';
+import Articles from './views/Default/Articles';
+import Login from './views/Default/Login';
+import DefaultLayout from './layouts/Default';
 
 // private layout
-const PrivateLayout = loadable(
-  async () => await import('./layouts/Private/Private')
-);
-const Dashboard = loadable(
-  async () => await import('@/views/Private/Dashboard/Dashboard')
-);
+import PrivateLayout from './layouts/Private';
+import Dashboard from './views/Private/Dashboard';
+
 function App(): JSX.Element {
   return (
     <Routes>
       <Route path={routesPrefix.public} element={<DefaultLayout />}>
-        <Route index element={<Home fallback={<RouterFallback />} />} />
-        <Route
-          path={routes.about}
-          element={<About fallback={<RouterFallback />} />}
-        />
-        <Route
-          path={routes.articles}
-          element={<Articles fallback={<RouterFallback />} />}
-        />
-        <Route
-          path={routes.login}
-          element={<Login fallback={<RouterFallback />} />}
-        />
+        <Route index element={<Home />} />
+        <Route path={routes.about} element={<About />} />
+        <Route path={routes.articles} element={<Articles />} />
+        <Route path={routes.login} element={<Login />} />
         <Route path={routes.forbidden} element={<div>forbidden</div>} />
       </Route>
       <Route path={routesPrefix.app} element={<PrivateLayout />}>
         <Route index element={<Dashboard />} />
-        <Route
-          path={routes.dashboard}
-          element={<Dashboard fallback={<RouterFallback />} />}
-        />
+        <Route path={routes.dashboard} element={<Dashboard />} />
       </Route>
       <Route path="*" element={<div>404</div>} />
     </Routes>

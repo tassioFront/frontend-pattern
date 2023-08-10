@@ -14,7 +14,6 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@loadable/component": "^5.15.3",
     "@open-ish/utility-storagefy": "1.1.1",
     "@open-ish/utility-trycatchfy": "1.3.2",
     "@reduxjs/toolkit": "^1.9.1",
@@ -47,7 +46,6 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.0.1",
-    "@types/loadable__component": "^5.13.4",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
