@@ -11,6 +11,7 @@ export default {
 
     ${media.greaterThan('desktop')`
       flex-direction: row;
+      flex-wrap: wrap;
       gap: var(--spacing-medium);
       justify-content: center;
     `}
