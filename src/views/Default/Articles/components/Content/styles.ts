@@ -3,17 +3,20 @@ import styled from 'styled-components';
 
 export default {
   Content: styled.div`
-    align-items: center;
-    flex-direction: column;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
     width: 100%;
     gap: var(--spacing-large);
 
-    ${media.greaterThan('desktop')`
-      flex-direction: row;
-      flex-wrap: wrap;
+    ${media.greaterThan('tablet')`
       gap: var(--spacing-medium);
-      justify-content: center;
+      grid-template-columns: 1fr 1fr;
+    `}
+
+    ${media.greaterThan('desktop')`
+      gap: var(--spacing-medium);
+      grid-template-columns: 1fr 1fr 1fr;
     `}
   `,
 };
