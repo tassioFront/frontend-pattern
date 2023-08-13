@@ -1,29 +1,49 @@
 import { IArticle } from '@/models/Article';
 import Styles from './styles';
 import ArticleCard from '../ArticleCard/ArticleCard';
+import { useState } from 'react';
+import { useObserver } from '@/hooks/useObserver/useObserver';
 
 interface ContentTypes {
   articles: IArticle[];
   error: string;
 }
 
+const ITEMS_RENDER_PER_SCROLL = 1;
+const ITEMS_RENDER_PER_SCROLL_DESKTOP = 3;
+
 const Content = ({ articles, error }: ContentTypes): JSX.Element => {
+  const isDesktop = window.innerWidth > 768;
+  const itemsPerPage = isDesktop
+    ? ITEMS_RENDER_PER_SCROLL_DESKTOP
+    : ITEMS_RENDER_PER_SCROLL;
+  const [count, setCount] = useState(itemsPerPage);
+  const [observerElement] = useObserver({
+    onVisible: (isVisible: boolean) => {
+      const isIncrease = isVisible && count < articles.length;
+      isIncrease && setCount(count + itemsPerPage);
+    },
+  });
+
   return articles?.length > 0 ? (
     <Styles.Content>
-      {articles.map((article) => {
+      {articles.slice(0, count).map((article) => {
         return (
-          <ArticleCard
-            alt={article.title}
-            imageSize="200"
-            key={article.title}
-            imageUrl={article.cover_image}
-            url={article.url}
-            title={article.title}
-            description={article.description}
-            positiveReactionsCount={article.positive_reactions_count}
-          />
+          article !== null && (
+            <ArticleCard
+              alt={article.title}
+              imageSize="200"
+              key={article.title}
+              imageUrl={article.cover_image}
+              url={article.url}
+              title={article.title}
+              description={article.description}
+              positiveReactionsCount={article.positive_reactions_count}
+            />
+          )
         );
       })}
+      <span ref={observerElement} />
     </Styles.Content>
   ) : (
     <>{error}</>
