@@ -1,6 +1,8 @@
 # Intro
 
-This project has been created to explore React functionalities and frontend patterns. The main idea of this project is to be a template project. Then, use it in the future in new projects or to improve current ones I hope you enjoy it and learn something new. [See more here](https://frontend-pattern.vercel.app)
+This project has been created to explore React functionalities and frontend patterns. The main idea of this project is to be a template project. Then, use it in the future in new projects or to improve current ones I hope you enjoy it and learn something new. 
+
+[Access the online version here](https://frontend-pattern.vercel.app) or go to [my articles](https://frontend-pattern.vercel.app/articles) directly.
 
 # Available Scripts
 
