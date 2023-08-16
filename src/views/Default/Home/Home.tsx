@@ -8,8 +8,8 @@ import { texts, actions } from './enums';
 const Home = (): JSX.Element => {
   const whatWillIFindList = [
     'Frontend good practices',
-    'Unit test configuration',
-    'Vite and Vitest configuration',
+    'Tips about performance',
+    'Vite and Vitest configurations',
     'Typescript configuration',
     'Project structure',
   ];

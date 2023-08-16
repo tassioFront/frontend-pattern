@@ -1,6 +1,6 @@
 export enum texts {
   heading = 'Inspiration',
-  description = 'This web system has been created to explore React functionalities and frontend patterns. I hope you enjoy it and learn something new.',
+  description = 'This web system has been created to explore React functionalities and frontend patterns. Here you also find content about my journey as Developer, besides nice articles. ',
   whatWillIFindHeading = 'So, what will I find here?',
   whatWillIFindIntro = `The main idea of this project is to be a template project. Then, use
   it in the future in new projects or to improve current ones. Some

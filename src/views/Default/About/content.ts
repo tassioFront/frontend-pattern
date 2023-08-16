@@ -39,6 +39,31 @@ export const techs: IContent['techs'] = [
   Techs.Akamai,
 ];
 
+export const theJourney = [
+  `My journey as a developer started in 2018. I was a just graduated chemical working with sensory analysis at that time. There, my main job was doing manual and repeated things in Excel. I wasn't happy with that, so I decided ${highlighText(
+    'to study ways to do my job automatically'
+  )}. Proactively, I found online VBA courses and started doing macros. That was a game-changer in my professional life. `,
+
+  `After a few months of learning and coding on VBA, I decided to go deeper and explore the development world: ${highlighText(
+    'becoming a FrontEnd developer.'
+  )} `,
+
+  `I started studying the FrontEnd world in Jan 2019, ${highlighText(
+    '6 months were needed to I got my first opportunity as a FrontEnd'
+  )}: working on a website of recipes. There, I worked on creating features and fixing bugs mainly. Nine months later, learning a lot, I got my second opportunity (my current job): working at a company in the construction segment. There are some solutions here, and I have been working in the marketplace system, where industries sell products to retailers.`,
+
+  `The main challenge when I got here was to work on a legacy project and bring the company culture to a project maintain by a third-party company so far.`,
+
+  `I have worked for 2 years creating features, solving configuration issues (such as unit tests and typescript config), and fixing bugs. 
+After 2 years, I changed to a cross-team (ProductOps) to explore more things about systems issues (such as patterns and architecture). ${highlighText(
+    'My goal was to become a more independent developer and explore issues that (usually) FrontEnd developers do not take care of'
+  )}. And also, to get next to people with years and years of experience. It was totally outside my comfort zone, I got happy the team accepted giving me this amazing opportunity.`,
+
+  `${highlighText(
+    'My current goal'
+  )}: learn how people abroad have been using tech to solve problems and code with them.`,
+];
+
 export const challenges: IContent['challenges'] = [
   {
     title: 'Becoming a Developer',
@@ -113,7 +138,7 @@ export const challenges: IContent['challenges'] = [
     title: 'Migration to a cross-team',
     desc: [
       `After 2 years of creating new features and solving bugs (at JSM), I decided to get another challenge: work in a cross-team (ProductOps) to explore more (learn) things about systems issues:`,
-      `- Frontend architecture;`,
+      `- Frontend architecture and patterns;`,
       `- Infrastructure;`,
       `- DevOps`,
       `${highlighText(

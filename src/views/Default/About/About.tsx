@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { storageService } from '@open-ish/utility-storagefy';
 import { StorageKeys } from '@/enums/storage-keys';
 import UserInfoContent from './components/UserInfo/UserInfoContent';
-import { IContent, challenges, techs } from './content';
+import { IContent, challenges, techs, theJourney } from './content';
 import Techs from './components/Techs/Techs';
 import Challenges from './components/Challenges/Challenges';
 
@@ -55,8 +55,14 @@ const About = (): JSX.Element => {
         <Section heading2={texts.whoAmI}>
           <UserInfoContent user={user as IUserGithub} error={error} />
         </Section>
+
         {user !== undefined && (
           <>
+            <Section heading2={texts.myJourney}>
+              {theJourney.map((des) => (
+                <p key={des} dangerouslySetInnerHTML={{ __html: des }} />
+              ))}
+            </Section>
             <Section heading2={texts.techsIntro}>
               <Techs techs={user.techs} />
             </Section>
