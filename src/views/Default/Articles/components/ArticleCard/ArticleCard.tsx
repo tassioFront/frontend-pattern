@@ -1,5 +1,6 @@
 import Typography from '@/components/Typography/Typography';
 import Styles from './styles';
+import { memo } from 'react';
 
 interface ArticleCardTypes {
   title: string;
@@ -10,7 +11,7 @@ interface ArticleCardTypes {
   description: string;
   positiveReactionsCount: string;
 }
-const ArticleCard = ({
+const ArticleCard = memo(function ArticleCard({
   alt,
   url,
   imageUrl,
@@ -18,7 +19,7 @@ const ArticleCard = ({
   description,
   title,
   positiveReactionsCount,
-}: ArticleCardTypes): JSX.Element => {
+}: ArticleCardTypes) {
   return (
     <Styles.Wrapper
       floating={
@@ -53,6 +54,6 @@ const ArticleCard = ({
       }
     />
   );
-};
+});
 
 export default ArticleCard;

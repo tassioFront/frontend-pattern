@@ -1,7 +1,7 @@
 import { IArticle } from '@/models/Article';
 import Styles from './styles';
 import ArticleCard from '../ArticleCard/ArticleCard';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useObserver } from '@/hooks/useObserver/useObserver';
 
 interface ContentTypes {
@@ -18,11 +18,15 @@ const Content = ({ articles, error }: ContentTypes): JSX.Element => {
     ? ITEMS_RENDER_PER_SCROLL_DESKTOP
     : ITEMS_RENDER_PER_SCROLL;
   const [count, setCount] = useState(itemsPerPage);
-  const [observerElement] = useObserver({
-    onVisible: (isVisible: boolean) => {
+  const onVisible = useCallback(
+    (isVisible: boolean) => {
       const isIncrease = isVisible && count < articles.length;
       isIncrease && setCount(count + itemsPerPage);
     },
+    [count]
+  );
+  const [observerElement] = useObserver({
+    onVisible,
   });
 
   return articles?.length > 0 ? (
