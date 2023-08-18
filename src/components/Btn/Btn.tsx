@@ -7,6 +7,7 @@ export interface BtnTypes {
   isLoading?: boolean;
   children?: React.ReactNode;
   className?: string;
+  disabled?: boolean;
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -19,16 +20,18 @@ const Btn = ({
   className,
   shape = 'default',
   type = 'button',
+  disabled = false,
   ...rest
 }: BtnTypes): JSX.Element => {
   return (
     <Styles.Btn
       aria-busy={isLoading}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-        !isLoading && onClick(e)
+        !isLoading && !disabled && onClick(e)
       }
       className={classNames(color, 'shape--' + shape, className)}
       type={type}
+      disabled={disabled}
       {...rest}
     >
       {isLoading && <Styles.Spinner />}

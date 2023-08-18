@@ -61,6 +61,22 @@ const Styles = {
           background-color: var(--color-brand-secondary-light-2);
         }
       }
+
+      &.shape--text {
+        font-weight: var(--font-weight-medium);
+        color: var(--color-brand-secondary-regular);
+        background-color: transparent;
+
+        :hover {
+          color: var(--color-brand-secondary-dark-1);
+          background-color: var(--color-brand-secondary-light-1);
+        }
+      }
+    }
+
+    :disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   `,
   Children: styled.span`
