@@ -9,10 +9,11 @@ const Chip = ({
   label,
   className,
   type = 'default',
+  onClick,
 }: ChipTypes): JSX.Element => {
   return (
     <Styles.Chip color={`var(${color})`} className={className} type={type}>
-      {label}
+      {type === 'tag' ? <button onClick={onClick}>{label}</button> : label}
     </Styles.Chip>
   );
 };

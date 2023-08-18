@@ -43,6 +43,7 @@ export const reset = `
       text-decoration: none;
       background-color: transparent;
       border: 1px solid transparent;
+      cursor: pointer;
     }
 
     .grecaptcha-badge {

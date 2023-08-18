@@ -3,4 +3,5 @@ export interface ChipTypes {
   color: string;
   className?: string;
   type?: 'default' | 'tag';
+  onClick?: () => void;
 }

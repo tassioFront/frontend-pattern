@@ -27,7 +27,18 @@ const Styles = {
       font: var(--text-caption);
       letter-spacing: var(--text-caption-letter);
       font-weight: var(--font-weight-bold);
-      padding: var(--spacing-xxsmall) var(--spacing-small);
+      opacity: 0.6;
+      transition-duration: var(--transition-duration);
+      will-change: opacity;
+
+      & button {
+        color: inherit;
+        padding: var(--spacing-xxsmall) var(--spacing-small);
+        width: 100%;
+      }
+      :hover {
+        opacity: 1;
+      }
     }
   `,
   ChipGroup: styled.div`

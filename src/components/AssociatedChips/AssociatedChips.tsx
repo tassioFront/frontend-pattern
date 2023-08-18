@@ -20,7 +20,13 @@ const AssociatedChips = ({
   return (
     <Styles.ChipGroup className={className} {...rest}>
       {options.map((opt) => (
-        <Chip key={opt} label={opt} color={DEFAULT_COLOR} type="tag" />
+        <Chip
+          key={opt}
+          label={opt}
+          color={DEFAULT_COLOR}
+          type="tag"
+          onClick={() => alert('Sorry, we are working on it.')}
+        />
       ))}
     </Styles.ChipGroup>
   );

@@ -7,6 +7,7 @@ import Styles from './styles';
 
 interface BtnFloatTypes extends Omit<BtnTypes, 'onClick'> {
   showNumber?: number;
+  dataTestid?: string;
 }
 const BtnFloat = (props: BtnFloatTypes): JSX.Element => {
   const [isShowBtn, setIsShowBtn] = useState(false);
@@ -14,7 +15,11 @@ const BtnFloat = (props: BtnFloatTypes): JSX.Element => {
   useScroll(() => setIsShowBtn(window.scrollY > showNumber));
 
   return (
-    <Styles.Btn className={isShowBtn ? 'show' : ''} onClick={goToTop}>
+    <Styles.Btn
+      className={isShowBtn ? 'show' : ''}
+      onClick={goToTop}
+      data-testid={props.dataTestid}
+    >
       Go to top
     </Styles.Btn>
   );
