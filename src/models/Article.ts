@@ -5,4 +5,5 @@ export interface IArticle {
   description: string;
   created_at: string;
   positive_reactions_count: string;
+  tag_list: string[];
 }
