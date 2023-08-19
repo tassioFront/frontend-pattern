@@ -11,7 +11,7 @@ const Styles = {
     height: 100%;
     transition: transform 0.3s ease-in-out;
     transform: ${({ isOpen }) =>
-      isOpen ? 'translateY(0)' : 'translateY(-100%)'};
+      isOpen ? 'translateY(0)' : 'translateY(-100%); visibility: hidden;'};
     z-index: var(--zindex-5);
   `,
   Header: styled.div`
