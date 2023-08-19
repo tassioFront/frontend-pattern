@@ -20,7 +20,7 @@ const Article = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [isOpen, setIsOpenError] = useState(false);
-  // @todo[web-worker-article]: this is for teaching purposes. See the article here: https://dev.to/tassiofront/avoid-overloading-the-main-thread-with-web-workers-557c
+  // @article-note[web-worker-article]: this is for teaching purposes. See the article here: https://dev.to/tassiofront/avoid-overloading-the-main-thread-with-web-workers-557c
   const swSearchParam = new URLSearchParams(window.location.search).get('sw');
   let hasOffSw: null | boolean = null;
   if (swSearchParam) {
@@ -44,7 +44,7 @@ const Article = (): JSX.Element => {
     });
   };
   const handleTags = () => {
-    // @todo[web-worker-article]: this is for teaching purposes. See the article here: https://dev.to/tassiofront/avoid-overloading-the-main-thread-with-web-workers-557c
+    // @article-note[web-worker-article]: this is for teaching purposes. See the article here: https://dev.to/tassiofront/avoid-overloading-the-main-thread-with-web-workers-557c
     if (hasOffSw) {
       const map = new Map();
       for (const article of articles) {

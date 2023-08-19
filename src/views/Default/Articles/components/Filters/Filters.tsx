@@ -31,7 +31,7 @@ const Filters = memo(function Filters({
       >
         <i className={`fa fa-filter`} aria-label="close modal"></i>
       </Btn>
-      {/* @todo[web-worker-article]: this is for teaching purposes. See the article here: https://dev.to/tassiofront/avoid-overloading-the-main-thread-with-web-workers-557c */}
+      {/* @article-note[web-worker-article]: this is for teaching purposes. See the article here: https://dev.to/tassiofront/avoid-overloading-the-main-thread-with-web-workers-557c */}
       {hasOffSw !== null && (
         <>
           <label htmlFor="click">Click!</label>
