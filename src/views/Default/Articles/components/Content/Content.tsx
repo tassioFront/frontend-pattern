@@ -29,7 +29,7 @@ const Content = ({ articles, error }: ContentTypes): JSX.Element => {
     onVisible,
   });
 
-  return articles?.length > 0 ? (
+  return error === '' ? (
     <Styles.Content>
       {articles.slice(0, count).map((article) => {
         return (

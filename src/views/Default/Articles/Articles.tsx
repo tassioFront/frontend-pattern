@@ -20,12 +20,10 @@ const Article = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [isOpen, setIsOpenError] = useState(false);
-  // @article-note[web-worker-article]: this is for teaching purposes. See the article here: https://dev.to/tassiofront/avoid-overloading-the-main-thread-with-web-workers-557c
-  const swSearchParam = new URLSearchParams(window.location.search).get('sw');
-  let hasOffSw: null | boolean = null;
-  if (swSearchParam) {
-    hasOffSw = swSearchParam === 'off';
-  }
+  const swArticles: Worker = useMemo(
+    () => new Worker(new URL('./woDevTags.ts', import.meta.url)),
+    []
+  );
 
   const getUserInfo = async (): Promise<void> => {
     const expectedBehavior = async (): Promise<void> => {
@@ -44,42 +42,27 @@ const Article = (): JSX.Element => {
     });
   };
   const handleTags = () => {
-    // @article-note[web-worker-article]: this is for teaching purposes. See the article here: https://dev.to/tassiofront/avoid-overloading-the-main-thread-with-web-workers-557c
-    if (hasOffSw) {
-      const map = new Map();
-      for (const article of articles) {
-        for (const tag of article.tag_list) {
-          map.set(tag, tag);
-        }
-      }
-      for (let idx = 0; idx < 1000000000; idx++) {
-        idx++;
-      }
-      setTags(Array.from(map.values()));
-    } else {
-      if (window.Worker) {
-        swArticles.postMessage(articles);
-      }
+    if (window.Worker) {
+      swArticles.postMessage(articles);
     }
   };
-  const swArticles: Worker = useMemo(
-    () => new Worker(new URL('./sw.ts', import.meta.url)),
-    []
-  );
 
   useEffect(() => {
     void getUserInfo();
   }, []);
   useEffect(() => {
+    !isLoading && handleTags();
+  }, [isLoading]);
+  useEffect(() => {
     if (window.Worker) {
       swArticles.onmessage = (e: MessageEvent<IArticle['tag_list']>) => {
         setTags(e.data);
+        return () => {
+          swArticles.terminate();
+        };
       };
     }
   }, [swArticles]);
-  useEffect(() => {
-    !isLoading && handleTags();
-  }, [isLoading]);
 
   return (
     <BaseScreen
@@ -92,7 +75,6 @@ const Article = (): JSX.Element => {
         tags={tags}
         onClose={() => setIsOpenError(false)}
         onOpen={() => setIsOpenError(true)}
-        hasOffSw={hasOffSw}
       />
       <Section>
         <>

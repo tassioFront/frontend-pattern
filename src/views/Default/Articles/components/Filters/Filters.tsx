@@ -9,7 +9,6 @@ import Styles from './styles';
 interface FiltersTypes {
   tags: IArticle['tag_list'];
   isOpen: boolean;
-  hasOffSw: boolean | null;
   onOpen: () => void;
   onClose: () => void;
 }
@@ -18,11 +17,9 @@ const Filters = memo(function Filters({
   isOpen,
   onOpen,
   onClose,
-  hasOffSw,
 }: FiltersTypes) {
   return (
     <Styles.Wrapper>
-      {tags.length === 0 && hasOffSw !== null && <span>working...</span>}
       <Btn
         className="secondary"
         shape="text"
@@ -31,13 +28,6 @@ const Filters = memo(function Filters({
       >
         <i className={`fa fa-filter`} aria-label="close modal"></i>
       </Btn>
-      {/* @article-note[web-worker-article]: this is for teaching purposes. See the article here: https://dev.to/tassiofront/avoid-overloading-the-main-thread-with-web-workers-557c */}
-      {hasOffSw !== null && (
-        <>
-          <label htmlFor="click">Click!</label>
-          <input type="checkbox" id="click" />
-        </>
-      )}
       <Modal
         isOpen={isOpen}
         onClose={onClose}
