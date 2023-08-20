@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import Styles from './styles';
 import Btn from '../Btn/Btn';
 import Typography from '../Typography/Typography';
@@ -22,13 +22,6 @@ const Modal = memo(function Modal({
   isOpen,
   onClose,
 }: ModalProps) {
-  useEffect(() => {
-    setTimeout(() => {
-      (
-        window.document.querySelector('body') as HTMLBodyElement
-      ).style.overflowY = isOpen ? 'hidden' : 'auto';
-    }, 500);
-  }, [isOpen]);
   return (
     <Styles.Wrapper
       isOpen={isOpen}
