@@ -2,12 +2,13 @@ import Typography from '@/components/Typography/Typography';
 import { IContent } from '../../content';
 import { createIdByString } from '@/helpers/string/string';
 import AssociatedChips from '@/components/AssociatedChips/AssociatedChips';
+import { memo } from 'react';
 
-const Challenges = ({
+const Challenges = memo(function Challenges({
   challenges,
 }: {
   challenges: IContent['challenges'];
-}): JSX.Element => {
+}) {
   return (
     <>
       {challenges.map((challenge) => (
@@ -27,6 +28,6 @@ const Challenges = ({
       ))}
     </>
   );
-};
+});
 
 export default Challenges;

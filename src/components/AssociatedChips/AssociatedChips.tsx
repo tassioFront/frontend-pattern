@@ -1,20 +1,16 @@
-import { goToTop } from '@/helpers/goTo';
-import { useEffect } from 'react';
 import Styles from './styles';
 import Chip from '../Chips/Chip';
+import { memo } from 'react';
 
 interface AssociatedChipsTypes {
   className?: string;
   options: string[];
 }
-const AssociatedChips = ({
+const AssociatedChips = memo(function AssociatedChips({
   options,
   className,
   ...rest
-}: AssociatedChipsTypes): JSX.Element => {
-  useEffect(() => {
-    goToTop();
-  }, []);
+}: AssociatedChipsTypes) {
   const DEFAULT_COLOR = '--color-brand-secondary-light-1';
 
   return (
@@ -30,6 +26,6 @@ const AssociatedChips = ({
       ))}
     </Styles.ChipGroup>
   );
-};
+});
 
 export default AssociatedChips;

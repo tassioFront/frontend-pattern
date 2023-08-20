@@ -1,4 +1,5 @@
 import { useEffect, useState, Suspense, lazy, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
 import Section from '@/components/Section/Section';
@@ -14,25 +15,37 @@ const ArticlesContent = lazy(
   async () => await import('./components/Content/Content')
 );
 
+enum query {
+  modalOpen = 'mo',
+}
+
 const Article = (): JSX.Element => {
   const [articles, setArticles] = useState<IArticle[]>([]);
   const [tags, setTags] = useState<IArticle['tag_list']>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [isOpen, setIsOpenError] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalQuery, setModalQuery] = useSearchParams();
   const swArticles: Worker = useMemo(
     () => new Worker(new URL('./woDevTags.ts', import.meta.url)),
     []
   );
 
+  const handleToggleModal = (value: boolean = true) => {
+    setIsOpen(value);
+    setModalQuery({
+      ...modalQuery,
+      ...(value && { [query.modalOpen]: 'open' }),
+    });
+  };
   const getUserInfo = async (): Promise<void> => {
     const expectedBehavior = async (): Promise<void> => {
       setIsLoading(true);
       const response = await getOwnerDevArticlesByUserName();
       setArticles(response.data);
+      modalQuery.get(query.modalOpen) && handleToggleModal();
     };
     const onResourceError = (): void => {
-      alert(apiErrors.getOwnerDevArticlesByUserName);
       setError(apiErrors.getOwnerDevArticlesByUserName);
     };
     await wrapperTrycatchfy({
@@ -41,6 +54,7 @@ const Article = (): JSX.Element => {
       onEndCycle: () => setIsLoading(false),
     });
   };
+  const hasData = () => articles.length > 0;
   const handleTags = () => {
     if (window.Worker) {
       swArticles.postMessage(articles);
@@ -50,6 +64,7 @@ const Article = (): JSX.Element => {
   useEffect(() => {
     void getUserInfo();
   }, []);
+
   useEffect(() => {
     !isLoading && handleTags();
   }, [isLoading]);
@@ -70,19 +85,24 @@ const Article = (): JSX.Element => {
       description={texts.description}
       isLoading={isLoading}
     >
-      <Filters
-        isOpen={isOpen}
-        tags={tags}
-        onClose={() => setIsOpenError(false)}
-        onOpen={() => setIsOpenError(true)}
-      />
+      <>
+        {hasData() && (
+          <Filters
+            isOpen={isOpen}
+            tags={tags}
+            onClose={() => handleToggleModal(false)}
+            onOpen={() => handleToggleModal()}
+          />
+        )}
+      </>
       <Section>
         <>
-          {articles?.length > 0 && (
+          {hasData() && (
             <Suspense fallback={<RouterFallback />}>
-              <ArticlesContent articles={articles} error={error} />
+              <ArticlesContent articles={articles} />
             </Suspense>
           )}
+          {error !== '' && error}
         </>
       </Section>
     </BaseScreen>

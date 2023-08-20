@@ -6,13 +6,12 @@ import { useObserver } from '@/hooks/useObserver/useObserver';
 
 interface ContentTypes {
   articles: IArticle[];
-  error: string;
 }
 
 const ITEMS_RENDER_PER_SCROLL = 1;
 const ITEMS_RENDER_PER_SCROLL_DESKTOP = 3;
 
-const Content = ({ articles, error }: ContentTypes): JSX.Element => {
+const Content = ({ articles }: ContentTypes): JSX.Element => {
   const isDesktop = window.innerWidth > 768;
   const itemsPerPage = isDesktop
     ? ITEMS_RENDER_PER_SCROLL_DESKTOP
@@ -29,7 +28,7 @@ const Content = ({ articles, error }: ContentTypes): JSX.Element => {
     onVisible,
   });
 
-  return error === '' ? (
+  return (
     <Styles.Content>
       {articles.slice(0, count).map((article) => {
         return (
@@ -49,8 +48,6 @@ const Content = ({ articles, error }: ContentTypes): JSX.Element => {
       })}
       <span ref={observerElement} />
     </Styles.Content>
-  ) : (
-    <>{error}</>
   );
 };
 

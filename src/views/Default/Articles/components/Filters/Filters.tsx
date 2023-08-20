@@ -1,10 +1,9 @@
 import { memo } from 'react';
 import Btn from '@/components/Btn/Btn';
 import Modal from '@/components/Modal/Modal';
-import ChipGroup from '@/components/Chips/ChipGroup';
 import { IArticle } from '@/models/Article';
-import Chip from '@/components/Chips/Chip';
 import Styles from './styles';
+import AssociatedChips from '@/components/AssociatedChips/AssociatedChips';
 
 interface FiltersTypes {
   tags: IArticle['tag_list'];
@@ -34,16 +33,7 @@ const Filters = memo(function Filters({
         title="Filter-ish by tag"
         description="These tags do not filter yet, it is for teaching purposes."
       >
-        <ChipGroup>
-          {tags.map((tag) => (
-            <Chip
-              key={tag}
-              color="--color-brand-secondary-light-1"
-              label={tag}
-              type="tag"
-            />
-          ))}
-        </ChipGroup>
+        <AssociatedChips options={tags} />
       </Modal>
     </Styles.Wrapper>
   );
