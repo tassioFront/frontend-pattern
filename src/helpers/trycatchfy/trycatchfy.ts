@@ -15,14 +15,14 @@ interface IWrapperTrycatchfy {
   expectedBehavior: ITrycatchfyParams<IFakeAxios>['expectedBehavior'];
   onForbiddenError?: ITrycatchfyParams<IFakeAxios>['onForbiddenError'];
   onResourceError: ITrycatchfyParams<IFakeAxios>['onResourceError'];
-  onEndCycle: ITrycatchfyParams<IFakeAxios>['onEndCycle'];
+  onEndCycle?: ITrycatchfyParams<IFakeAxios>['onEndCycle'];
 }
 
 export const wrapperTrycatchfy = async ({
   expectedBehavior,
   onForbiddenError,
   onResourceError,
-  onEndCycle,
+  onEndCycle = () => {},
 }: IWrapperTrycatchfy): Promise<void | Error> => {
   const onUnauthorizedErrorDefault = (): void => {
     alert(customHttpErrors.unauthorizedError);

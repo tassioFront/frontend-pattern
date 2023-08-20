@@ -25,7 +25,6 @@ const Article = (): JSX.Element => {
   const [baseState, setBaseState] = useState<
     'isLoading' | 'isError' | 'isEmpty' | 'isData'
   >('isLoading');
-  const [isOpen, setIsOpen] = useState(false);
   const [modalQuery, setModalQuery] = useSearchParams();
   const swArticles: Worker = useMemo(
     () => new Worker(new URL('./woDevTags.ts', import.meta.url)),
@@ -33,7 +32,6 @@ const Article = (): JSX.Element => {
   );
 
   const handleToggleModal = (value: boolean = true) => {
-    setIsOpen(value);
     setModalQuery({
       ...modalQuery,
       ...(value && { [query.modalOpen]: 'open' }),
@@ -52,7 +50,6 @@ const Article = (): JSX.Element => {
     await wrapperTrycatchfy({
       expectedBehavior,
       onResourceError,
-      onEndCycle: () => setBaseState(hasData() ? 'isEmpty' : 'isData'),
     });
   };
   const hasData = () => articles.length > 0;
@@ -90,7 +87,7 @@ const Article = (): JSX.Element => {
       <>
         {hasData() && (
           <Filters
-            isOpen={isOpen}
+            isOpen={!!modalQuery.get(query.modalOpen)}
             tags={tags}
             onClose={() => handleToggleModal(false)}
             onOpen={() => handleToggleModal()}

@@ -26,12 +26,7 @@ const BaseScreen = memo(function BaseScreen({
   isEmptyMessage = 'There is not data so far. How about add it?',
   isErrorMessage = 'Sorry, something was wrong',
 }: BaseScreenTypes) {
-  console.log('base scr');
   const id = createIdByString(heading);
-  useEffect(() => {
-    goToTop();
-  }, []);
-
   const uiState = {
     isLoading: () => <Loading height="50vh" data-testid="loading" />,
     isError: () => <Error message={isErrorMessage} />,
@@ -39,6 +34,9 @@ const BaseScreen = memo(function BaseScreen({
     isData: () => children,
   };
 
+  useEffect(() => {
+    goToTop();
+  }, []);
   return (
     <Styles.Wrapper className={className} data-testid={id + '-wrapper'}>
       <>
