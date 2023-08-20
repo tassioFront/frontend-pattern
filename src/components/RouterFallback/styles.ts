@@ -5,6 +5,7 @@ const Styles = {
     align-items: center;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     padding: var(--spacing-base);
     gap: var(--spacing-large);
     min-height: 100vh;
