@@ -4,7 +4,11 @@ import BaseScreen from './BaseScreen';
 const children = <p id="children">children</p>;
 describe('<BaseScreen />', () => {
   it('should render heading and children, but there is not description', () => {
-    render(<BaseScreen heading="heading">{children}</BaseScreen>);
+    render(
+      <BaseScreen heading="heading" uiCurrentState="isData">
+        {children}
+      </BaseScreen>
+    );
     const wrapper = screen.getByText('children');
     const header = screen.getByTestId('heading' + '-header');
     const desc = header.querySelector('#heading' + '-desc');
@@ -19,7 +23,7 @@ describe('<BaseScreen />', () => {
 
   it('should render description', () => {
     render(
-      <BaseScreen heading="heading" description="desc">
+      <BaseScreen heading="heading" description="desc" uiCurrentState="isData">
         {children}
       </BaseScreen>
     );
@@ -31,13 +35,18 @@ describe('<BaseScreen />', () => {
 
   it('should not render children when is loading', () => {
     render(
-      <BaseScreen heading="heading" description="desc" isLoading={true}>
+      <BaseScreen
+        heading="heading"
+        description="desc"
+        uiCurrentState="isLoading"
+      >
         {children}
       </BaseScreen>
     );
     const wrapper = screen.getByTestId('heading' + '-wrapper');
     const loading = screen.getByTestId('loading');
-    expect(wrapper.querySelector('#heading' + '-desc')).not.toBeInTheDocument();
+    expect(wrapper.querySelector('#heading' + '-desc')).toBeInTheDocument();
     expect(loading).toBeInTheDocument();
+    expect(wrapper.querySelector('#children')).not.toBeInTheDocument();
   });
 });
