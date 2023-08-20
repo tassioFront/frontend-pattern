@@ -15,11 +15,12 @@ import Challenges from './components/Challenges/Challenges';
 
 const About = (): JSX.Element => {
   const [user, setUser] = useState<IUserGithub & IContent>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [baseState, setBaseState] = useState<
+    'isLoading' | 'isError' | 'isEmpty' | 'isData'
+  >('isLoading');
+
   const getUserInfo = async (): Promise<void> => {
     const expectedBehavior = async (): Promise<void> => {
-      setIsLoading(true);
       const ghDataCache = storageService.get<IUserGithub>(
         StorageKeys.GHUserData
       );
@@ -32,13 +33,14 @@ const About = (): JSX.Element => {
       setUser({ ...response.data, techs, challenges });
     };
     const onResourceError = (): void => {
-      alert(apiErrors.getUserGithubByUserName);
-      setError(apiErrors.getUserGithubByUserName);
+      setBaseState('isError');
     };
     await wrapperTrycatchfy({
       expectedBehavior,
       onResourceError,
-      onEndCycle: () => setIsLoading(false),
+      onEndCycle: () =>
+        storageService.get<IUserGithub>(StorageKeys.GHUserData) &&
+        setBaseState('isData'),
     });
   };
   useEffect(() => {
@@ -49,11 +51,12 @@ const About = (): JSX.Element => {
     <BaseScreen
       heading={texts.heading}
       description={texts.description}
-      isLoading={isLoading}
+      uiCurrentState={baseState}
+      isErrorMessage={apiErrors.getUserGithubByUserName}
     >
       <>
         <Section heading2={texts.whoAmI}>
-          <UserInfoContent user={user as IUserGithub} error={error} />
+          <UserInfoContent user={user as IUserGithub} />
         </Section>
 
         {user !== undefined && (

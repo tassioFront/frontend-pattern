@@ -3,14 +3,10 @@ import Styles, { imageSize } from './styles';
 
 interface UserInfoContentTypes {
   user: IUserGithub;
-  error: string;
 }
 
-const UserInfoContent = ({
-  user,
-  error,
-}: UserInfoContentTypes): JSX.Element => {
-  return user !== undefined ? (
+const UserInfoContent = ({ user }: UserInfoContentTypes): JSX.Element => {
+  return (
     <Styles.Content>
       <Styles.ImgLazyLoad
         src={user.avatar_url}
@@ -21,8 +17,6 @@ const UserInfoContent = ({
       <h3>{user?.name}</h3>
       <p>{user?.bio}</p>
     </Styles.Content>
-  ) : (
-    <>{error}</>
   );
 };
 

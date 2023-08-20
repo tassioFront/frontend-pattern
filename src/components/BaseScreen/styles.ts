@@ -5,7 +5,7 @@ const Styles = {
   Wrapper: styled.div`
     align-items: center;
     display: flex;
-    height: 100%;
+    min-height: 100vh;
     width: 100%;
     justify-content: flex-start;
     padding: var(--spacing-xxlarge) var(--spacing-xsmall);

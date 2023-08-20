@@ -22,8 +22,9 @@ enum query {
 const Article = (): JSX.Element => {
   const [articles, setArticles] = useState<IArticle[]>([]);
   const [tags, setTags] = useState<IArticle['tag_list']>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [baseState, setBaseState] = useState<
+    'isLoading' | 'isError' | 'isEmpty' | 'isData'
+  >('isLoading');
   const [isOpen, setIsOpen] = useState(false);
   const [modalQuery, setModalQuery] = useSearchParams();
   const swArticles: Worker = useMemo(
@@ -40,18 +41,18 @@ const Article = (): JSX.Element => {
   };
   const getUserInfo = async (): Promise<void> => {
     const expectedBehavior = async (): Promise<void> => {
-      setIsLoading(true);
       const response = await getOwnerDevArticlesByUserName();
       setArticles(response.data);
       modalQuery.get(query.modalOpen) && handleToggleModal();
+      setBaseState(response.data.length === 0 ? 'isEmpty' : 'isData');
     };
     const onResourceError = (): void => {
-      setError(apiErrors.getOwnerDevArticlesByUserName);
+      setBaseState('isError');
     };
     await wrapperTrycatchfy({
       expectedBehavior,
       onResourceError,
-      onEndCycle: () => setIsLoading(false),
+      onEndCycle: () => setBaseState(hasData() ? 'isEmpty' : 'isData'),
     });
   };
   const hasData = () => articles.length > 0;
@@ -66,8 +67,8 @@ const Article = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    !isLoading && handleTags();
-  }, [isLoading]);
+    baseState === 'isData' && handleTags();
+  }, [baseState]);
   useEffect(() => {
     if (window.Worker) {
       swArticles.onmessage = (e: MessageEvent<IArticle['tag_list']>) => {
@@ -83,7 +84,8 @@ const Article = (): JSX.Element => {
     <BaseScreen
       heading={texts.heading}
       description={texts.description}
-      isLoading={isLoading}
+      uiCurrentState={baseState}
+      isErrorMessage={apiErrors.getOwnerDevArticlesByUserName}
     >
       <>
         {hasData() && (
@@ -102,7 +104,6 @@ const Article = (): JSX.Element => {
               <ArticlesContent articles={articles} />
             </Suspense>
           )}
-          {error !== '' && error}
         </>
       </Section>
     </BaseScreen>
