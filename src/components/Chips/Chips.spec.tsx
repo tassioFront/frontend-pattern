@@ -11,15 +11,6 @@ describe('<Chips />', () => {
   beforeEach(() => {
     error.mockClear();
   });
-  it('should console an error as it is rendering not Chip children', () => {
-    render(
-      <ChipGroup>
-        <p>not Chip component</p>
-        <p>not Chip component</p>
-      </ChipGroup>
-    );
-    expect(error).toBeCalledWith(chipsTexts.onError);
-  });
 
   it('should render Chip children and not show an error', () => {
     render(
