@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import BtnLink from '../BtnLink/BtnLink';
 import Styles from './styles';
 
@@ -16,10 +15,8 @@ interface MenuTypes {
 const Burger = ({ open, actions, setOpen, ...props }: MenuTypes) => {
   const isHidden = open;
 
-  useEffect(() => {
-    (window.document.querySelector('body') as HTMLBodyElement).style.overflowY =
-      open ? 'hidden' : 'auto';
-  }, [open]);
+  (window.document.querySelector('body') as HTMLBodyElement).style.overflowY =
+    open ? 'hidden' : 'auto';
 
   return (
     <>

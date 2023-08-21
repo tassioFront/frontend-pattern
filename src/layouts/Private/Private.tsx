@@ -24,7 +24,9 @@ const Default = (): JSX.Element => {
     navigate(dashboardResolvedRouter);
   };
   useEffect(() => {
-    GHUserName !== null && getUserGHInfo({ userName: GHUserName, onSuccess });
+    if (GHUserName !== null) {
+      void getUserGHInfo({ userName: GHUserName, onSuccess });
+    }
   }, []);
 
   return (

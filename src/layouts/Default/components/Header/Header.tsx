@@ -7,7 +7,7 @@ import {
   articlesResolvedRouter,
 } from '@/routes/resolvedRoutes';
 import Menu from '@/components/Menu/Menu';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const Header = (): JSX.Element => {
   const [open, setOpen] = useState(false);
@@ -38,7 +38,6 @@ const Header = (): JSX.Element => {
     },
   ];
 
-  useEffect(() => {}, [open]);
   return (
     <Styles.Header>
       <Logo />

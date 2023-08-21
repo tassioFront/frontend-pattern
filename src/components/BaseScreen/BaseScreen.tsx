@@ -1,5 +1,5 @@
 import { goToTop } from '@/helpers/goTo';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import Styles from './styles';
 import Typography from '../Typography/Typography';
 import { createIdByString } from '@/helpers/string/string';
@@ -17,6 +17,8 @@ interface BaseScreenTypes {
   isErrorMessage?: string;
 }
 
+goToTop();
+
 const BaseScreen = memo(function BaseScreen({
   children,
   className,
@@ -33,10 +35,6 @@ const BaseScreen = memo(function BaseScreen({
     isEmpty: () => <EmptyState message={isEmptyMessage} />,
     isData: () => children,
   };
-
-  useEffect(() => {
-    goToTop();
-  }, []);
   return (
     <Styles.Wrapper className={className} data-testid={id + '-wrapper'}>
       <>
