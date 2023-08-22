@@ -8,6 +8,7 @@ describe('<AssociatedChips />', () => {
       <AssociatedChips
         data-testid="a-chips"
         options={[]}
+        onClick={() => {}}
         className="testid-chips"
       />
     );
@@ -18,6 +19,7 @@ describe('<AssociatedChips />', () => {
   it('should render AssociatedChips with data', () => {
     render(
       <AssociatedChips
+        onClick={() => {}}
         data-testid="a-chips"
         options={['chip-1', 'chip-2']}
         className="testid-chips"
