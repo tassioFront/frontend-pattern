@@ -22,7 +22,10 @@ const Challenges = memo(function Challenges({
             <p key={des} dangerouslySetInnerHTML={{ __html: des }} />
           ))}
           {challenge.tags?.length !== undefined && (
-            <AssociatedChips options={challenge.tags} />
+            <AssociatedChips
+              options={challenge.tags}
+              onClick={() => alert('Sorry, we are working on it.')}
+            />
           )}
         </div>
       ))}
