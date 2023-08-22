@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Styles from './styles';
 
 interface CardTypes {
@@ -6,12 +7,12 @@ interface CardTypes {
   actions?: JSX.Element | undefined;
   className?: string;
 }
-const Card = ({
+const Card = memo(function Card({
   floating = undefined,
   content,
   actions = undefined,
   className,
-}: CardTypes): JSX.Element => {
+}: CardTypes) {
   return (
     <Styles.Wrapper className={className}>
       {floating && <Styles.Floating>{floating}</Styles.Floating>}
@@ -24,6 +25,6 @@ const Card = ({
       )}
     </Styles.Wrapper>
   );
-};
+});
 
 export default Card;

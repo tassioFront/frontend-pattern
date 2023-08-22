@@ -12,7 +12,8 @@ const Styles = {
     position: relative;
     justify-content: center;
     transition: 0.3s ease-in-out;
-    will-change: border;
+    will-change: border opacity;
+    animation: fadeIn 0.5s;
 
     ${media.greaterThan('tablet')`
       justify-content: space-between;
@@ -20,6 +21,15 @@ const Styles = {
 
     &:hover {
       border: 1px solid var(--color-neutral-light-1);
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
     }
   `,
   Floating: styled.div`
