@@ -5,10 +5,14 @@ import { memo } from 'react';
 interface AssociatedChipsTypes {
   className?: string;
   options: string[];
+  selected?: string[];
+  onClick: (value: string) => void;
 }
 const AssociatedChips = memo(function AssociatedChips({
   options,
   className,
+  onClick,
+  selected = [],
   ...rest
 }: AssociatedChipsTypes) {
   const DEFAULT_COLOR = '--color-brand-secondary-light-1';
@@ -20,8 +24,9 @@ const AssociatedChips = memo(function AssociatedChips({
           key={opt}
           label={opt}
           color={DEFAULT_COLOR}
+          className={selected.includes(opt) ? 'selected' : ''}
           type="tag"
-          onClick={() => alert('Sorry, we are working on it.')}
+          onClick={() => onClick(opt)}
         />
       ))}
     </Styles.ChipGroup>

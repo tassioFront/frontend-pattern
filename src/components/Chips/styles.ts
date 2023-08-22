@@ -36,7 +36,8 @@ const Styles = {
         padding: var(--spacing-xxsmall) var(--spacing-small);
         width: 100%;
       }
-      :hover {
+      :hover,
+      &.selected {
         opacity: 1;
       }
     }
