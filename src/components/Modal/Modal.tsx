@@ -40,7 +40,7 @@ const Modal = memo(function Modal({
         {children}
         <Styles.Actions>
           <Btn color="primary" onClick={onClose}>
-            Got it!
+            Apply!
           </Btn>
         </Styles.Actions>
       </Styles.Content>
