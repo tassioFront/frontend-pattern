@@ -46,8 +46,8 @@ const Filters = memo(function Filters({
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        title="Filter-ish by tag"
-        description="These tags do not filter yet, it is for teaching purposes."
+        title="Filter by tag (beta)"
+        description="Filter the articles by tags"
       >
         <AssociatedChips
           options={tags}
