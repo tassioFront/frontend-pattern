@@ -1,6 +1,6 @@
 import { IArticle } from '@/models/Article';
 import Styles from './styles';
-import { useCallback, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { useObserver } from '@/hooks/useObserver/useObserver';
 import ArticleCard from '../ArticleCard/ArticleCard';
 import { ISearch } from '../../types';
@@ -16,7 +16,12 @@ const ITEMS_RENDER_PER_SCROLL_DESKTOP = 3;
 
 let searchCache: IArticle[] | null = null;
 
-const Content = ({ articles, search, isOpen }: ContentTypes): JSX.Element => {
+const Content = memo(function Content({
+  articles,
+  search,
+  isOpen,
+}: ContentTypes) {
+  const { byText, byTags } = search;
   const isDesktop = window.innerWidth > 768;
   const itemsPerPage = isDesktop
     ? ITEMS_RENDER_PER_SCROLL_DESKTOP
@@ -32,27 +37,31 @@ const Content = ({ articles, search, isOpen }: ContentTypes): JSX.Element => {
   const [observerElement] = useObserver({
     onVisible,
   });
-
-  const rows = isOpen
-    ? searchCache
-    : articles.filter((product) => {
-        const hasFoundByText = product.title
-          .toLowerCase()
-          .includes(search.byText.toLowerCase());
-        if (!hasFoundByText) {
-          return false;
+  const filterBySearch = useMemo(() => {
+    return articles.filter((product) => {
+      const hasFoundByText = product.title
+        .toLowerCase()
+        .includes(byText.toLowerCase());
+      if (!hasFoundByText) {
+        return false;
+      }
+      const hasFilterByTextOnly = byTags.length === 0;
+      let hasTag = false;
+      for (const tag of byTags) {
+        hasTag = product.tag_list.includes(tag);
+        if (hasTag) {
+          break;
         }
-        const hasFilterByTextOnly = search.byTags.length === 0;
-        let hasTag = false;
-        search.byTags.forEach((tag) => {
-          hasTag = product.tag_list.includes(tag);
-        });
-        return hasFilterByTextOnly || hasTag;
-      });
+      }
+      return hasFilterByTextOnly || hasTag;
+    });
+  }, [byText, isOpen]);
+
+  const rows = isOpen && searchCache !== null ? searchCache : filterBySearch;
   searchCache = rows;
   return (
     <Styles.Content>
-      {(rows as IArticle[]).slice(0, count).map((article) => {
+      {rows.slice(0, count).map((article) => {
         return (
           article !== null && (
             <ArticleCard
@@ -71,6 +80,6 @@ const Content = ({ articles, search, isOpen }: ContentTypes): JSX.Element => {
       <span ref={observerElement} />
     </Styles.Content>
   );
-};
+});
 
 export default Content;
