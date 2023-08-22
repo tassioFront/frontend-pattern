@@ -61,22 +61,26 @@ const Content = memo(function Content({
   searchCache = rows;
   return (
     <Styles.Content>
-      {rows.slice(0, count).map((article) => {
-        return (
-          article !== null && (
-            <ArticleCard
-              alt={article.title}
-              imageSize="200"
-              key={article.title}
-              imageUrl={article.cover_image}
-              url={article.url}
-              title={article.title}
-              description={article.description}
-              positiveReactionsCount={article.positive_reactions_count}
-            />
-          )
-        );
-      })}
+      {rows.length > 0 ? (
+        rows.slice(0, count).map((article) => {
+          return (
+            article !== null && (
+              <ArticleCard
+                alt={article.title}
+                imageSize="200"
+                key={article.title}
+                imageUrl={article.cover_image}
+                url={article.url}
+                title={article.title}
+                description={article.description}
+                positiveReactionsCount={article.positive_reactions_count}
+              />
+            )
+          );
+        })
+      ) : (
+        <p>Nothing here. Do you wanna try another search?</p>
+      )}
       <span ref={observerElement} />
     </Styles.Content>
   );
