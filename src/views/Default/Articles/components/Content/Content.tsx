@@ -1,17 +1,22 @@
 import { IArticle } from '@/models/Article';
 import Styles from './styles';
-import ArticleCard from '../ArticleCard/ArticleCard';
 import { useCallback, useState } from 'react';
 import { useObserver } from '@/hooks/useObserver/useObserver';
+import ArticleCard from '../ArticleCard/ArticleCard';
+import { ISearch } from '../../types';
 
 interface ContentTypes {
   articles: IArticle[];
+  isOpen: boolean;
+  search: ISearch;
 }
 
 const ITEMS_RENDER_PER_SCROLL = 1;
 const ITEMS_RENDER_PER_SCROLL_DESKTOP = 3;
 
-const Content = ({ articles }: ContentTypes): JSX.Element => {
+let searchCache: IArticle[] | null = null;
+
+const Content = ({ articles, search, isOpen }: ContentTypes): JSX.Element => {
   const isDesktop = window.innerWidth > 768;
   const itemsPerPage = isDesktop
     ? ITEMS_RENDER_PER_SCROLL_DESKTOP
@@ -28,9 +33,26 @@ const Content = ({ articles }: ContentTypes): JSX.Element => {
     onVisible,
   });
 
+  const rows = isOpen
+    ? searchCache
+    : articles.filter((product) => {
+        const hasFoundByText = product.title
+          .toLowerCase()
+          .includes(search.byText.toLowerCase());
+        if (!hasFoundByText) {
+          return false;
+        }
+        const hasFilterByTextOnly = search.byTags.length === 0;
+        let hasTag = false;
+        search.byTags.forEach((tag) => {
+          hasTag = product.tag_list.includes(tag);
+        });
+        return hasFilterByTextOnly || hasTag;
+      });
+  searchCache = rows;
   return (
     <Styles.Content>
-      {articles.slice(0, count).map((article) => {
+      {(rows as IArticle[]).slice(0, count).map((article) => {
         return (
           article !== null && (
             <ArticleCard

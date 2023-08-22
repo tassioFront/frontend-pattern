@@ -10,6 +10,7 @@ import { getOwnerDevArticlesByUserName } from '@/services/devPublicApi.service';
 import { IArticle } from '@/models/Article';
 import RouterFallback from '@/components/RouterFallback/RouterFallback';
 import Filters from './components/Filters/Filters';
+import { ISearch } from './types';
 
 const ArticlesContent = lazy(
   async () => await import('./components/Content/Content')
@@ -25,24 +26,45 @@ const Article = (): JSX.Element => {
   const [baseState, setBaseState] = useState<
     'isLoading' | 'isError' | 'isEmpty' | 'isData'
   >('isLoading');
+  const [search, setSearch] = useState<ISearch>({
+    byText: '',
+    byTags: [],
+  });
   const [modalQuery, setModalQuery] = useSearchParams();
   const swArticles: Worker = useMemo(
     () => new Worker(new URL('./woDevTags.ts', import.meta.url)),
     []
   );
 
+  const handleSearchText = (value: string) => {
+    setSearch({ ...search, byText: value });
+  };
+  const handleSearchTags = (value: string) => {
+    const isAddHandle = search.byTags.findIndex((tag) => tag === value) === -1;
+    const byTags = isAddHandle
+      ? [...search.byTags, value]
+      : search.byTags.filter((tag) => tag !== value);
+    setSearch({ ...search, byTags });
+  };
   const handleToggleModal = (value: boolean = true) => {
     setModalQuery({
       ...modalQuery,
       ...(value && { [query.modalOpen]: 'open' }),
     });
   };
+  const hasData = () => articles.length > 0;
+  const handleTags = () => {
+    if (window.Worker) {
+      swArticles.postMessage(articles);
+    }
+  };
   const getUserInfo = async (): Promise<void> => {
     const expectedBehavior = async (): Promise<void> => {
       const response = await getOwnerDevArticlesByUserName();
       setArticles(response.data);
       modalQuery.get(query.modalOpen) && handleToggleModal();
-      setBaseState(response.data.length === 0 ? 'isEmpty' : 'isData');
+      const baseStateValue = response.data.length === 0 ? 'isEmpty' : 'isData';
+      setBaseState(baseStateValue);
     };
     const onResourceError = (): void => {
       setBaseState('isError');
@@ -52,17 +74,10 @@ const Article = (): JSX.Element => {
       onResourceError,
     });
   };
-  const hasData = () => articles.length > 0;
-  const handleTags = () => {
-    if (window.Worker) {
-      swArticles.postMessage(articles);
-    }
-  };
 
   useEffect(() => {
     void getUserInfo();
   }, []);
-
   useEffect(() => {
     baseState === 'isData' && handleTags();
   }, [baseState]);
@@ -86,23 +101,28 @@ const Article = (): JSX.Element => {
     >
       <>
         {hasData() && (
-          <Filters
-            isOpen={!!modalQuery.get(query.modalOpen)}
-            tags={tags}
-            onClose={() => handleToggleModal(false)}
-            onOpen={() => handleToggleModal()}
-          />
+          <>
+            <Filters
+              selectedTags={search.byTags}
+              handleSearchText={handleSearchText}
+              handleSearchTags={handleSearchTags}
+              isOpen={!!modalQuery.get(query.modalOpen)}
+              tags={tags}
+              onClose={() => handleToggleModal(false)}
+              onOpen={() => handleToggleModal()}
+            />
+            <Section>
+              <Suspense fallback={<RouterFallback />}>
+                <ArticlesContent
+                  articles={articles}
+                  search={search}
+                  isOpen={!!modalQuery.get(query.modalOpen)}
+                />
+              </Suspense>
+            </Section>
+          </>
         )}
       </>
-      <Section>
-        <>
-          {hasData() && (
-            <Suspense fallback={<RouterFallback />}>
-              <ArticlesContent articles={articles} />
-            </Suspense>
-          )}
-        </>
-      </Section>
     </BaseScreen>
   );
 };

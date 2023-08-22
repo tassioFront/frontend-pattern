@@ -79,7 +79,7 @@ const Styles = {
       cursor: not-allowed;
     }
   `,
-  Children: styled.span`
+  Children: styled.p`
     display: inherit;
     position: relative;
     white-space: nowrap;
