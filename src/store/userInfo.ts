@@ -1,20 +1,17 @@
 import { IUserGithub } from '@/models/UserGithub';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
-import {
-  getGHUserNameFromCache,
-  getGHUserDataFromCache,
-} from '@/helpers/useInfo';
+import { getGHUserDataFromCache } from '@/helpers/useInfo';
 
 interface UserInfoStore {
   GHData: IUserGithub | null;
 }
 
 const initialState: UserInfoStore = {
-  GHData: getGHUserNameFromCache() !== null ? getGHUserDataFromCache() : null,
+  GHData: getGHUserDataFromCache(),
 };
 
-const selector = {
+const userInfoSelectors = {
   getMainUserInfo: (state: RootState) => {
     return state.userInfo.GHData;
   },
@@ -35,12 +32,10 @@ const userInfoSlice = createSlice({
         ...state,
         GHData: action.payload,
       };
-      return state;
     },
   },
 });
-
-export const userInfoSelectors = selector;
+export { userInfoSelectors };
 export const userInfoActions = userInfoSlice.actions;
 
-export default userInfoSlice;
+export default userInfoSlice.reducer;

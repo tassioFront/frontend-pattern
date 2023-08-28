@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userInfoSlice from './userInfo';
+import userInfo from './userInfo';
 
 const store = configureStore({
   reducer: {
-    userInfo: userInfoSlice.reducer,
+    userInfo,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

@@ -7,7 +7,7 @@ export const getGHUserNameFromCache = (): string | null =>
   storageService.get<string>(StorageKeys.GHUserName);
 
 export const getGHUserDataFromCache = (): IUserGithub | null =>
-  storageService.get<IUserGithub>(StorageKeys.GHUserData);
+  storageService.get<IUserGithub | null>(StorageKeys.GHUserData);
 
 export const fakeLogout = (): void => {
   storageService.remove(StorageKeys.GHUserName);

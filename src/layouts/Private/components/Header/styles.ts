@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const Styles = {
   Header: styled(Header)`
+    align-items: center;
     display: flex;
     background-color: var(--color-neutral-dark-1);
     justify-content: space-between;
@@ -12,6 +13,10 @@ const Styles = {
     ${media.greaterThan('mobileMax')`
       padding: var(--spacing-xxlarge) var(--spacing-medium);
     `}
+
+    p {
+      text-align: end;
+    }
   `,
   Nav: styled.nav`
     display: flex;

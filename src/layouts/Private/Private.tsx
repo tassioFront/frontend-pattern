@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { Outlet, useNavigate, Navigate } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Styles from './styles';
+import Footer from '@/components/Footer/Footer';
 
 const Default = (): JSX.Element => {
   // state
@@ -16,7 +17,7 @@ const Default = (): JSX.Element => {
   const { isLoading, getUserGHInfo } = useGetGHInfoByUserName();
 
   // handling
-  const onNotHasGHUserName = (): null => Navigate({ to: loginResolvedRouter });
+  const onNotHasGHUserName = () => Navigate({ to: loginResolvedRouter });
   const { GHUserName } = GHUserNameFromStorage({
     onNotHasGHUserName,
   });
@@ -35,7 +36,7 @@ const Default = (): JSX.Element => {
       <Styles.Content>
         {isLoading ? <Spinner type="brand" /> : <Outlet />}
       </Styles.Content>
-      private footer
+      <Footer />
     </Styles.Wrapper>
   );
 };
