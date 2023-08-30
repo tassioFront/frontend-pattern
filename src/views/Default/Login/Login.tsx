@@ -3,7 +3,7 @@ import Styles from './styles';
 import { texts, actions } from './enums';
 import TextInput from '@/components/TextInput/TextInput';
 import Btn from '@/components/Btn/Btn';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import {
   useGetGHInfoByUserName,
   getUserGHInfoOnSuccessParams,
@@ -16,6 +16,7 @@ import { dashboardResolvedRouter } from '@/routes/resolvedRoutes';
 
 const Login = (): JSX.Element => {
   // state
+  const ref = useRef(null);
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
   const onChangeInput = (value: string): void => {
@@ -30,12 +31,16 @@ const Login = (): JSX.Element => {
 
   // handling
   const { isLoading, getUserGHInfo } = useGetGHInfoByUserName();
+  const handleFocus = () => ref?.current?.focus?.();
   const onSubmit = useCallback(
     async (event: unknown, userNameResult: string) => {
       const key = (event as React.KeyboardEvent<HTMLImageElement>).key;
       const isNotSubmitOrEnterKey = key !== undefined && key !== 'Enter';
       if (isNotSubmitOrEnterKey) {
         return;
+      }
+      if (userNameResult === '') {
+        return handleFocus();
       }
       await getUserGHInfo({ userName: userNameResult, onSuccess });
     },
@@ -46,6 +51,7 @@ const Login = (): JSX.Element => {
     <BaseScreen heading={texts.heading} description={texts.description}>
       <Styles.Content>
         <TextInput
+          ref={ref}
           data-cy={loginCy.userNameInput}
           label={texts.inputLabel}
           placeholder={texts.inputPlaceholder}

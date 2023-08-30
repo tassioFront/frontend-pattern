@@ -11,5 +11,6 @@ export const getGHUserDataFromCache = (): IUserGithub | null =>
 
 export const fakeLogout = (): void => {
   storageService.remove(StorageKeys.GHUserName);
+  storageService.remove(StorageKeys.GHUserData);
   window.location.href = loginResolvedRouter;
 };

@@ -1,6 +1,8 @@
 import { apiErrors } from '@/enums/home';
+import { StorageKeys } from '@/enums/storage-keys';
 import { wrapperTrycatchfy } from '@/helpers/trycatchfy/trycatchfy';
 import { IUserGithub } from '@/models/UserGithub';
+import { storageService } from '@/services/localStorage/localStorage.service';
 import { getUserGithubByUserName } from '@/services/userGithub.service';
 import { useAppDispatch, useAppSelector } from '@/store/helper';
 import { userInfoActions, userInfoSelectors } from '@/store/userInfo';
@@ -39,6 +41,10 @@ export const useGetGHInfoByUserName = (): IUseGetGHInfoByUserNameResponse => {
         response = await getUserGithubByUserName(userName);
       }
       dispatch(userInfoActions.setUserInfo(response?.data));
+      storageService.set<IUserGithub | null>(
+        StorageKeys.GHUserData,
+        response?.data
+      );
       onSuccess?.(response);
     };
     const onResourceError = (): void => {
