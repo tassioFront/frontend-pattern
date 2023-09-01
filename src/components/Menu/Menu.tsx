@@ -1,5 +1,7 @@
+import { useTransition } from 'react';
 import BtnLink from '../BtnLink/BtnLink';
 import Styles from './styles';
+import Spinner from '../Spinner/Spinner';
 
 interface MenuTypes {
   open: boolean;
@@ -13,6 +15,7 @@ interface MenuTypes {
 }
 
 const Burger = ({ open, actions, setOpen, ...props }: MenuTypes) => {
+  const [isPending, startTransition] = useTransition();
   const isHidden = open;
 
   (window.document.querySelector('body') as HTMLBodyElement).style.overflowY =
@@ -46,12 +49,18 @@ const Burger = ({ open, actions, setOpen, ...props }: MenuTypes) => {
         aria-label="Toggle menu"
         aria-expanded={open}
         open={open}
-        onClick={() => setOpen(!open)}
+        onClick={() => startTransition(() => setOpen(!open))}
         {...props}
       >
-        <span />
-        <span />
-        <span />
+        {isPending ? (
+          <Spinner type="brand" />
+        ) : (
+          <>
+            <span />
+            <span />
+            <span />
+          </>
+        )}
       </Styles.Burger>
     </>
   );
