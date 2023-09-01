@@ -30,7 +30,7 @@ const Content = memo(function Content({
   const onVisible = useCallback(
     (isVisible: boolean) => {
       const isIncrease = isVisible && count < articles.length;
-      isIncrease && setCount(count + itemsPerPage);
+      isIncrease && setCount((value) => value + itemsPerPage);
     },
     [count]
   );

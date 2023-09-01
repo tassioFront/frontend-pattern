@@ -28,7 +28,7 @@ const userInfoSlice = createSlice({
       state: UserInfoStore,
       action: PayloadAction<UserInfoStore['GHData']>
     ) {
-      state = {
+      return {
         ...state,
         GHData: action.payload,
       };

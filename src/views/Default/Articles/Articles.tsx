@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense, lazy, useMemo } from 'react';
+import { useEffect, useState, Suspense, lazy } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
@@ -20,6 +20,10 @@ enum query {
   modalOpen = 'mo',
 }
 
+const swArticles: Worker = new Worker(
+  new URL('./woDevTags.ts', import.meta.url)
+);
+
 const Article = (): JSX.Element => {
   const [articles, setArticles] = useState<IArticle[]>([]);
   const [tags, setTags] = useState<IArticle['tag_list']>([]);
@@ -31,10 +35,8 @@ const Article = (): JSX.Element => {
     byTags: [],
   });
   const [modalQuery, setModalQuery] = useSearchParams();
-  const swArticles: Worker = useMemo(
-    () => new Worker(new URL('./woDevTags.ts', import.meta.url)),
-    []
-  );
+
+  const hasData = () => articles.length > 0;
 
   const handleSearchText = (value: string) => {
     setSearch({ ...search, byText: value });
@@ -52,7 +54,6 @@ const Article = (): JSX.Element => {
       ...(value && { [query.modalOpen]: 'open' }),
     });
   };
-  const hasData = () => articles.length > 0;
   const handleTags = () => {
     if (window.Worker) {
       swArticles.postMessage(articles);
