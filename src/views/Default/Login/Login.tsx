@@ -16,7 +16,7 @@ import { dashboardResolvedRouter } from '@/routes/resolvedRoutes';
 
 const Login = (): JSX.Element => {
   // state
-  const ref = useRef(null);
+  const ref = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
   const onChangeInput = (value: string): void => {
