@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense, lazy, useDeferredValue } from 'react';
+import { useEffect, useState, Suspense, lazy } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
@@ -35,14 +35,11 @@ const Article = (): JSX.Element => {
     byTags: [],
   });
 
-  const [query2, setQuery2] = useState('');
-  const deferredQuery = useDeferredValue(query2);
   const [modalQuery, setModalQuery] = useSearchParams();
 
   const hasData = () => articles.length > 0;
 
   const handleSearchText = (value: string) => {
-    setQuery2(value);
     setSearch({ ...search, byText: value });
   };
   const handleSearchTags = (value: string) => {
@@ -121,7 +118,6 @@ const Article = (): JSX.Element => {
                 <ArticlesContent
                   articles={articles}
                   search={search}
-                  deferredQuery={deferredQuery}
                   isOpen={!!modalQuery.get(query.modalOpen)}
                 />
               </Suspense>
