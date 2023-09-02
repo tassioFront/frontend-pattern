@@ -11,6 +11,8 @@ import DefaultLayout from './layouts/Default';
 // private layout
 import PrivateLayout from './layouts/Private';
 import Dashboard from './views/Private/Dashboard';
+import Todo from './views/Private/Todo';
+import TodoUsers from './views/Private/TodoUsers/TodoUsers';
 
 function App(): JSX.Element {
   return (
@@ -25,6 +27,9 @@ function App(): JSX.Element {
       <Route path={routesPrefix.app} element={<PrivateLayout />}>
         <Route index element={<Dashboard />} />
         <Route path={routes.dashboard} element={<Dashboard />} />
+
+        <Route path={routes.todo} element={<Todo />} />
+        <Route path={routes.todoUsers} element={<TodoUsers />} />
       </Route>
       <Route path="*" element={<div>404</div>} />
     </Routes>

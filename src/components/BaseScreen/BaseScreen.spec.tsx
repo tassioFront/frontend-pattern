@@ -5,7 +5,7 @@ const children = <p id="children">children</p>;
 describe('<BaseScreen />', () => {
   it('should render heading and children, but there is not description', () => {
     render(
-      <BaseScreen heading="heading" uiCurrentState="isData">
+      <BaseScreen heading="heading" uiCurrentState="hasData">
         {children}
       </BaseScreen>
     );
@@ -23,7 +23,7 @@ describe('<BaseScreen />', () => {
 
   it('should render description', () => {
     render(
-      <BaseScreen heading="heading" description="desc" uiCurrentState="isData">
+      <BaseScreen heading="heading" description="desc" uiCurrentState="hasData">
         {children}
       </BaseScreen>
     );

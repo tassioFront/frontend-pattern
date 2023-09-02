@@ -8,6 +8,7 @@ const Styles = {
     border-radius: 2px;
     display: flex;
     justify-content: center;
+    flex-direction: column;
     margin: auto;
     min-height: 25vh;
     padding: var(--spacing-medium) var(--spacing-base);

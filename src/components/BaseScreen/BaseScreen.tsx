@@ -7,14 +7,15 @@ import Loading from '../Loading/Loading';
 import Error from './components/Error/Error';
 import EmptyState from './components/EmptyState/EmptyState';
 
-interface BaseScreenTypes {
+export interface BaseScreenTypes {
   children: JSX.Element | JSX.Element[];
   className?: string;
   heading: string;
   description?: string | null;
-  uiCurrentState?: 'isLoading' | 'isError' | 'isEmpty' | 'isData';
+  uiCurrentState?: 'isLoading' | 'isError' | 'isEmpty' | 'hasData';
   isEmptyMessage?: string;
   isErrorMessage?: string;
+  onEmpty?: () => void;
 }
 
 goToTop();
@@ -24,16 +25,17 @@ const BaseScreen = memo(function BaseScreen({
   className,
   heading,
   description = null,
-  uiCurrentState = 'isData',
+  uiCurrentState = 'hasData',
   isEmptyMessage = 'There is not data so far. How about add it?',
   isErrorMessage = 'Sorry, something was wrong',
+  onEmpty,
 }: BaseScreenTypes) {
   const id = createIdByString(heading);
   const uiState = {
     isLoading: () => <Loading height="50vh" data-testid="loading" />,
     isError: () => <Error message={isErrorMessage} />,
-    isEmpty: () => <EmptyState message={isEmptyMessage} />,
-    isData: () => children,
+    isEmpty: () => <EmptyState message={isEmptyMessage} onEmpty={onEmpty} />,
+    hasData: () => children,
   };
   return (
     <Styles.Wrapper className={className} data-testid={id + '-wrapper'}>
