@@ -1,6 +1,6 @@
 import Typography from '@/components/Typography/Typography';
 import Styles from './styles';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
 interface ArticleCardTypes {
   title: string;
@@ -20,6 +20,8 @@ const ArticleCard = memo(function ArticleCard({
   title,
   positiveReactionsCount,
 }: ArticleCardTypes) {
+  console.log('Card');
+  const [test, setTest] = useState(0);
   return (
     <Styles.Wrapper
       floating={
@@ -38,6 +40,8 @@ const ArticleCard = memo(function ArticleCard({
           />
           <Typography id={title} tag="h3" label={title}></Typography>
           <p>{description}</p>
+          <button onClick={() => setTest((test) => test + 1)}>test</button>
+          {test}
         </Styles.Content>
       }
       actions={

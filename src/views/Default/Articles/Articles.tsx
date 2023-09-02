@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense, lazy } from 'react';
+import { useEffect, useState, Suspense, lazy, useDeferredValue } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
@@ -28,17 +28,21 @@ const Article = (): JSX.Element => {
   const [articles, setArticles] = useState<IArticle[]>([]);
   const [tags, setTags] = useState<IArticle['tag_list']>([]);
   const [baseState, setBaseState] = useState<
-    'isLoading' | 'isError' | 'isEmpty' | 'isData'
+    'isLoading' | 'isError' | 'isEmpty' | 'hasData'
   >('isLoading');
   const [search, setSearch] = useState<ISearch>({
     byText: '',
     byTags: [],
   });
+
+  const [query2, setQuery2] = useState('');
+  const deferredQuery = useDeferredValue(query2);
   const [modalQuery, setModalQuery] = useSearchParams();
 
   const hasData = () => articles.length > 0;
 
   const handleSearchText = (value: string) => {
+    setQuery2(value);
     setSearch({ ...search, byText: value });
   };
   const handleSearchTags = (value: string) => {
@@ -64,7 +68,7 @@ const Article = (): JSX.Element => {
       const response = await getOwnerDevArticlesByUserName();
       setArticles(response.data);
       modalQuery.get(query.modalOpen) && handleToggleModal();
-      const baseStateValue = response.data.length === 0 ? 'isEmpty' : 'isData';
+      const baseStateValue = response.data.length === 0 ? 'isEmpty' : 'hasData';
       setBaseState(baseStateValue);
     };
     const onResourceError = (): void => {
@@ -80,7 +84,7 @@ const Article = (): JSX.Element => {
     void getUserInfo();
   }, []);
   useEffect(() => {
-    baseState === 'isData' && handleTags();
+    baseState === 'hasData' && handleTags();
   }, [baseState]);
   useEffect(() => {
     if (window.Worker) {
@@ -117,6 +121,7 @@ const Article = (): JSX.Element => {
                 <ArticlesContent
                   articles={articles}
                   search={search}
+                  deferredQuery={deferredQuery}
                   isOpen={!!modalQuery.get(query.modalOpen)}
                 />
               </Suspense>

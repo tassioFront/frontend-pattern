@@ -16,7 +16,7 @@ import Challenges from './components/Challenges/Challenges';
 const About = (): JSX.Element => {
   const [user, setUser] = useState<IUserGithub & IContent>();
   const [baseState, setBaseState] = useState<
-    'isLoading' | 'isError' | 'isEmpty' | 'isData'
+    'isLoading' | 'isError' | 'isEmpty' | 'hasData'
   >('isLoading');
 
   const getUserInfo = async (): Promise<void> => {
@@ -40,7 +40,7 @@ const About = (): JSX.Element => {
       onResourceError,
       onEndCycle: () =>
         storageService.get<IUserGithub>(StorageKeys.GHUserData) &&
-        setBaseState('isData'),
+        setBaseState('hasData'),
     });
   };
   useEffect(() => {

@@ -9,3 +9,5 @@ export const articlesResolvedRouter = `${routesPrefix.public}${routes.articles}`
 
 // private layout
 export const dashboardResolvedRouter = `${routesPrefix.app}/${routes.dashboard}`;
+export const todoResolvedRouter = `${routesPrefix.app}/${routes.todo}`;
+export const todoUsersResolvedRouter = `${routesPrefix.app}/${routes.todoUsers}`;

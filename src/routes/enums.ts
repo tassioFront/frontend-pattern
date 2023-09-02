@@ -6,6 +6,8 @@ export enum routes {
 
   // private layout
   dashboard = 'dashboard',
+  todo = 'to-do',
+  todoUsers = 'to-do/users',
 
   // default layout
   forbidden = 'forbidden',
