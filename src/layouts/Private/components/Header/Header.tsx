@@ -23,7 +23,7 @@ const Header = (): JSX.Element => {
     <Styles.Header>
       <Logo />
       <div>
-        <p>Hi {user.name ?? 'anonymous'}</p>
+        <p>Hi {user?.name ?? 'anonymous'}</p>
         <Styles.Nav>
           {actions.map((action) => {
             return (
