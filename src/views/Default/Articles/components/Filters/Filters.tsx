@@ -46,6 +46,7 @@ const Filters = memo(function Filters({
       <Modal
         isOpen={isOpen}
         onClose={onClose}
+        onSubmit={onClose}
         title="Filter by tag (beta)"
         description="Filter the articles by tags"
       >
