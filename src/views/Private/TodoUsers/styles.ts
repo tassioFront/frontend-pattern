@@ -27,6 +27,7 @@ export default {
   Creation: styled.div`
     display: flex;
     flex-direction: column;
+    margin-bottom: var(--spacing-xgiant);
 
     ${media.greaterThan('mobile')`
       gap: var(--spacing-base);

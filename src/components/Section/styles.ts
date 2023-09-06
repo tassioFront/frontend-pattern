@@ -14,7 +14,7 @@ const Styles = {
       margin: var(--spacing-xxxlarge) 0;
     `}
 
-    &:not(header) > * {
+    & > article, > div, > section {
       margin: ${(props) => String(props.space) + 'px'} 0;
 
       ${media.greaterThan<{ space: number }>('tablet')`

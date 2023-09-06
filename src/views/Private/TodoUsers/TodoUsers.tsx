@@ -11,33 +11,40 @@ import {
   todoUsersStatus,
   selectTodoUserById,
   saveTodoUser,
+  setSelectedUser,
 } from '@/store/todoUsers';
 import Styles from './styles';
+import BtnLink from '@/components/BtnLink/BtnLink';
+import { todoResolvedRouter } from '@/routes/resolvedRoutes';
+import { ITodoUser } from '@/models/Todo';
 
 const TodoUsers = (): JSX.Element => {
   const ref = useRef<HTMLInputElement>(null);
   const [text, setText] = useState('');
-  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedUserId, setSelectedUserId] = useState<ITodoUser['id']>('');
   const [onSaveUiState, setOnSaveUiState] = useState<
     'isLoading' | 'hasError' | 'idle' | 'isEdit'
   >('idle');
   const dispatch = useDispatch<AppDispatch>();
   const users = useSelector(selectAllTodoUsers);
-  const userById = useSelector((state: RootState) =>
-    selectTodoUserById(state, selectedUser)
+  const userByIdToEdit = useSelector((state: RootState) =>
+    selectTodoUserById(state, selectedUserId)
   );
 
   const statusOnLoad = useSelector(todoUsersStatus);
 
+  const handleFirstSelectedUser = (id: string) => {
+    dispatch(setSelectedUser(id));
+  };
   const handleChangeInput = (value: string): void => {
     setText(value);
   };
   const handleEdit = (id: string) => {
-    setSelectedUser(id);
+    setSelectedUserId(id);
   };
   const handleFocus = () => ref?.current?.focus?.();
   const handleReset = () => {
-    setSelectedUser('');
+    setSelectedUserId('');
     setOnSaveUiState('idle');
     setText('');
   };
@@ -51,13 +58,14 @@ const TodoUsers = (): JSX.Element => {
       if (onSaveUiState === 'isEdit') {
         const user = await editTodoUser({
           name: userName,
-          id: userById?.id as string,
+          id: userByIdToEdit?.id as string,
         });
         dispatch(updateTodoUser(user));
       } else {
         const user = await postTodoUser(userName);
         dispatch(saveTodoUser(user));
         isEmpty && handleEdit(user.id);
+        isEmpty && handleFirstSelectedUser(user.id);
       }
     } catch (error) {
       setOnSaveUiState('hasError');
@@ -67,10 +75,10 @@ const TodoUsers = (): JSX.Element => {
   };
 
   const startEditMode =
-    userById !== undefined && text === '' && onSaveUiState !== 'isEdit';
+    userByIdToEdit !== undefined && text === '' && onSaveUiState !== 'isEdit';
   if (startEditMode) {
     setOnSaveUiState('isEdit');
-    setText(userById.name);
+    setText(userByIdToEdit.name);
     handleFocus();
   }
 
@@ -120,6 +128,15 @@ const TodoUsers = (): JSX.Element => {
           >
             Save it!
           </Btn>
+          {users.length > 0 && (
+            <BtnLink
+              style={{ alignSelf: 'center' }}
+              className="secondary"
+              to={todoResolvedRouter}
+            >
+              Create to-dos!
+            </BtnLink>
+          )}
         </Styles.Creation>
         <ul>{renderedUsers}</ul>
       </Styles.Section>
