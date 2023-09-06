@@ -95,7 +95,7 @@ const TodoUsers = (): JSX.Element => {
   return (
     <BaseScreen
       isErrorMessage={'Sorry, something went wrong'}
-      heading="Users"
+      heading="Todo Users (Beta)"
       description="Todo creators"
       uiCurrentState={statusOnLoad}
       onEmpty={async () => await onSave(true)}
