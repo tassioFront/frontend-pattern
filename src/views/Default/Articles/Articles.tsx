@@ -60,25 +60,27 @@ const Article = (): JSX.Element => {
       swArticles.postMessage(articles);
     }
   };
-  const getUserInfo = async (): Promise<void> => {
-    const expectedBehavior = async (): Promise<void> => {
-      const response = await getOwnerDevArticlesByUserName();
-      setArticles(response.data);
-      modalQuery.get(query.modalOpen) && handleToggleModal();
-      const baseStateValue = response.data.length === 0 ? 'isEmpty' : 'hasData';
-      setBaseState(baseStateValue);
-    };
-    const onResourceError = (): void => {
-      setBaseState('isError');
-    };
-    await wrapperTrycatchfy({
-      expectedBehavior,
-      onResourceError,
-    });
-  };
 
   useEffect(() => {
-    void getUserInfo();
+    const getArticles = async (): Promise<void> => {
+      const expectedBehavior = async (): Promise<void> => {
+        const response = await getOwnerDevArticlesByUserName();
+        setArticles(response.data);
+        modalQuery.get(query.modalOpen) && handleToggleModal();
+        const baseStateValue =
+          response.data.length === 0 ? 'isEmpty' : 'hasData';
+        setBaseState(baseStateValue);
+      };
+      const onResourceError = (): void => {
+        setBaseState('isError');
+      };
+      await wrapperTrycatchfy({
+        expectedBehavior,
+        onResourceError,
+      });
+    };
+
+    void getArticles();
   }, []);
   useEffect(() => {
     baseState === 'hasData' && handleTags();
