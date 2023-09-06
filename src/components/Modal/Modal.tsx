@@ -10,9 +10,10 @@ interface ModalProps {
   isOpen: boolean;
   title: string;
   description?: string;
+  onSubmitText?: string;
   onClose: () => void;
   onSubmit: () => void;
-  isLoadingSubmit?: boolean;
+  isSubmitLoading?: boolean;
 }
 
 const Modal = memo(function Modal({
@@ -24,7 +25,8 @@ const Modal = memo(function Modal({
   isOpen,
   onClose,
   onSubmit,
-  isLoadingSubmit = false,
+  onSubmitText = 'See the result!',
+  isSubmitLoading = false,
 }: ModalProps) {
   return (
     <Styles.Wrapper
@@ -43,8 +45,8 @@ const Modal = memo(function Modal({
         </Styles.Header>
         {children}
         <Styles.Actions>
-          <Btn color="primary" onClick={onSubmit} isLoading={isLoadingSubmit}>
-            See the result!
+          <Btn color="primary" onClick={onSubmit} isLoading={isSubmitLoading}>
+            {onSubmitText}
           </Btn>
         </Styles.Actions>
       </Styles.Content>
