@@ -1,19 +1,23 @@
 import { memo } from 'react';
-import { ITodoUser } from '@/models/Todo';
 import BtnLink from '@/components/BtnLink/BtnLink';
 import { todoUsersResolvedRouter } from '@/routes/resolvedRoutes';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAllTodoUsers, setSelectedUser } from '@/store/todoUsers';
+import { AppDispatch } from '@/store';
 
 export interface UserSelectTypes {
-  users: ITodoUser[];
   selectedUserId: string;
-  handleSelectedUser: (id: string) => void;
 }
 
 const UserSelect = memo(function UserSelect({
   selectedUserId,
-  handleSelectedUser,
-  users,
 }: UserSelectTypes) {
+  const dispatch = useDispatch<AppDispatch>();
+  const users = useSelector(selectAllTodoUsers);
+  const handleSelectedUser = (id: string) => {
+    dispatch(setSelectedUser(id));
+  };
+
   return (
     <div
       style={{

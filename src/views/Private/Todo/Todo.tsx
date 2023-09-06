@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, lazy } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
 import { AppDispatch } from '@/store';
@@ -13,29 +13,22 @@ import {
   inprogressIds,
   todoIds,
 } from '@/store/todo';
-import {
-  selectAllTodoUsers,
-  todoSelectedUser,
-  setSelectedUser,
-} from '@/store/todoUsers';
+import { todoSelectedUser } from '@/store/todoUsers';
 
 import Styles from './styles';
-import Board from './components/Board/Board';
-import UserSelect from './components/UserSelect/UserSelect';
+const Board = lazy(async () => await import('./components/Board/Board'));
+const UserSelect = lazy(
+  async () => await import('./components/UserSelect/UserSelect')
+);
 
 const Todo = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
   const todoEntities = useSelector(selectAllTodo);
-  const users = useSelector(selectAllTodoUsers);
   const selectedUser = useSelector(todoSelectedUser) as ITodoUser;
-  const doneIdsList = useSelector(doneIds);
-  const inprogressIdsList = useSelector(inprogressIds);
   const todoIdsList = useSelector(todoIds);
+  const inprogressIdsList = useSelector(inprogressIds);
+  const doneIdsList = useSelector(doneIds);
   const statusOnLoad = useSelector(todoStatus);
-
-  const handleSelectedUser = (id: string) => {
-    dispatch(setSelectedUser(id));
-  };
 
   useEffect(() => {
     const isEmpty = Object.keys(todoEntities).length === 0;
@@ -52,13 +45,9 @@ const Todo = (): JSX.Element => {
       uiCurrentState={statusOnLoad}
     >
       <Styles.Section>
-        {users.length > 0 ? (
+        {selectedUser !== null ? (
           <>
-            <UserSelect
-              users={users}
-              selectedUserId={selectedUser.id}
-              handleSelectedUser={handleSelectedUser}
-            />
+            <UserSelect selectedUserId={selectedUser.id} />
             <Board
               key="todo"
               selectedUser={selectedUser}
@@ -66,19 +55,19 @@ const Todo = (): JSX.Element => {
               order={todoIdsList}
             />
             <Board
-              status="inProgress"
               key="inProgress"
-              selectedUser={selectedUser}
+              status="inProgress"
               heading="in progress"
+              selectedUser={selectedUser}
               todoEntities={todoEntities}
               order={inprogressIdsList}
               color="var(--color-brand-primary-light-1)"
             />
             <Board
-              status="done"
               key="done"
-              selectedUser={selectedUser}
+              status="done"
               heading="done"
+              selectedUser={selectedUser}
               todoEntities={todoEntities}
               order={doneIdsList}
               color="var(--color-contextual-success-light-1)"

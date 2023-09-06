@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from 'react';
+import { lazy, memo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Typography from '@/components/Typography/Typography';
 import { ITodo, ITodoUser } from '@/models/Todo';
@@ -9,7 +9,7 @@ import { removeTodo } from '@/store/todo';
 
 import Styles from './styles';
 import Task from '../Task/Task';
-import TaskModal from '../TaskModal/TaskModal';
+const TaskModal = lazy(async () => await import('../TaskModal/TaskModal'));
 export interface BoardTypes {
   className?: string;
   heading?: string;
@@ -102,13 +102,15 @@ const Board = memo(function Board({
       >
         <i className="fa fa-plus" aria-label="Create a new task"></i>
       </Styles.Btn>
-      <TaskModal
-        selectedUser={selectedUser}
-        isOpen={isOpen}
-        task={task}
-        setTask={setTask}
-        handleReset={handleReset}
-      />
+      {isOpen && (
+        <TaskModal
+          selectedUser={selectedUser}
+          isOpen={isOpen}
+          task={task}
+          setTask={setTask}
+          handleReset={handleReset}
+        />
+      )}
     </Styles.Wrapper>
   );
 });
