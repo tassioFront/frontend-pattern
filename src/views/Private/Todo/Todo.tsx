@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
 import { AppDispatch } from '@/store';
+import { ITodoUser } from '@/models/Todo';
+import BtnLink from '@/components/BtnLink/BtnLink';
+import { todoUsersResolvedRouter } from '@/routes/resolvedRoutes';
 import {
   getAllTodo,
   selectAllTodo,
@@ -15,12 +18,10 @@ import {
   todoSelectedUser,
   setSelectedUser,
 } from '@/store/todoUsers';
+
 import Styles from './styles';
 import Board from './components/Board/Board';
-import { ITodoUser } from '@/models/Todo';
 import UserSelect from './components/UserSelect/UserSelect';
-import BtnLink from '@/components/BtnLink/BtnLink';
-import { todoUsersResolvedRouter } from '@/routes/resolvedRoutes';
 
 const Todo = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();

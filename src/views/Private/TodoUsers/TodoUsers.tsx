@@ -5,6 +5,7 @@ import Btn from '@/components/Btn/Btn';
 import TextInput from '@/components/TextInput/TextInput';
 import { postTodoUser, editTodoUser } from '@/services/todoUsers.service';
 import { AppDispatch, RootState } from '@/store';
+import BtnLink from '@/components/BtnLink/BtnLink';
 import {
   selectAllTodoUsers,
   updateTodoUser,
@@ -13,24 +14,23 @@ import {
   saveTodoUser,
   setSelectedUser,
 } from '@/store/todoUsers';
-import Styles from './styles';
-import BtnLink from '@/components/BtnLink/BtnLink';
 import { todoResolvedRouter } from '@/routes/resolvedRoutes';
 import { ITodoUser } from '@/models/Todo';
+
+import Styles from './styles';
 
 const TodoUsers = (): JSX.Element => {
   const ref = useRef<HTMLInputElement>(null);
   const [text, setText] = useState('');
-  const [selectedUserId, setSelectedUserId] = useState<ITodoUser['id']>('');
   const [onSaveUiState, setOnSaveUiState] = useState<
-    'isLoading' | 'hasError' | 'idle' | 'isEdit'
+    'isLoading' | 'isError' | 'idle' | 'isEdit'
   >('idle');
+  const [selectedUserId, setSelectedUserId] = useState<ITodoUser['id']>('');
   const dispatch = useDispatch<AppDispatch>();
   const users = useSelector(selectAllTodoUsers);
   const userByIdToEdit = useSelector((state: RootState) =>
     selectTodoUserById(state, selectedUserId)
   );
-
   const statusOnLoad = useSelector(todoUsersStatus);
 
   const handleFirstSelectedUser = (id: string) => {
@@ -49,12 +49,12 @@ const TodoUsers = (): JSX.Element => {
     setText('');
   };
 
-  const onSave = async (isEmpty: boolean = false) => {
+  const onSave = async (isFirstUser: boolean = false) => {
     const isInvalid = text === '' && statusOnLoad !== 'isEmpty';
     if (isInvalid) return;
     try {
       setOnSaveUiState('isLoading');
-      const userName = isEmpty ? 'Chuck Norris' : text;
+      const userName = isFirstUser ? 'Chuck Norris' : text;
       if (onSaveUiState === 'isEdit') {
         const user = await editTodoUser({
           name: userName,
@@ -64,13 +64,15 @@ const TodoUsers = (): JSX.Element => {
       } else {
         const user = await postTodoUser(userName);
         dispatch(saveTodoUser(user));
-        isEmpty && handleEdit(user.id);
-        isEmpty && handleFirstSelectedUser(user.id);
+        if (isFirstUser) {
+          handleEdit(user.id);
+          handleFirstSelectedUser(user.id);
+        }
       }
     } catch (error) {
-      setOnSaveUiState('hasError');
+      setOnSaveUiState('isError');
     } finally {
-      !isEmpty && handleReset();
+      !isFirstUser && handleReset();
     }
   };
 
@@ -112,7 +114,7 @@ const TodoUsers = (): JSX.Element => {
         <Styles.Creation>
           <TextInput
             error={
-              onSaveUiState === 'hasError' ? 'Sorry, something went wrong' : ''
+              onSaveUiState === 'isError' ? 'Sorry, something went wrong' : ''
             }
             value={text}
             ref={ref}

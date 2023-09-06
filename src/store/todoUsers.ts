@@ -3,12 +3,13 @@ import {
   createEntityAdapter,
   createAsyncThunk,
 } from '@reduxjs/toolkit';
-import { RootState } from '.';
 import { BaseScreenTypes } from '@/components/BaseScreen/BaseScreen';
 import { ITodoUser } from '@/models/Todo';
 import { getTodoUsers } from '@/services/todoUsers.service';
 import { storageService } from '@/services/localStorage/localStorage.service';
 import { StorageKeys } from '@/enums/storage-keys';
+
+import { RootState } from '.';
 
 const currentUser = storageService.get<ITodoUser | null>(
   StorageKeys.TodoSelectedUser

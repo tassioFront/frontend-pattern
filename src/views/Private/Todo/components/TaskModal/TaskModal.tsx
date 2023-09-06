@@ -12,7 +12,6 @@ export interface TaskModalTypes {
   isOpen: boolean;
   selectedUser: ITodoUser;
   task: ITodo;
-  setIsOpen: (value: boolean) => void;
   setTask: (task: ITodo) => void;
   handleReset: () => void;
 }
@@ -25,9 +24,8 @@ const TaskModal = memo(function TaskModal({
   handleReset,
 }: TaskModalTypes) {
   const [onSubmitUiState, setOnSubmitUiState] = useState<
-    'isLoading' | 'hasError' | 'idle' | 'isEdit'
+    'isLoading' | 'isError' | 'idle' | 'isEdit'
   >('idle');
-
   const dispatch = useDispatch<AppDispatch>();
   const users = useSelector(selectAllTodoUsers);
 
@@ -60,7 +58,7 @@ const TaskModal = memo(function TaskModal({
       }
     } catch (error) {
       hasSucceed = false;
-      setOnSubmitUiState('hasError');
+      setOnSubmitUiState('isError');
     } finally {
       hasSucceed && handleResetModal();
     }

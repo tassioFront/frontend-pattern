@@ -19,9 +19,9 @@ const Task = memo(function Task({
   className,
   color,
   item,
+  isDeleteLoading,
   onClick,
   handleDelete,
-  isDeleteLoading,
 }: TaskTypes) {
   const assigned = useSelector((state: RootState) =>
     selectTodoUserById(state, item.assignedId)

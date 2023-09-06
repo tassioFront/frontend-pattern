@@ -1,15 +1,15 @@
 import { memo, useRef, useState } from 'react';
-import Styles from './styles';
+import { useDispatch } from 'react-redux';
 import Typography from '@/components/Typography/Typography';
 import { ITodo, ITodoUser } from '@/models/Todo';
-import Task from '../Task/Task';
-import TaskModal from '../TaskModal/TaskModal';
 import { Dictionary } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store';
 import { deleteTodo } from '@/services/todo.service';
 import { removeTodo } from '@/store/todo';
 
+import Styles from './styles';
+import Task from '../Task/Task';
+import TaskModal from '../TaskModal/TaskModal';
 export interface BoardTypes {
   className?: string;
   heading?: string;
@@ -41,7 +41,7 @@ const Board = memo(function Board({
     ...initState,
   });
   const [onDeleteUiState, setOnDeleteUiState] = useState<
-    'isLoading' | 'hasError' | 'idle'
+    'isLoading' | 'isError' | 'idle'
   >('idle');
   const taskToDeleteId = useRef('');
   const dispatch = useDispatch<AppDispatch>();
@@ -57,7 +57,7 @@ const Board = memo(function Board({
       await deleteTodo(todoToDelete.id);
       dispatch(removeTodo(todoToDelete));
     } catch (error) {
-      setOnDeleteUiState('hasError');
+      setOnDeleteUiState('isError');
     } finally {
       setOnDeleteUiState('idle');
     }
@@ -105,7 +105,6 @@ const Board = memo(function Board({
       <TaskModal
         selectedUser={selectedUser}
         isOpen={isOpen}
-        setIsOpen={setIsOpen}
         task={task}
         setTask={setTask}
         handleReset={handleReset}
