@@ -7,6 +7,8 @@ import { RootState } from '.';
 import { BaseScreenTypes } from '@/components/BaseScreen/BaseScreen';
 import { ITodo } from '@/models/Todo';
 import { getTodo } from '@/services/todo.service';
+import { calcTodoProgress } from '@/helpers/calcTodoProgress/calcTodoProgress';
+import { startTransition } from 'react';
 
 const todoAdapter = createEntityAdapter<ITodo>();
 
@@ -15,6 +17,16 @@ export const getAllTodo = createAsyncThunk('todo/all', async () => {
   return response;
 });
 
+const editProgressBar = (state: RootState['todo']) => {
+  startTransition(() => {
+    state.progressBar = calcTodoProgress({
+      total: state.ids.length,
+      done: state.doneIds.length,
+      inProgress: state.inProgressIds.length,
+    });
+  });
+};
+
 const todoSlice = createSlice({
   name: 'todo',
   initialState: todoAdapter.getInitialState<{
@@ -22,11 +34,13 @@ const todoSlice = createSlice({
     doneIds: Array<ITodo['id']>;
     todoIds: Array<ITodo['id']>;
     inProgressIds: Array<ITodo['id']>;
+    progressBar: number;
   }>({
     status: 'isLoading',
     doneIds: [],
     todoIds: [],
     inProgressIds: [],
+    progressBar: 0,
   }),
   reducers: {
     saveTodo: (state, action: { payload: ITodo; type: string }) => {
@@ -36,6 +50,7 @@ const todoSlice = createSlice({
       todoAdapter.addOne(state, action);
       const statusId = action.payload.status + 'Ids';
       state[statusId].unshift(action.payload.id);
+      editProgressBar(state);
     },
     updateTodo(state, action: { payload: ITodo; type: string }) {
       const { id, title, description, authorId, assignedId, status } =
@@ -49,6 +64,7 @@ const todoSlice = createSlice({
           (todo: ITodo['id']) => todo !== id
         );
         state[statusId].unshift(id);
+        editProgressBar(state);
       }
       todoAdapter.updateOne(state, {
         id,
@@ -62,6 +78,7 @@ const todoSlice = createSlice({
         (todo: ITodo['id']) => todo !== id
       );
       todoAdapter.removeOne(state, id);
+      editProgressBar(state);
     },
   },
   extraReducers: (builder) => {
@@ -77,6 +94,7 @@ const todoSlice = createSlice({
         }
         state.status = 'hasData';
       }
+      editProgressBar(state);
     });
     builder.addCase(getAllTodo.rejected, (state) => {
       if (state.status === 'isLoading') {
@@ -89,6 +107,7 @@ const todoSlice = createSlice({
 export const todoStatus = (state: RootState) => state.todo.status;
 export const todoIds = (state: RootState) => state.todo.todoIds;
 export const inprogressIds = (state: RootState) => state.todo.inProgressIds;
+export const progressBar = (state: RootState) => state.todo.progressBar;
 export const selectAllTodo = (state: RootState) => state.todo.entities;
 export const doneIds = (state: RootState) => state.todo.doneIds;
 

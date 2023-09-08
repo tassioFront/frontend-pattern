@@ -12,10 +12,12 @@ import {
   doneIds,
   inprogressIds,
   todoIds,
+  progressBar,
 } from '@/store/todo';
 import { todoSelectedUser } from '@/store/todoUsers';
 
 import Styles from './styles';
+import ProgressBar from '@/components/ProgressBar/ProgressBar';
 const Board = lazy(async () => await import('./components/Board/Board'));
 const UserSelect = lazy(
   async () => await import('./components/UserSelect/UserSelect')
@@ -28,6 +30,7 @@ const Todo = (): JSX.Element => {
   const todoIdsList = useSelector(todoIds);
   const inprogressIdsList = useSelector(inprogressIds);
   const doneIdsList = useSelector(doneIds);
+  const progress = useSelector(progressBar);
   const statusOnLoad = useSelector(todoStatus);
 
   useEffect(() => {
@@ -44,6 +47,7 @@ const Todo = (): JSX.Element => {
       isErrorMessage={'Sorry, something went wrong'}
       uiCurrentState={statusOnLoad}
     >
+      <ProgressBar progress={String(progress)} />
       <Styles.Section>
         {selectedUser !== null ? (
           <>

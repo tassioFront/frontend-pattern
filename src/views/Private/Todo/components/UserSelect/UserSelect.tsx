@@ -28,7 +28,7 @@ const UserSelect = memo(function UserSelect({
     >
       <label>
         {/* @todo[wrappers]: create custom components later */}
-        Select a user!
+        Select the task creator!
         <select
           defaultValue={selectedUserId}
           onChange={(e) => handleSelectedUser(e.target.value)}
