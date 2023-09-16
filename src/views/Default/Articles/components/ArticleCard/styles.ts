@@ -7,7 +7,6 @@ const Styles = {
   Wrapper: styled(Card)`
     width: 100%;
     max-width: 300px;
-    justify-self: center;
 
     ${media.greaterThan('tablet')`
       min-height: 500px;
