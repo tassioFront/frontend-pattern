@@ -74,10 +74,9 @@ const Styles = {
   `,
   OverLay: styled.div`
     background-color: transparent;
-    transition: transform 3s ease-in-out;
-    will-change: background-color position width height z-index;
 
     &.isOpen {
+      transition-duration: 0.3s;
       position: absolute;
       width: 100%;
       height: 100%;
