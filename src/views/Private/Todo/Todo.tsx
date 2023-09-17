@@ -23,6 +23,8 @@ const UserSelect = lazy(
   async () => await import('./components/UserSelect/UserSelect')
 );
 
+// Nice drag and drop example
+// https://www.youtube.com/watch?v=CYKDtVZr_Jw
 const Todo = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
   const todoEntities = useSelector(selectAllTodo);
@@ -47,7 +49,7 @@ const Todo = (): JSX.Element => {
       isErrorMessage={'Sorry, something went wrong'}
       uiCurrentState={statusOnLoad}
     >
-      <ProgressBar progress={String(progress)} />
+      <ProgressBar progress={progress} />
       <Styles.Section>
         {selectedUser !== null ? (
           <>

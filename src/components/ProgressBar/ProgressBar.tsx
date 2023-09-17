@@ -2,7 +2,7 @@ import { memo } from 'react';
 import Styles from './styles';
 
 interface ProgressBarTypes {
-  progress: string;
+  progress: number;
 }
 
 const ProgressBar = memo(function ProgressBar({

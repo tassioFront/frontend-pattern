@@ -7,5 +7,8 @@ export const calcTodoProgress = ({
   done: number;
   inProgress: number;
 }) => {
-  return Math.round(((done / total + inProgress / total / 2) / 1) * 100);
+  const result = Math.round(
+    ((done / total + inProgress / total / 2) / 1) * 100
+  );
+  return Number.isNaN(result) ? 0 : result;
 };

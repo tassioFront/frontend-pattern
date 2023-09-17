@@ -20,11 +20,12 @@ const Styles = {
     opacity: 0.2;
     width: 100%;
   `,
-  Content: styled.span<{ progress: string }>`
+  Content: styled.span<{ progress: number }>`
     background-color: var(--color-contextual-success-light-1);
-    width: ${(props) => props.progress}%;
-    transition: width 0.75s ease-out;
-    will-change: width;
+    width: 100%;
+    transform: translate(${(props) => props.progress - 100}%, 0);
+    transition: transform 0.5s ease-out;
+    will-change: transform;
   `,
 };
 
