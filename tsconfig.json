@@ -30,5 +30,5 @@
     "types": ["vitest/globals", "vite/client"]
   },
   "include": ["src", "tests","**/*.config.js", "**/*.config.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx"]
 }

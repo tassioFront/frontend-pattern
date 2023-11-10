@@ -1,8 +1,7 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, lazy } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
 import Btn from '@/components/Btn/Btn';
-import TextInput from '@/components/TextInput/TextInput';
 import { postTodoUser, editTodoUser } from '@/services/todoUsers.service';
 import { AppDispatch, RootState } from '@/store';
 import BtnLink from '@/components/BtnLink/BtnLink';
@@ -18,6 +17,10 @@ import { todoResolvedRouter } from '@/routes/resolvedRoutes';
 import { ITodoUser } from '@/models/Todo';
 
 import Styles from './styles';
+
+const TextInput = lazy(
+  async () => await import('@/components/TextInput/TextInput')
+);
 
 const TodoUsers = (): JSX.Element => {
   const ref = useRef<HTMLInputElement>(null);

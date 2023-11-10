@@ -1,12 +1,15 @@
-import { memo, useState } from 'react';
+import { memo, useState, lazy } from 'react';
 import { ITodo, ITodoUser } from '@/models/Todo';
 import Modal from '@/components/Modal/Modal';
-import TextInput from '@/components/TextInput/TextInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAllTodoUsers } from '@/store/todoUsers';
 import { postTodo, putTodo } from '@/services/todo.service';
 import { saveTodo, updateTodo } from '@/store/todo';
 import { AppDispatch } from '@/store';
+
+const TextInput = lazy(
+  async () => await import('@/components/TextInput/TextInput')
+);
 
 export interface TaskModalTypes {
   isOpen: boolean;

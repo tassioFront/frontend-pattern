@@ -1,11 +1,14 @@
-import { memo } from 'react';
+import { memo, lazy } from 'react';
 import Btn from '@/components/Btn/Btn';
 import Modal from '@/components/Modal/Modal';
 import AssociatedChips from '@/components/AssociatedChips/AssociatedChips';
 import { IArticle } from '@/models/Article';
-import TextInput from '@/components/TextInput/TextInput';
 import Styles from './styles';
 import { ISearch } from '../../types';
+
+const TextInput = lazy(
+  async () => await import('@/components/TextInput/TextInput')
+);
 
 interface FiltersTypes {
   tags: IArticle['tag_list'];
