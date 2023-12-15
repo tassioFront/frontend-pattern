@@ -8,7 +8,6 @@ interface HandleMenu {
 
 const Styles = {
   Burger: styled.div<HandleMenu>`
-    cursor: pointer;
     display: flex;
     border: none;
     left: var(--spacing-base);
@@ -40,8 +39,6 @@ const Styles = {
 
       :nth-child(2) {
         opacity: ${({ open }) => (open ? '0' : '1')};
-        transform: ${({ open }) =>
-          open ? 'translateX(20px)' : 'translateX(0)'};
       }
 
       :nth-child(3) {

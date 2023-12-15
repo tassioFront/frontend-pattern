@@ -26,11 +26,13 @@ export default {
     right: 0;
   `,
   Avatar: styled.span`
-    padding: var(--spacing-xxsmall) var(--spacing-xsmall);
+    height: 24px;
+    width: 24px;
     border: 1px solid var(--color-brand-secondary-regular);
-    border-radius: calc(2 * var(--spacing-xsmall));
+    border-radius: 50%;
     background-color: var(--color-brand-secondary-regular);
     color: white;
     display: block;
+    text-align: center;
   `,
 };
