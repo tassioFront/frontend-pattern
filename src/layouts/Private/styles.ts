@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import screenSizes from '@/styles/screenSizes';
-import Header from '@/components/Header/Header';
 import { media } from '@/styles/media';
+import { lazy } from 'react';
+const Header = lazy(async () => await import('@/components/Header/Header'));
 
 const Styles = {
   Wrapper: styled.div`

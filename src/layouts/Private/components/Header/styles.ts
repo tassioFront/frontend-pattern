@@ -1,6 +1,7 @@
-import Header from '@/components/Header/Header';
+import { lazy } from 'react';
 import { media } from '@/styles/media';
 import styled from 'styled-components';
+const Header = lazy(async () => await import('@/components/Header/Header'));
 
 const Styles = {
   Header: styled(Header)`
