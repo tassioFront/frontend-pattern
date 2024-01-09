@@ -39,6 +39,17 @@ const Styles = {
           background-color: var(--color-brand-primary-light-2);
         }
       }
+
+      &.shape--text {
+        font-weight: var(--font-weight-medium);
+        color: var(--color-brand-primary-regular);
+        background-color: transparent;
+
+        :hover {
+          color: var(--color-brand-primary-dark-1);
+          background-color: var(--color-brand-primary-light-1);
+        }
+      }
     }
 
     &.secondary {
