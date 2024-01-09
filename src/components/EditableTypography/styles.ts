@@ -1,17 +1,18 @@
 import styled from 'styled-components';
-import Typography from '../Typography/Typography';
 import TextInput from '../TextInput/TextInput';
 
 const Styles = {
   TextInput: styled(TextInput)`
     width: fit-content;
   `,
-  Typography: styled(Typography)`
+  Typography: styled.span`
+    display: flex;
+    align-items: center;
     will-change: opacity;
 
     :hover {
       cursor: text;
-      opacity: 0.75;
+      opacity: 0.7;
       transition-duration: var(--transition-duration);
     }
   `,

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { TypographyTypes } from '../Typography/Typography';
+import Typography, { TypographyTypes } from '../Typography/Typography';
 import Styles from './styles';
 import { useClickOutside } from '@/hooks/useClickOutside/useClickOutside';
+import { editableTypo } from '@/enums/dataCy';
 
 interface EditableTypographyTypes extends TypographyTypes {
   updateText: (value: string) => void;
@@ -14,7 +15,7 @@ const EditableTypography = ({
   className,
   updateText,
 }: EditableTypographyTypes): JSX.Element => {
-  const [isEdit, setEdit] = useState(false);
+  const [isEdit, setEdit] = useState(label === '');
   const ref = useRef<HTMLInputElement>(null);
   const [newText, setNewText] = useState(label);
   useClickOutside(ref, () => {
@@ -22,6 +23,7 @@ const EditableTypography = ({
   });
   const onKeyDown = (event: unknown) => {
     const key = (event as React.KeyboardEvent<HTMLImageElement>).key;
+    if (!newText) return;
     const isEsc = key === 'Escape';
     const isEnter = key === 'Enter';
     if (isEsc) {
@@ -47,6 +49,7 @@ const EditableTypography = ({
       {isEdit ? (
         <Styles.TextInput
           data-testid="editable__input"
+          data-cy={editableTypo.editableInput}
           label=""
           ref={ref}
           value={newText}
@@ -55,14 +58,14 @@ const EditableTypography = ({
           title="Press Esc or click outside to cancel"
         />
       ) : (
-        <span onClick={() => setEdit(true)} title="Click to edit">
-          <Styles.Typography
-            tag={tag}
-            id={id}
-            label={label}
-            className={className}
+        <Styles.Typography onClick={() => setEdit(true)} title="Click to edit">
+          <Typography tag={tag} id={id} label={label} className={className} />
+          <i
+            title="edit text"
+            className="fa fa-pencil"
+            aria-label="edit text"
           />
-        </span>
+        </Styles.Typography>
       )}
     </>
   );
