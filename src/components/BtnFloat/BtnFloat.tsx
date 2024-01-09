@@ -4,10 +4,13 @@ import { BtnTypes } from '../Btn/Btn';
 import { goToTop } from '@/helpers/goTo';
 
 import Styles from './styles';
+import { btn } from '@/enums/dataCy';
 
 interface BtnFloatTypes extends Omit<BtnTypes, 'onClick'> {
   showNumber?: number;
   dataTestid?: string;
+  label?: string;
+  onClick?: () => void;
 }
 const BtnFloat = (props: BtnFloatTypes): JSX.Element => {
   const [isShowBtn, setIsShowBtn] = useState(false);
@@ -17,10 +20,11 @@ const BtnFloat = (props: BtnFloatTypes): JSX.Element => {
   return (
     <Styles.Btn
       className={isShowBtn ? 'show' : ''}
-      onClick={goToTop}
+      onClick={props.onClick ?? goToTop}
       data-testid={props.dataTestid}
+      data-cy={btn.float}
     >
-      Go to top
+      {props.label ?? 'Go to top'}
     </Styles.Btn>
   );
 };
