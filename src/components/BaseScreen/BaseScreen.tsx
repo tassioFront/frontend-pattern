@@ -12,7 +12,7 @@ export interface BaseScreenTypes {
   className?: string;
   heading: string;
   description?: string | null;
-  uiCurrentState?: 'isLoading' | 'isError' | 'isEmpty' | 'hasData';
+  uiCurrentState?: 'isLoading' | 'isError' | 'isEmpty' | 'hasData' | 'isIdle';
   isEmptyMessage?: string;
   isErrorMessage?: string;
   onEmpty?: () => void;
@@ -36,6 +36,7 @@ const BaseScreen = memo(function BaseScreen({
     isError: () => <Error message={isErrorMessage} />,
     isEmpty: () => <EmptyState message={isEmptyMessage} onEmpty={onEmpty} />,
     hasData: () => children,
+    isIdle: () => null,
   };
   return (
     <Styles.Wrapper className={className} data-testid={id + '-wrapper'}>

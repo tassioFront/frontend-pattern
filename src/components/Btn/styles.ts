@@ -85,6 +85,19 @@ const Styles = {
       }
     }
 
+    &.danger {
+      &.shape--text {
+        font-weight: var(--font-weight-medium);
+        color: var(--color-contextual-error-light-1);
+        background-color: transparent;
+
+        :hover {
+          color: var(--color-contextual-error-dark-1);
+          background-color: var(--color-contextual-error-light-1);
+        }
+      }
+    }
+
     :disabled {
       opacity: 0.5;
       cursor: not-allowed;

@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import Styles from './styles';
 import Btn from '@/components/Btn/Btn';
+import { baseScreen } from '@/enums/dataCy';
 
 interface EmptyStateTypes {
   message: string;
@@ -13,8 +14,12 @@ const EmptyState = memo(function EmptyState({
 }: EmptyStateTypes) {
   return (
     <Styles.EmptyState>
-      <p>{message}</p>
-      {onEmpty && <Btn onClick={onEmpty}>Create</Btn>}
+      <p data-cy={baseScreen.isEmptyMessage}>{message}</p>
+      {onEmpty && (
+        <Btn data-cy={baseScreen.onEmpty} onClick={onEmpty}>
+          Create
+        </Btn>
+      )}
     </Styles.EmptyState>
   );
 });

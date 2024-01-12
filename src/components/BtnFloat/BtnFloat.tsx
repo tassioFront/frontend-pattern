@@ -22,6 +22,7 @@ const BtnFloat = (props: BtnFloatTypes): JSX.Element => {
       className={isShowBtn ? 'show' : ''}
       onClick={props.onClick ?? goToTop}
       data-testid={props.dataTestid}
+      isLoading={props.isLoading}
       data-cy={btn.float}
     >
       {props.label ?? 'Go to top'}
