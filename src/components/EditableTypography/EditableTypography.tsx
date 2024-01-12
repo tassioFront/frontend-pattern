@@ -19,6 +19,7 @@ const EditableTypography = ({
   const ref = useRef<HTMLInputElement>(null);
   const [newText, setNewText] = useState(label);
   useClickOutside(ref, () => {
+    if (!newText) return;
     setEdit(false);
   });
   const onKeyDown = (event: unknown) => {
@@ -52,18 +53,18 @@ const EditableTypography = ({
           data-cy={editableTypo.editableInput}
           label=""
           ref={ref}
-          value={newText}
+          value={newText || 'Edit me'}
           onKeyDown={onKeyDown}
           onChange={(event) => setNewText(event.target.value)}
           title="Press Esc or click outside to cancel"
         />
       ) : (
         <Styles.Typography onClick={() => setEdit(true)} title="Click to edit">
-          <Typography tag={tag} id={id} label={label} className={className} />
-          <i
-            title="edit text"
-            className="fa fa-pencil"
-            aria-label="edit text"
+          <Typography
+            tag={tag}
+            id={id}
+            label={label || 'editing...'}
+            className={className}
           />
         </Styles.Typography>
       )}

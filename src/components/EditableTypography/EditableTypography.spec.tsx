@@ -11,6 +11,24 @@ import { vi } from 'vitest';
 import EditableTypography from './EditableTypography';
 
 describe('<EditableTypography />', () => {
+  it('Should render validate empty state mode, showing fallback', () => {
+    const updateTextMock = vi.fn();
+    render(
+      <EditableTypography
+        label=""
+        id="testId"
+        tag="h1"
+        className="testClass"
+        updateText={updateTextMock}
+      />
+    );
+
+    expect(screen.queryByTestId('editable__input')).toBeInTheDocument();
+    expect(
+      (screen.queryByTestId('editable__input') as HTMLInputElement)?.value
+    ).toBe('Edit me');
+  });
+
   it('Should render label as it is not edit mode', () => {
     const updateTextMock = vi.fn();
     render(
