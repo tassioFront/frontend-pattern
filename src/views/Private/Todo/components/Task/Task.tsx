@@ -5,10 +5,10 @@ import Btn from '@/components/Btn/Btn';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { selectTodoUserById } from '@/store/todoUsers';
+import { todoCy } from '@/enums/dataCy';
 
 export interface TaskTypes {
   className?: string;
-  color: string;
   item: ITodo;
   onClick: () => void;
   handleDelete: () => void;
@@ -17,7 +17,6 @@ export interface TaskTypes {
 
 const Task = memo(function Task({
   className,
-  color,
   item,
   isDeleteLoading,
   onClick,
@@ -28,7 +27,11 @@ const Task = memo(function Task({
   );
 
   return (
-    <Styles.Wrapper className={className} color={color} onClick={onClick}>
+    <Styles.Wrapper
+      className={className}
+      onClick={onClick}
+      data-cy={todoCy.task + item.status}
+    >
       <Styles.Header onClick={(e) => e.stopPropagation()}>
         <strong>{item.title}</strong>
         <Btn
@@ -36,18 +39,25 @@ const Task = memo(function Task({
           shape="text"
           onClick={handleDelete}
           isLoading={isDeleteLoading}
+          data-cy={todoCy.taskBtn + item.status}
         >
-          <i className={`fa fa-times-circle`} aria-label="close modal"></i>
+          <i
+            title="Delete task"
+            className={`fa fa-times-circle`}
+            aria-label="Delete taskl"
+          ></i>
         </Btn>
       </Styles.Header>
       <hr />
-      <Styles.Content>
+      <Styles.Content title="Click to edit the task">
         {item.description.length > 78
           ? item.description.slice(0, 78) + '...'
           : item.description}
       </Styles.Content>
       <Styles.Footer>
-        <Styles.Avatar>{assigned?.name.slice(0, 1)}</Styles.Avatar>
+        <Styles.Avatar title={assigned?.name}>
+          {assigned?.name.slice(0, 1)}
+        </Styles.Avatar>
       </Styles.Footer>
     </Styles.Wrapper>
   );

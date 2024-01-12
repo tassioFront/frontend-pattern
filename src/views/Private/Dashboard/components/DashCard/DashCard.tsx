@@ -9,6 +9,7 @@ interface DashCardTypes {
   imageUrl: string;
   alt: string;
   description: string;
+  dataCy: string;
 }
 const DashCard = memo(function DashCard({
   alt,
@@ -16,6 +17,7 @@ const DashCard = memo(function DashCard({
   imageUrl,
   description,
   title,
+  dataCy,
 }: DashCardTypes) {
   return (
     <Styles.Wrapper
@@ -28,6 +30,7 @@ const DashCard = memo(function DashCard({
       }
       actions={
         <Styles.BtnLink
+          data-cy={dataCy}
           className="primary"
           to={url}
           aria-label={'go to feature ' + title}

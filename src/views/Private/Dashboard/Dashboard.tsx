@@ -2,9 +2,11 @@ import BaseScreen from '@/components/BaseScreen/BaseScreen';
 import { todoResolvedRouter } from '@/routes/resolvedRoutes';
 import DashCard from './components/DashCard/DashCard';
 import Styles from './styles';
+import { todoCy } from '@/enums/dataCy';
 
 const actions = [
   {
+    dataCy: todoCy.goToTodo,
     title: 'Todo list',
     url: todoResolvedRouter,
     description: 'That to-do list you love ;)',
@@ -29,6 +31,7 @@ const Dashboard = (): JSX.Element => {
             imageUrl={action.imageUrl}
             alt={action.alt}
             title={action.title}
+            dataCy={action.dataCy}
           />
         ))}
       </Styles.DashCardWrapper>
