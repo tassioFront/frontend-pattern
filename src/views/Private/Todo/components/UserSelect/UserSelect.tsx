@@ -4,6 +4,7 @@ import { todoUsersResolvedRouter } from '@/routes/resolvedRoutes';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAllTodoUsers, setSelectedUser } from '@/store/todoUsers';
 import { AppDispatch } from '@/store';
+import SelectInput from '@/components/SelectInput/SelectInput';
 
 export interface UserSelectTypes {
   selectedUserId: string;
@@ -26,20 +27,13 @@ const UserSelect = memo(function UserSelect({
         alignItems: 'flex-start',
       }}
     >
-      <label>
-        {/* @todo[wrappers]: create custom components later */}
-        Select the task creator!
-        <select
-          defaultValue={selectedUserId}
-          onChange={(e) => handleSelectedUser(e.target.value)}
-        >
-          {users.map((opt) => (
-            <option key={opt.id} value={opt.id}>
-              {opt.name}
-            </option>
-          ))}
-        </select>
-      </label>
+      <SelectInput
+        label="Select the task creator!"
+        onChange={(e) => handleSelectedUser(e.target.value)}
+        options={users.map((user) => {
+          return { id: user.id, label: user.name };
+        })}
+      />
       <BtnLink className="secondary" to={todoUsersResolvedRouter}>
         Edit users
       </BtnLink>

@@ -17,6 +17,7 @@ import { todoResolvedRouter } from '@/routes/resolvedRoutes';
 import { ITodoUser } from '@/models/Todo';
 
 import Styles from './styles';
+import { todoCy } from '@/enums/dataCy';
 
 const TextInput = lazy(
   async () => await import('@/components/TextInput/TextInput')
@@ -130,6 +131,7 @@ const TodoUsers = (): JSX.Element => {
             isLoading={onSaveUiState === 'isLoading'}
             onClick={async () => await onSave()}
             disabled={text === ''}
+            data-cy={todoCy.createUser}
           >
             Save it!
           </Btn>
@@ -138,6 +140,7 @@ const TodoUsers = (): JSX.Element => {
               style={{ alignSelf: 'center' }}
               className="secondary"
               to={todoResolvedRouter}
+              data-cy={todoCy.goToTodo}
             >
               Create to-dos!
             </BtnLink>
