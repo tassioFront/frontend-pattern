@@ -2,33 +2,33 @@ import Styles from './styles';
 import uniqid from 'uniqid';
 import { forwardRef } from 'react';
 
-interface TextInputTypes extends React.InputHTMLAttributes<HTMLInputElement> {
+interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   error?: string;
 }
-const TextInput = forwardRef(function TextInput(
+
+const TextareaInput = forwardRef(function Textarea(
   {
     id = '',
     label,
     error = '',
-    type = 'text',
     className,
     placeholder,
     value,
     required = false,
     onChange,
     ...rest
-  }: TextInputTypes,
-  ref: React.ForwardedRef<HTMLInputElement>
+  }: TextareaProps,
+  ref: React.ForwardedRef<HTMLTextAreaElement>
 ) {
-  const selfId = id ?? uniqid(`input__`);
+  const selfId = id || uniqid(`textarea__`);
 
   return (
     <Styles.Wrapper className={className}>
       <Styles.Label htmlFor={selfId}>{label}</Styles.Label>
-      <Styles.Input
+      <Styles.Textarea
         id={selfId}
-        type={type}
         value={value}
         onChange={onChange}
         required={required}
@@ -41,4 +41,4 @@ const TextInput = forwardRef(function TextInput(
   );
 });
 
-export default TextInput;
+export default TextareaInput;
