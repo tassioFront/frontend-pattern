@@ -29,13 +29,13 @@ const Modal = memo(function Modal({
   isSubmitLoading = false,
 }: ModalProps) {
   return (
-    <Styles.Wrapper
+    <Styles.Overflow
       isOpen={isOpen}
       onClick={onClose}
       style={style}
       className={className}
     >
-      <Styles.Content onClick={(e) => e.stopPropagation()}>
+      <Styles.Wrapper>
         <Styles.Header>
           <Typography id="modal" tag="h1" label={title} />
           <Btn className="secondary" shape="text" onClick={onClose}>
@@ -43,14 +43,16 @@ const Modal = memo(function Modal({
           </Btn>
           {description && <p>{description}</p>}
         </Styles.Header>
-        {children}
+        <Styles.Content onClick={(e) => e.stopPropagation()}>
+          {children}
+        </Styles.Content>
         <Styles.Actions>
           <Btn color="primary" onClick={onSubmit} isLoading={isSubmitLoading}>
             {onSubmitText}
           </Btn>
         </Styles.Actions>
-      </Styles.Content>
-    </Styles.Wrapper>
+      </Styles.Wrapper>
+    </Styles.Overflow>
   );
 });
 

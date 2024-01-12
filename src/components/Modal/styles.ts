@@ -2,7 +2,7 @@ import { media } from '@/styles/media';
 import styled from 'styled-components';
 
 const Styles = {
-  Wrapper: styled.div<{ isOpen: boolean }>`
+  Overflow: styled.div<{ isOpen: boolean }>`
     background-color: rgba(0, 0, 0, 0.75);
     position: fixed;
     top: 0;
@@ -13,6 +13,10 @@ const Styles = {
     transform: ${({ isOpen }) =>
       isOpen ? 'translateY(0)' : 'translateY(-100%); visibility: hidden;'};
     z-index: var(--zindex-5);
+  `,
+  Content: styled.div`
+    overflow-y: auto;
+    padding: var(--spacing-small);
   `,
   Header: styled.div`
     display: flex;
@@ -30,19 +34,20 @@ const Styles = {
     `}
     }
   `,
-  Content: styled.article`
+  Wrapper: styled.article`
     background-color: var(--color-neutral-regular);
     display: flex;
     flex-direction: column;
     padding: var(--spacing-large) var(--spacing-base);
     height: 100%;
     position: absolute;
+    overflow-y: auto;
     width: 100%;
 
     ${media.greaterThan('tablet')`
       border-radius: var(--border-radius);
       left: 50%;
-      height: 70%;
+      height: 80%;
       top: 50%;
       transform: translate(-50%, -50%);
       width: 70%;
