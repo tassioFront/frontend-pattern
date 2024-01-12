@@ -21,7 +21,7 @@ export interface BoardTypes {
   todoEntities: ITodoBoard['todoItems'];
   selectedUser: ITodoUser;
   updateBoards: any;
-  statusOptions: Array<Omit<ITodoBoard, 'todoItems'>>;
+  statusOptions: any;
 }
 
 const Board = memo(function Board({

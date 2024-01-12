@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:ci": "vitest --watch=false",
     "test": "vitest",
     "dev": "vite --host",
     "build": "tsc && vite build",
