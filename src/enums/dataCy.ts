@@ -14,6 +14,7 @@ export enum todoCy {
   modalDesc = 'modal-desc__input',
   modalStatus = 'modal-status__option',
   modalAssigned = 'modal-assigned__option',
+  droppableArea = 'droppable-area__board',
 }
 
 export enum baseScreen {

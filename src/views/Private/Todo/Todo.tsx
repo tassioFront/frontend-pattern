@@ -11,6 +11,17 @@ import { postBoard, getBoards } from '@/services/board.service';
 import { useNavigate } from 'react-router-dom';
 import BtnFloat from '@/components/BtnFloat/BtnFloat';
 import { useDescriptiveRequest } from '@/hooks/useDescriptiveRequest/useDescriptiveRequest';
+import {
+  useSensor,
+  useSensors,
+  KeyboardSensor,
+  DndContext,
+  closestCorners,
+  DragOverlay,
+  MouseSensor,
+} from '@dnd-kit/core';
+import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import Task from './components/Task/Task';
 const Board = lazy(async () => await import('./components/Board/Board'));
 const UserSelect = lazy(
   async () => await import('./components/UserSelect/UserSelect')
@@ -133,6 +144,123 @@ const Todo = (): JSX.Element => {
     void fetchBoardsUiState.requestData();
   }, []);
 
+  const sensors = useSensors(
+    // useSensor(PointerSensor, {
+    //   activationConstraint: { delay: 100, tolerance: 100 },
+    // }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+    useSensor(MouseSensor, {
+      activationConstraint: { delay: 100, tolerance: 100 },
+    })
+  );
+
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      const copyBoards: ITodoBoard[] = JSON.parse(JSON.stringify(boards));
+      const boardIdx = copyBoards.findIndex(
+        (item) => item.id === active.data.current.status
+      );
+
+      const oldIndex = copyBoards[boardIdx].todoItems.findIndex(
+        (item) => item.id === active.id
+      );
+      const newIndex = copyBoards[boardIdx].todoItems.findIndex(
+        (item) => item.id === over.id
+      );
+
+      copyBoards[boardIdx].todoItems = arrayMove(
+        copyBoards[boardIdx].todoItems,
+        oldIndex,
+        newIndex
+      );
+      // setActiveId(
+      //   // copyBoards[1].todoItems.find((item) => item.id === active.id) as ITodo
+      //   active.data.current.task
+      // );
+      setBoards(copyBoards);
+    }
+  };
+
+  const [activeId, setActiveId] = useState<ITodo>();
+  function handleDragStart(event: any) {
+    // const { active } = event;
+    // const { id } = active;
+
+    // setActiveId(id);
+    setActiveId(event.active.data.current.task);
+  }
+
+  function handleDragOver(event: any) {
+    const { active, over } = event;
+    const id = active.data?.current?.status;
+    const overId = over.data?.current?.status ?? over.id;
+
+    const activeContainer = boards.findIndex((item) => item.id === id);
+    const overContainer = boards.findIndex((item) => item.id === overId);
+    if (
+      activeContainer === -1 ||
+      overContainer === -1 ||
+      activeContainer === overContainer
+    ) {
+      return;
+    }
+    updateBoards.item({
+      itemEdit: { ...active.data.current.task, status: overId },
+      currentStatus: active.data.current.task.status,
+    });
+
+    // setBoards((prev) => {
+    //   const activeItems = prev[activeContainer];
+    //   const overItems = prev[overContainer];
+
+    //   //   // Find the indexes for the items
+    //   const activeIndex = activeItems.todoItems.indexOf(id);
+    //   const overIndex = overItems.todoItems.indexOf(overId);
+
+    //   let newIndex;
+    //   const has = prev.findIndex((item) => item.id === overId);
+    //   if (has > 0) {
+    //     // We're at the root droppable of a container
+    //     newIndex = overItems.todoItems.length + 1;
+    //   } else {
+    //     const isBelowLastItem =
+    //       over &&
+    //       overIndex === overItems.todoItems.length - 1 &&
+    //       draggingRect.offsetTop > over.rect.offsetTop + over.rect.height;
+
+    //     const modifier = isBelowLastItem ? 1 : 0;
+
+    //     newIndex =
+    //       overIndex >= 0
+    //         ? overIndex + modifier
+    //         : overItems.todoItems.length + 1;
+    //   }
+
+    //   return {
+    //     ...prev,
+    //     [activeContainer]: {
+    //       ...prev[activeContainer],
+    //       todoItems: prev[activeContainer].todoItems.filter(
+    //         (item) => item !== active.id
+    //       ),
+    //     },
+    //     [overContainer]: {
+    //       ...prev[overContainer],
+    //       todoItems: [
+    //         ...prev[overContainer].todoItems.slice(0, newIndex),
+    //         boards[activeContainer].todoItems[activeIndex],
+    //         ...prev[overContainer].todoItems.slice(
+    //           newIndex,
+    //           prev[overContainer].todoItems.length
+    //         ),
+    //       ],
+    //     },
+    //   };
+    // });
+  }
   return (
     <BaseScreen
       heading="To-do List (Beta)"
@@ -155,25 +283,45 @@ const Todo = (): JSX.Element => {
         {selectedUser !== null ? (
           <>
             <UserSelect selectedUserId={selectedUser.id} />
-            <Styles.Boards>
-              {boards.map((board) => (
-                <Board
-                  key={board.id}
-                  status={board.id}
-                  heading={board.title}
-                  selectedUser={selectedUser}
-                  todoEntities={board.todoItems || []}
-                  color="var(--color-brand-primary-light-1)"
-                  updateBoards={updateBoards}
-                  statusOptions={boards.map(({ id, title }) => {
-                    return {
-                      label: title,
-                      id,
-                    };
-                  })}
-                />
-              ))}
-            </Styles.Boards>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCorners}
+              onDragEnd={handleDragEnd}
+              onDragStart={handleDragStart}
+              onDragOver={handleDragOver}
+            >
+              <Styles.Boards>
+                {boards.map((board) => (
+                  <Board
+                    key={board.id}
+                    status={board.id}
+                    heading={board.title}
+                    selectedUser={selectedUser}
+                    todoEntities={board.todoItems || []}
+                    color="var(--color-brand-primary-light-1)"
+                    updateBoards={updateBoards}
+                    statusOptions={boards.map(({ id, title }) => {
+                      return {
+                        label: title,
+                        id,
+                      };
+                    })}
+                  />
+                ))}
+                <DragOverlay>
+                  {activeId ? (
+                    <Task
+                      id={activeId.id}
+                      item={activeId}
+                      onClick={() => {}}
+                      handleDelete={() => {}}
+                      isDeleteLoading={false}
+                    />
+                  ) : null}
+                </DragOverlay>
+              </Styles.Boards>
+            </DndContext>
+
             <BtnFloat
               label="Create new board"
               showNumber={1}

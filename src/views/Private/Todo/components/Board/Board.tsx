@@ -1,4 +1,4 @@
-import { lazy, memo, useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, memo, useEffect, useRef, useState } from 'react';
 import { ITodo, ITodoBoard, ITodoUser } from '@/models/Todo';
 import { deleteTodo } from '@/services/todo.service';
 
@@ -12,6 +12,11 @@ import {
 import { todoCy } from '@/enums/dataCy';
 import { useDescriptiveRequest } from '@/hooks/useDescriptiveRequest/useDescriptiveRequest';
 import Spinner from '@/components/Spinner/Spinner';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { useDroppable } from '@dnd-kit/core';
 const TaskModal = lazy(async () => await import('../TaskModal/TaskModal'));
 export interface BoardTypes {
   className?: string;
@@ -105,6 +110,7 @@ const Board = memo(function Board({
     taskToDeleteId.current = todoToDelete.id;
     await deleteTodoUiState.requestData();
   };
+
   const handleReset = () => {
     setIsOpen(false);
     setTask({
@@ -126,71 +132,87 @@ const Board = memo(function Board({
       fetchTodoUiState.setUiStateStatus('isEmpty');
   }, [todoEntities]);
 
+  const { setNodeRef } = useDroppable({
+    id: status,
+  });
+
   return (
-    <Styles.Wrapper>
-      <Styles.EditableTypography
-        tag="h1"
-        id={heading}
-        label={heading}
-        updateText={async (value) => await handleEditTitleBoard(value)}
-      />
-      <Styles.Content>
-        {fetchTodoUiState.uiStateStatus === 'hasData' &&
-          todoEntities?.map?.((item) => (
-            <Task
-              key={item.id}
-              item={item}
-              onClick={() => handleEditTask(item)}
-              handleDelete={async () => await handleDeleteTodo(item)}
-              isDeleteLoading={
-                deleteTodoUiState.uiStateStatus === 'isLoading' &&
-                taskToDeleteId.current === item.id
-              }
-            />
-          ))}
-        {fetchTodoUiState.uiStateStatus === 'isEmpty' && (
-          <p>Sorry, there is nothing here yet</p>
-        )}
-        {fetchTodoUiState.uiStateStatus === 'isLoading' && <Spinner />}
-      </Styles.Content>
-      <Styles.BtnCreate
-        onClick={() => setIsOpen(true)}
-        shape="text"
-        data-cy={todoCy.createTask + status}
-      >
-        <i
-          title="click to create the task"
-          className="fa fa-plus"
-          aria-label="Create a new task"
-        ></i>
-      </Styles.BtnCreate>
-      <Styles.BtnDelete
-        onClick={deleteBoardUiState.requestData}
-        className="danger"
-        shape="text"
-        isLoading={deleteBoardUiState.uiStateStatus === 'isLoading'}
-        data-cy={todoCy.deleteBoard + status}
-      >
-        <i
-          title="click to delete the board"
-          className="fa fa-times-circle"
-          aria-label="Delete board"
-        ></i>
-      </Styles.BtnDelete>
-      {isOpen && (
-        <TaskModal
-          selectedUser={selectedUser}
-          isOpen={isOpen}
-          task={task}
-          setTask={setTask}
-          handleReset={handleReset}
-          updateBoards={updateBoards}
-          statusOptions={statusOptions}
-          status={status}
-          // setUiStateStatus={fetchTodoUiState.setUiStateStatus}
+    <SortableContext
+      id={status}
+      items={todoEntities}
+      strategy={verticalListSortingStrategy}
+    >
+      <Styles.Wrapper>
+        <Styles.EditableTypography
+          tag="h1"
+          id={heading}
+          label={heading}
+          updateText={async (value) => await handleEditTitleBoard(value)}
         />
-      )}
-    </Styles.Wrapper>
+        <Styles.Content
+          ref={setNodeRef}
+          data-cy={todoCy.droppableArea + status}
+          id={status}
+        >
+          {fetchTodoUiState.uiStateStatus === 'hasData' &&
+            todoEntities?.map?.((item) => (
+              <Task
+                key={item.id}
+                item={item}
+                id={item.id}
+                onClick={() => handleEditTask(item)}
+                handleDelete={async () => await handleDeleteTodo(item)}
+                isDeleteLoading={
+                  deleteTodoUiState.uiStateStatus === 'isLoading' &&
+                  taskToDeleteId.current === item.id
+                }
+              />
+            ))}
+          {fetchTodoUiState.uiStateStatus === 'isEmpty' && (
+            <p>Sorry, there is nothing here yet</p>
+          )}
+          {fetchTodoUiState.uiStateStatus === 'isLoading' && <Spinner />}
+        </Styles.Content>
+        <Styles.BtnCreate
+          onClick={() => setIsOpen(true)}
+          shape="text"
+          data-cy={todoCy.createTask + status}
+        >
+          <i
+            title="click to create the task"
+            className="fa fa-plus"
+            aria-label="Create a new task"
+          ></i>
+        </Styles.BtnCreate>
+        <Styles.BtnDelete
+          onClick={deleteBoardUiState.requestData}
+          className="danger"
+          shape="text"
+          isLoading={deleteBoardUiState.uiStateStatus === 'isLoading'}
+          data-cy={todoCy.deleteBoard + status}
+        >
+          <i
+            title="click to delete the board"
+            className="fa fa-times-circle"
+            aria-label="Delete board"
+          ></i>
+        </Styles.BtnDelete>
+        <Suspense>
+          {isOpen && (
+            <TaskModal
+              selectedUser={selectedUser}
+              isOpen={isOpen}
+              task={task}
+              setTask={setTask}
+              handleReset={handleReset}
+              updateBoards={updateBoards}
+              statusOptions={statusOptions}
+              status={status}
+            />
+          )}
+        </Suspense>
+      </Styles.Wrapper>
+    </SortableContext>
   );
 });
 

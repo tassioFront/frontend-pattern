@@ -9,11 +9,16 @@ export default {
     position: relative;
     width: 100%;
     flex-shrink: 0;
+    /* cursor: pointer; */
+    cursor: grab;
   `,
   Header: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+
+    /* & strong {
+    } */
   `,
   Content: styled.div`
     padding: var(--spacing-xsmall) 0;

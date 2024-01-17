@@ -6,13 +6,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { selectTodoUserById } from '@/store/todoUsers';
 import { todoCy } from '@/enums/dataCy';
-
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 export interface TaskTypes {
   className?: string;
   item: ITodo;
   onClick: () => void;
   handleDelete: () => void;
   isDeleteLoading: boolean;
+  id: string;
 }
 
 const Task = memo(function Task({
@@ -21,16 +23,36 @@ const Task = memo(function Task({
   isDeleteLoading,
   onClick,
   handleDelete,
+  id,
 }: TaskTypes) {
   const assigned = useSelector((state: RootState) =>
     selectTodoUserById(state, item.assignedId)
   );
 
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id,
+      data: {
+        status: item.status,
+        task: {
+          ...item,
+        },
+      },
+    });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
     <Styles.Wrapper
       className={className}
       onClick={onClick}
-      data-cy={todoCy.task + item.status}
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      data-cy={todoCy.task + id}
     >
       <Styles.Header onClick={(e) => e.stopPropagation()}>
         <strong>{item.title}</strong>
