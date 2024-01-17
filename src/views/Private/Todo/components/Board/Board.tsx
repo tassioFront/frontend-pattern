@@ -25,7 +25,7 @@ export interface BoardTypes {
   color?: string;
   todoEntities: ITodoBoard['todoItems'];
   selectedUser: ITodoUser;
-  updateBoards: any;
+  boardActions: any;
   statusOptions: any;
 }
 
@@ -34,7 +34,7 @@ const Board = memo(function Board({
   status,
   selectedUser,
   todoEntities,
-  updateBoards,
+  boardActions,
   statusOptions,
 }: BoardTypes) {
   const initState = {
@@ -54,9 +54,9 @@ const Board = memo(function Board({
   const fetchTodoUiState = useDescriptiveRequest({
     handleOnSuccess: async () => {
       const response = await getTodoByBoardId(status);
-      updateBoards.todoItems({
+      boardActions.replaceBoardTodos({
         todoItems: response,
-        boardToUpdateId: status,
+        currentStatus: status,
       });
       return response.length > 0 ? 'hasData' : 'isEmpty';
     },
@@ -68,7 +68,7 @@ const Board = memo(function Board({
       await deleteBoard({
         boardId: status,
       });
-      updateBoards.deleteBoard({
+      boardActions.deleteBoard({
         boardToUpdateId: status,
       });
     },
@@ -80,7 +80,7 @@ const Board = memo(function Board({
         todoId: taskToDeleteId.current,
         boardId: status,
       });
-      updateBoards.deleteTodo({
+      boardActions.deleteTodo({
         todoId: taskToDeleteId.current,
         boardToUpdateId: status,
       });
@@ -97,9 +97,9 @@ const Board = memo(function Board({
         id: status,
         title: value,
       });
-      updateBoards.title({
+      boardActions.updateBoardTitle({
         newTitle: value,
-        boardToUpdateId: status,
+        currentStatus: status,
       });
     } catch (error) {
       alert('Sorry, We got an error on update the board title');
@@ -205,7 +205,7 @@ const Board = memo(function Board({
               task={task}
               setTask={setTask}
               handleReset={handleReset}
-              updateBoards={updateBoards}
+              boardActions={boardActions}
               statusOptions={statusOptions}
               status={status}
             />

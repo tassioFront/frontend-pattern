@@ -19,9 +19,11 @@ import {
   closestCorners,
   DragOverlay,
   MouseSensor,
+  DragOverEvent,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import Task from './components/Task/Task';
+import { putTodo } from '@/services/todo.service';
 const Board = lazy(async () => await import('./components/Board/Board'));
 const UserSelect = lazy(
   async () => await import('./components/UserSelect/UserSelect')
@@ -31,12 +33,9 @@ const UserSelect = lazy(
 // https://www.youtube.com/watch?v=CYKDtVZr_Jw
 const Todo = (): JSX.Element => {
   const selectedUser = useSelector(todoSelectedUser) as ITodoUser;
-
   const navigate = useNavigate();
   const [boards, setBoards] = useState<ITodoBoard[]>([]);
-  // const [baseState, setBaseState] = useState<
-  //   'isLoading' | 'isError' | 'isEmpty' | 'hasData'
-  // >('isLoading');
+
   const fetchBoardsUiState = useDescriptiveRequest({
     handleOnSuccess: async () => {
       const response = await getBoards();
@@ -57,30 +56,100 @@ const Todo = (): JSX.Element => {
     },
   });
 
-  const updateBoards = {
-    todoItems: ({
+  // drag and drop state
+  const [activeTaskDragged, setActiveTaskDragged] = useState<ITodo>();
+  const sensors = useSensors(
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+    useSensor(MouseSensor, {
+      activationConstraint: { delay: 100, tolerance: 100 },
+    })
+  );
+
+  const copyBoardState = () =>
+    JSON.parse(JSON.stringify(boards)) as ITodoBoard[];
+
+  const handleDragEnd = (event: DragOverEvent) => {
+    console.log('🚀 ~ handleDragEnd ~ event:', event);
+    const { active, over } = event;
+    if (active.id === over?.id) return;
+    const copyBoards = copyBoardState();
+    const boardIdx = copyBoards.findIndex(
+      (item) => item.id === active?.data?.current?.status
+    );
+
+    const oldIndex = copyBoards[boardIdx].todoItems.findIndex(
+      (item) => item.id === active.id
+    );
+    const newIndex = copyBoards[boardIdx].todoItems.findIndex(
+      (item) => item.id === over?.id
+    );
+
+    copyBoards[boardIdx].todoItems = arrayMove(
+      copyBoards[boardIdx].todoItems,
+      oldIndex,
+      newIndex
+    );
+    setBoards(copyBoards);
+  };
+
+  const handleDragStart = (event: DragOverEvent) => {
+    setActiveTaskDragged(event.active.data.current?.task);
+  };
+
+  const handleDragOver = async (event: DragOverEvent) => {
+    console.log('🚀 ~ handleDragOver ~ event:', event);
+    const { active, over } = event;
+    const id = active.data?.current?.status;
+    const overId = over?.data?.current?.status ?? over?.id;
+
+    const activeContainer = boards.findIndex((item) => item.id === id);
+    const overContainer = boards.findIndex((item) => item.id === overId);
+    if (
+      activeContainer === -1 ||
+      overContainer === -1 ||
+      activeContainer === overContainer
+    ) {
+      return;
+    }
+
+    const task = active?.data?.current?.task;
+    try {
+      await putTodo({ ...task, status: overId }, id);
+      boardActions.updateTodoByBoardId({
+        itemEdit: { ...task, status: overId },
+        currentStatus: task?.status,
+      });
+    } catch (error) {
+      console.log('🚀 ~ handleDragOver ~ error:', error);
+    }
+  };
+
+  const boardActions = {
+    replaceBoardTodos: ({
       todoItems,
-      boardToUpdateId,
+      currentStatus,
     }: {
       todoItems: ITodo[];
-      boardToUpdateId: string;
+      currentStatus: string;
     }) => {
-      const copyBoards: ITodoBoard[] = JSON.parse(JSON.stringify(boards));
+      const copyBoards = copyBoardState();
       const boardToUpdate = copyBoards.find(
-        (copyBoard) => copyBoard.id === boardToUpdateId
+        (copyBoard) => copyBoard.id === currentStatus
       ) as ITodoBoard;
       boardToUpdate.todoItems = todoItems;
 
       setBoards(copyBoards);
     },
-    item: ({
+    updateTodoByBoardId: ({
       itemEdit,
       currentStatus,
     }: {
       itemEdit: ITodo;
       currentStatus: string;
     }) => {
-      const copyBoards: ITodoBoard[] = JSON.parse(JSON.stringify(boards));
+      const copyBoards = copyBoardState();
 
       const board = copyBoards.find(
         (board) => board.id === currentStatus
@@ -110,7 +179,7 @@ const Todo = (): JSX.Element => {
       boardToUpdateId: string;
       todoId: string;
     }) => {
-      const copyBoards: ITodoBoard[] = JSON.parse(JSON.stringify(boards));
+      const copyBoards = copyBoardState();
       const boardIdx = copyBoards.findIndex(
         (board) => board.id === boardToUpdateId
       );
@@ -120,20 +189,20 @@ const Todo = (): JSX.Element => {
       setBoards(copyBoards);
     },
     deleteBoard: ({ boardToUpdateId }: { boardToUpdateId: string }) => {
-      let copyBoards: ITodoBoard[] = JSON.parse(JSON.stringify(boards));
+      let copyBoards = copyBoardState();
       copyBoards = copyBoards.filter((board) => board.id !== boardToUpdateId);
       setBoards(copyBoards);
     },
-    title: async ({
-      boardToUpdateId,
+    updateBoardTitle: async ({
+      currentStatus,
       newTitle,
     }: {
-      boardToUpdateId: string;
+      currentStatus: string;
       newTitle: string;
     }) => {
-      const copyBoards: ITodoBoard[] = JSON.parse(JSON.stringify(boards));
+      const copyBoards = copyBoardState();
       const boardToUpdate = copyBoards.find(
-        (copyBoard) => copyBoard.id === boardToUpdateId
+        (copyBoard) => copyBoard.id === currentStatus
       ) as ITodoBoard;
       boardToUpdate.title = newTitle;
       setBoards(copyBoards);
@@ -144,123 +213,6 @@ const Todo = (): JSX.Element => {
     void fetchBoardsUiState.requestData();
   }, []);
 
-  const sensors = useSensors(
-    // useSensor(PointerSensor, {
-    //   activationConstraint: { delay: 100, tolerance: 100 },
-    // }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-    useSensor(MouseSensor, {
-      activationConstraint: { delay: 100, tolerance: 100 },
-    })
-  );
-
-  const handleDragEnd = (event: any) => {
-    const { active, over } = event;
-    if (active.id !== over.id) {
-      const copyBoards: ITodoBoard[] = JSON.parse(JSON.stringify(boards));
-      const boardIdx = copyBoards.findIndex(
-        (item) => item.id === active.data.current.status
-      );
-
-      const oldIndex = copyBoards[boardIdx].todoItems.findIndex(
-        (item) => item.id === active.id
-      );
-      const newIndex = copyBoards[boardIdx].todoItems.findIndex(
-        (item) => item.id === over.id
-      );
-
-      copyBoards[boardIdx].todoItems = arrayMove(
-        copyBoards[boardIdx].todoItems,
-        oldIndex,
-        newIndex
-      );
-      // setActiveId(
-      //   // copyBoards[1].todoItems.find((item) => item.id === active.id) as ITodo
-      //   active.data.current.task
-      // );
-      setBoards(copyBoards);
-    }
-  };
-
-  const [activeId, setActiveId] = useState<ITodo>();
-  function handleDragStart(event: any) {
-    // const { active } = event;
-    // const { id } = active;
-
-    // setActiveId(id);
-    setActiveId(event.active.data.current.task);
-  }
-
-  function handleDragOver(event: any) {
-    const { active, over } = event;
-    const id = active.data?.current?.status;
-    const overId = over.data?.current?.status ?? over.id;
-
-    const activeContainer = boards.findIndex((item) => item.id === id);
-    const overContainer = boards.findIndex((item) => item.id === overId);
-    if (
-      activeContainer === -1 ||
-      overContainer === -1 ||
-      activeContainer === overContainer
-    ) {
-      return;
-    }
-    updateBoards.item({
-      itemEdit: { ...active.data.current.task, status: overId },
-      currentStatus: active.data.current.task.status,
-    });
-
-    // setBoards((prev) => {
-    //   const activeItems = prev[activeContainer];
-    //   const overItems = prev[overContainer];
-
-    //   //   // Find the indexes for the items
-    //   const activeIndex = activeItems.todoItems.indexOf(id);
-    //   const overIndex = overItems.todoItems.indexOf(overId);
-
-    //   let newIndex;
-    //   const has = prev.findIndex((item) => item.id === overId);
-    //   if (has > 0) {
-    //     // We're at the root droppable of a container
-    //     newIndex = overItems.todoItems.length + 1;
-    //   } else {
-    //     const isBelowLastItem =
-    //       over &&
-    //       overIndex === overItems.todoItems.length - 1 &&
-    //       draggingRect.offsetTop > over.rect.offsetTop + over.rect.height;
-
-    //     const modifier = isBelowLastItem ? 1 : 0;
-
-    //     newIndex =
-    //       overIndex >= 0
-    //         ? overIndex + modifier
-    //         : overItems.todoItems.length + 1;
-    //   }
-
-    //   return {
-    //     ...prev,
-    //     [activeContainer]: {
-    //       ...prev[activeContainer],
-    //       todoItems: prev[activeContainer].todoItems.filter(
-    //         (item) => item !== active.id
-    //       ),
-    //     },
-    //     [overContainer]: {
-    //       ...prev[overContainer],
-    //       todoItems: [
-    //         ...prev[overContainer].todoItems.slice(0, newIndex),
-    //         boards[activeContainer].todoItems[activeIndex],
-    //         ...prev[overContainer].todoItems.slice(
-    //           newIndex,
-    //           prev[overContainer].todoItems.length
-    //         ),
-    //       ],
-    //     },
-    //   };
-    // });
-  }
   return (
     <BaseScreen
       heading="To-do List (Beta)"
@@ -299,7 +251,7 @@ const Todo = (): JSX.Element => {
                     selectedUser={selectedUser}
                     todoEntities={board.todoItems || []}
                     color="var(--color-brand-primary-light-1)"
-                    updateBoards={updateBoards}
+                    boardActions={boardActions}
                     statusOptions={boards.map(({ id, title }) => {
                       return {
                         label: title,
@@ -309,10 +261,10 @@ const Todo = (): JSX.Element => {
                   />
                 ))}
                 <DragOverlay>
-                  {activeId ? (
+                  {activeTaskDragged ? (
                     <Task
-                      id={activeId.id}
-                      item={activeId}
+                      id={activeTaskDragged.id}
+                      item={activeTaskDragged}
                       onClick={() => {}}
                       handleDelete={() => {}}
                       isDeleteLoading={false}

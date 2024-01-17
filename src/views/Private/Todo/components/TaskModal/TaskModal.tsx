@@ -18,7 +18,7 @@ export interface TaskModalTypes {
   task: ITodo;
   setTask: (task: ITodo) => void;
   handleReset: () => void;
-  updateBoards: any;
+  boardActions: any;
   statusOptions: any;
   status: string;
 }
@@ -30,7 +30,7 @@ const TaskModal = memo(function TaskModal({
   setTask,
   handleReset,
   statusOptions,
-  updateBoards,
+  boardActions,
   status,
 }: TaskModalTypes) {
   const [onSubmitUiState, setOnSubmitUiState] = useState<
@@ -60,15 +60,15 @@ const TaskModal = memo(function TaskModal({
       setOnSubmitUiState('isLoading');
       if (isEditModel) {
         const response = await putTodo(task, status);
-        updateBoards.item({
+        boardActions.updateTodoByBoardId({
           itemEdit: response,
           currentStatus: status,
         });
       } else {
         const response = await postTodo({ ...task, authorId: selectedUser.id });
-        updateBoards.todoItems({
+        boardActions.replaceBoardTodos({
           todoItems: response,
-          boardToUpdateId: task.status,
+          currentStatus: task.status,
         });
       }
     } catch (error) {
