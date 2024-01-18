@@ -29,6 +29,9 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
   },
   server: {
     port: 3000,

@@ -8,12 +8,12 @@ export interface ITodo {
   description: string;
   authorId: string;
   assignedId: string;
-  status: string;
+  boardId: string;
   id: string;
 }
 
 export interface ITodoBoard {
   title: string;
   id: string;
-  todoItems: ITodo[];
+  todosOrder: Array<ITodo['id']>;
 }
