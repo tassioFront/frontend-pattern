@@ -1,80 +1,91 @@
 import { ITodo, ITodoBoard } from '@/models/Todo';
-import { storageService } from './localStorage/localStorage.service';
-import { fakeApi } from './fakeApi';
-import { StorageKeys } from '@/enums/storage-keys';
+import {
+  IPutBoardTitle,
+  IPutMoveTodoToAnotherBoard,
+  IPutTodoById,
+  IPutTodoToAnotherIndex,
+  getBoards,
+  getTodosByBoardId,
+  postBoard,
+  postTodo,
+  putBoardTitle,
+  putMoveTodoToAnotherBoard,
+  putMoveTodoToAnotherIndex,
+  putTodoById,
+} from './backendLess/todos/todos';
 
 /*
  * Using localStorage and setTimeout as fake endpoints. Please, ignore it.
  */
 
-export const postTodo = async (payload: ITodo): Promise<ITodo[]> => {
-  await fakeApi(payload);
-  const id = String(Date.now());
-  const todo = { ...payload, id };
-  const currentData =
-    storageService.get<ITodoBoard[]>(StorageKeys.TodoBoardData) ?? [];
-  const board = currentData.find(
-    (board) => board.id === todo.status
-  ) as ITodoBoard;
-  board.todoItems.push(todo);
-  storageService.set(StorageKeys.TodoBoardData, currentData);
-  return board.todoItems;
+export const readBoards = async () => {
+  const response = await getBoards();
+  return response;
 };
 
-export const putTodo = async (
-  todoEdit: ITodo,
-  currentStatus: string
-): Promise<ITodo> => {
-  await fakeApi(todoEdit);
-  const currentData =
-    storageService.get<ITodoBoard[]>(StorageKeys.TodoBoardData) ?? [];
-
-  const board = currentData.find(
-    (board) => board.id === currentStatus
-  ) as ITodoBoard;
-  const todo = board.todoItems.findIndex((item) => {
-    return item.id === todoEdit.id;
+interface IReadTodosByBoardId {
+  boardId: ITodoBoard['id'];
+}
+export const readTodosByBoardId = async ({
+  boardId,
+}: IReadTodosByBoardId): Promise<ITodo[] | []> => {
+  const todos = await getTodosByBoardId({
+    boardId,
   });
 
-  if (todo === -1) {
-    throw new Error('Todo not found');
-  }
-  const hasChangedStatus = currentStatus !== todoEdit.status;
-  if (hasChangedStatus) {
-    board.todoItems = board.todoItems.filter(
-      (item: ITodo) => item.id !== todoEdit.id
-    );
-    const boardToUpdate = currentData.find(
-      (board) => board.id === todoEdit.status
-    ) as ITodoBoard;
-    boardToUpdate.todoItems.unshift(todoEdit);
-  } else {
-    board.todoItems[todo] = { ...todoEdit };
-  }
-  storageService.set(StorageKeys.TodoBoardData, currentData);
-  return todoEdit;
+  return todos;
 };
 
-export const deleteTodo = async ({
-  todoId,
-  boardId,
-}: {
-  todoId: ITodo['id'];
+export const createBoard = async (
+  board: Omit<ITodoBoard, 'id'>
+): Promise<ITodoBoard> => {
+  const response = await postBoard(board);
+  return response;
+};
+
+interface ICreateTodo {
   boardId: ITodoBoard['id'];
-}): Promise<void> => {
-  await fakeApi(todoId);
-  const currentData = storageService.get<ITodoBoard[]>(
-    StorageKeys.TodoBoardData
-  );
-  const boardIdx = currentData.findIndex((board) => board.id === boardId);
-  currentData[boardIdx].todoItems = currentData[boardIdx].todoItems.filter(
-    (todo) => todo.id !== todoId
-  );
-  storageService.set(StorageKeys.TodoBoardData, currentData);
+  todo: Omit<ITodo, 'id'>;
+}
+export const createTodo = async ({ boardId, todo }: ICreateTodo) => {
+  const response = await postTodo({ todo, boardId });
+  return response;
 };
 
-export const getTodo = async () => {
-  const currentData = storageService.get<ITodo[]>(StorageKeys.TodoData) ?? [];
-  await fakeApi(currentData);
-  return currentData;
+export const updateBoardTitle = async (payload: IPutBoardTitle) => {
+  const response = await putBoardTitle(payload);
+
+  return response;
 };
+
+export const updateTodoById = async (payload: IPutTodoById) => {
+  const response = await putTodoById(payload);
+
+  return response;
+};
+
+export const updateMoveTodoToAnotherBoard = async (
+  payload: IPutMoveTodoToAnotherBoard
+) => {
+  const response = await putMoveTodoToAnotherBoard(payload);
+  return response;
+};
+
+export const updateMoveTodoToAnotherIndex = async (
+  payload: IPutTodoToAnotherIndex
+) => {
+  const response = await putMoveTodoToAnotherIndex(payload);
+  return response;
+};
+
+// export const removeBoard = async ({
+//   statusId,
+// }: {
+//   statusId: ITodoBoard['id'];
+// }): Promise<void> => {
+//   await fakeApi(statusId);
+//   let currentData = storageService.get<ITodoBoard[]>(StorageKeys.TodoBoardData);
+//   currentData = currentData.filter((board) => board.id !== statusId);
+
+//   storageService.set(StorageKeys.TodoBoardData, currentData);
+// };
