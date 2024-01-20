@@ -21,7 +21,7 @@ describe('Todo', () => {
         );
         win.localStorage.setItem(
           StorageKeys.TodoBoardData,
-          `[{"title":"Todo","todoItems":[],"id":"1704501195058"},{"title":"Progress","todoItems":[],"id":"1704501791507"}]`
+          `[{"title":"Todo","todoItems":[],"id":"1704501195058", "todosOrder": []},{"title":"Progress","todoItems":[],"id":"1704501791507", "todosOrder": []}]`
         );
       },
     });
@@ -66,11 +66,54 @@ describe('Todo', () => {
       .eq(0)
       .click();
     cy.contains('Sorry, there is nothing here yet');
+
+    cy.reload();
+    cy.contains('Sorry, there is nothing here yet');
   });
 
   it('Should delete board', () => {
     cy.contains('Todo').should('exist');
     cy.get(getDataCy(todoCy.deleteBoard + '1704501195058')).click();
     cy.contains('Todo').should('not.exist');
+  });
+});
+
+describe('Todo - start with todos', () => {
+  beforeEach(() => {
+    cy.visit('http://localhost:3000/app/to-do', {
+      onBeforeLoad(win) {
+        win.localStorage.setItem(
+          StorageKeys.GHUserData,
+          `{"login":"tassioFront","id":47509510,"node_id":"MDQ6VXNlcjQ3NTA5NTEw","avatar_url":"https://avatars.githubusercontent.com/u/47509510?v=4","gravatar_id":"","url":"https://api.github.com/users/tassioFront","html_url":"https://github.com/tassioFront","followers_url":"https://api.github.com/users/tassioFront/followers","following_url":"https://api.github.com/users/tassioFront/following{/other_user}","gists_url":"https://api.github.com/users/tassioFront/gists{/gist_id}","starred_url":"https://api.github.com/users/tassioFront/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/tassioFront/subscriptions","organizations_url":"https://api.github.com/users/tassioFront/orgs","repos_url":"https://api.github.com/users/tassioFront/repos","events_url":"https://api.github.com/users/tassioFront/events{/privacy}","received_events_url":"https://api.github.com/users/tassioFront/received_events","type":"User","site_admin":false,"name":"Tássio","company":"@juntossomosmais","blog":"https://frontend-pattern.vercel.app/about","location":"Brazil","email":null,"hireable":null,"bio":"I'm FrontEnd Developer that loves wine and coffee. ☕️🍷👨🏻‍💻","twitter_username":null,"public_repos":52,"public_gists":0,"followers":88,"following":70,"created_at":"2019-02-10T23:25:10Z","updated_at":"2023-06-07T00:15:31Z"}`
+        );
+        win.localStorage.setItem(StorageKeys.GHUserName, 'tassioFront');
+        win.localStorage.setItem(
+          StorageKeys.TodoUsersData,
+          `[{"name":"Chuck Norris","id":"1704479903004"}]`
+        );
+        win.localStorage.setItem(
+          StorageKeys.TodoSelectedUser,
+          `{"name":"Chuck Norris","id":"1704479903004"}`
+        );
+        win.localStorage.setItem(
+          StorageKeys.TodoData,
+          `[{"title":"First task","description":"Hey, man!","boardId":"1705769029879","authorId":"1694198123060","assignedId":"1694198123060","id":"1705769453972"},{"title":"Second one to do","description":"Hey agian!","boardId":"1705769029879","authorId":"1694198123060","assignedId":"1694198123060","id":"1705769473279"},{"title":"First one to in prog","description":"i'm doing this","boardId":"1705769474944","authorId":"1694198123060","assignedId":"1694198123060","id":"1705769497339"}]`
+        );
+        win.localStorage.setItem(
+          StorageKeys.TodoBoardData,
+          `[{"id":"1705769029879","title":"Todo","todosOrder":["1705769453972","1705769473279"],"todoItems":[]},
+          {"id":"1705769474944","title":"Inprogress","todosOrder":["1705769497339"],"todoItems":[]}]`
+        );
+      },
+    });
+  });
+
+  it('Should load page with boards and todos', () => {
+    cy.get(getDataCy(todoCy.droppableArea + '1705769029879'))
+      .children()
+      .should('have.length', 2);
+    cy.get(getDataCy(todoCy.droppableArea + '1705769474944'))
+      .children()
+      .should('have.length', 1);
   });
 });

@@ -3,7 +3,7 @@ import { ITodo, ITodoUser } from '@/models/Todo';
 import Modal from '@/components/Modal/Modal';
 import { useSelector } from 'react-redux';
 import { selectAllTodoUsers } from '@/store/todoUsers';
-import { postTodo, putTodo } from '@/services/todo.service';
+import { createTodo, updateTodoById } from '@/services/todo.service';
 import { todoCy } from '@/enums/dataCy';
 import Styles from './styles';
 import TextareaInput from '@/components/TextareaInput/TextareaInput';
@@ -20,7 +20,7 @@ export interface TaskModalTypes {
   handleReset: () => void;
   boardActions: any;
   statusOptions: any;
-  status: string;
+  boardId: string;
 }
 
 const TaskModal = memo(function TaskModal({
@@ -31,7 +31,7 @@ const TaskModal = memo(function TaskModal({
   handleReset,
   statusOptions,
   boardActions,
-  status,
+  boardId,
 }: TaskModalTypes) {
   const [onSubmitUiState, setOnSubmitUiState] = useState<
     'isLoading' | 'isError' | 'idle' | 'isEdit'
@@ -59,16 +59,22 @@ const TaskModal = memo(function TaskModal({
     try {
       setOnSubmitUiState('isLoading');
       if (isEditModel) {
-        const response = await putTodo(task, status);
+        const response = await updateTodoById({
+          updatedTodo: task,
+          todoId: task.id,
+        });
         boardActions.updateTodoByBoardId({
           itemEdit: response,
-          currentStatus: status,
+          currentStatus: boardId,
         });
       } else {
-        const response = await postTodo({ ...task, authorId: selectedUser.id });
+        const response = await createTodo({
+          todo: { ...task, authorId: selectedUser.id },
+          boardId,
+        });
         boardActions.replaceBoardTodos({
           todoItems: response,
-          currentStatus: task.status,
+          currentStatus: boardId,
         });
       }
     } catch (error) {
@@ -99,9 +105,9 @@ const TaskModal = memo(function TaskModal({
       <Styles.SelectInput
         data-cy={todoCy.modalStatus}
         options={statusOptions}
-        value={task.status}
+        value={task.boardId}
         label="Select the task status!"
-        onChange={(e) => handleChange(e.target.value, 'status')}
+        onChange={(e) => handleChange(e.target.value, 'boardId')}
       />
 
       <Styles.SelectInput

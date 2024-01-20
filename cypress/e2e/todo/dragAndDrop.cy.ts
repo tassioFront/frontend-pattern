@@ -19,17 +19,22 @@ describe('Todo - drag and drop', () => {
           `{"name":"Chuck Norris","id":"1704479903004"}`
         );
         win.localStorage.setItem(
+          StorageKeys.TodoData,
+          `[
+              {"title":"My first task","description":"this is to validate the first task created so far","boardId":"1704501195058","authorId":"1694198123060","assignedId":"1694198123060","id":"1705085126345"},
+              {"title":"New task","description":"hey nice description","boardId":"1704501195058","authorId":"1694198123060","assignedId":"1694198123060","id":"1705406296332"},
+              {"title":"Tassio's task","description":"First one, man. Do it!","boardId":"1705085095168","authorId":"1694198123060","assignedId":"1705092179322","id":"1705085369305"},
+              {"title":"Second one","description":"This is in progress","boardId":"1705085095168","authorId":"1694198123060","assignedId":"1694198123060","id":"1705085146650"},
+              {"title":"The last task","description":"A description used to test it and validatee","boardId":"1705085095168","authorId":"1694198123060","assignedId":"1694198123060","id":"1456789"}
+           ]`
+        );
+        win.localStorage.setItem(
           StorageKeys.TodoBoardData,
-          `[{"title":"Todo","todoItems":[
-              {"title":"My first task","description":"this is to validate the first task created so far","status":"1704501195058","authorId":"1694198123060","assignedId":"1694198123060","id":"1705085126345"},
-              {"title":"New task","description":"hey nice description","status":"1704501195058","authorId":"1694198123060","assignedId":"1694198123060","id":"1705406296332"}],
-              "id":"1704501195058"},
-            {"title":"In Progress","todoItems":[
-              {"title":"Tassio's task","description":"First one, man. Do it!","status":"1705085095168","authorId":"1694198123060","assignedId":"1705092179322","id":"1705085369305"},
-              {"title":"Second one","description":"This is in progress. Let's dive inThis is in progress. Let's dive inThis is in progress. Let's dive inThis is in progress. Let's dive inThis is in progress. Let's dive inThis is in progress. Let's div","status":"1705085095168","authorId":"1694198123060","assignedId":"1694198123060","id":"1705085146650"},
-              {"title":"The last task","description":"A description used to test it and validatee","status":"1705085095168","authorId":"1694198123060","assignedId":"1694198123060","id":"1456789"}],
-              "id":"1705085095168"},
-            {"title":"Done","todoItems":[],"id":"1705085100993"}]`
+          `[
+            {"title":"Todo","todosOrder":["1705085126345", "1705406296332"],"todoItems":[],"id":"1704501195058"},
+            {"title":"In Progress","todosOrder":["1705085369305","1705085146650", "1456789"],"todoItems":[], "id":"1705085095168"},
+            {"title":"Done","todosOrder": [],"todoItems":[],"id":"1705085100993"}
+          ]`
         );
       },
     });
@@ -45,12 +50,26 @@ describe('Todo - drag and drop', () => {
     );
 
     // moving to another board
+    cy.get(getDataCy(todoCy.droppableArea + '1704501195058'))
+      .children()
+      .should('have.length', 2);
+    cy.get(getDataCy(todoCy.droppableArea + '1705085100993'))
+      .children()
+      .should('have.length', 1);
+
     cy.get(getDataCy(todoCy.task + '1705085126345')).drag(
       getDataCy(todoCy.droppableArea + '1705085100993'),
       {
         force: true,
       }
     );
+
+    cy.get(getDataCy(todoCy.droppableArea + '1704501195058'))
+      .children()
+      .should('have.length', 1);
+    cy.get(getDataCy(todoCy.droppableArea + '1705085100993'))
+      .children()
+      .should('have.length', 1);
 
     // it is failing
     // cy.get(getDataCy(todoCy.task + '1705085146650')).drag(

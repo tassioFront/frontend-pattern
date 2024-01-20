@@ -1,14 +1,9 @@
 import { Suspense, lazy, memo, useEffect, useRef, useState } from 'react';
 import { ITodo, ITodoBoard, ITodoUser } from '@/models/Todo';
-import { deleteTodo } from '@/services/todo.service';
 
 import Styles from './styles';
 import Task from '../Task/Task';
-import {
-  deleteBoard,
-  getTodoByBoardId,
-  patchBoardTitle,
-} from '@/services/board.service';
+
 import { todoCy } from '@/enums/dataCy';
 import { useDescriptiveRequest } from '@/hooks/useDescriptiveRequest/useDescriptiveRequest';
 import Spinner from '@/components/Spinner/Spinner';
@@ -17,13 +12,20 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
+
+import {
+  readTodosByBoardId,
+  removeBoardById,
+  removeTodoById,
+  updateBoardTitle,
+} from '@/services/todo.service';
 const TaskModal = lazy(async () => await import('../TaskModal/TaskModal'));
 export interface BoardTypes {
   className?: string;
   heading: string;
-  status: string;
+  boardId: string;
   color?: string;
-  todoEntities: ITodoBoard['todoItems'];
+  todoEntities: ITodo[];
   selectedUser: ITodoUser;
   boardActions: any;
   statusOptions: any;
@@ -31,7 +33,7 @@ export interface BoardTypes {
 
 const Board = memo(function Board({
   heading,
-  status,
+  boardId,
   selectedUser,
   todoEntities,
   boardActions,
@@ -40,7 +42,7 @@ const Board = memo(function Board({
   const initState = {
     title: '',
     description: '',
-    status,
+    boardId,
     authorId: '',
     assignedId: selectedUser.id,
     id: '',
@@ -53,10 +55,10 @@ const Board = memo(function Board({
 
   const fetchTodoUiState = useDescriptiveRequest({
     handleOnSuccess: async () => {
-      const response = await getTodoByBoardId(status);
+      const response = await readTodosByBoardId({ boardId });
       boardActions.replaceBoardTodos({
         todoItems: response,
-        currentStatus: status,
+        currentStatus: boardId,
       });
       return response.length > 0 ? 'hasData' : 'isEmpty';
     },
@@ -65,24 +67,24 @@ const Board = memo(function Board({
 
   const deleteBoardUiState = useDescriptiveRequest({
     handleOnSuccess: async () => {
-      await deleteBoard({
-        boardId: status,
+      await removeBoardById({
+        boardId,
       });
       boardActions.deleteBoard({
-        boardToUpdateId: status,
+        boardToUpdateId: boardId,
       });
     },
   });
 
   const deleteTodoUiState = useDescriptiveRequest({
     handleOnSuccess: async () => {
-      await deleteTodo({
+      await removeTodoById({
         todoId: taskToDeleteId.current,
-        boardId: status,
+        boardId,
       });
       boardActions.deleteTodo({
         todoId: taskToDeleteId.current,
-        boardToUpdateId: status,
+        boardToUpdateId: boardId,
       });
     },
   });
@@ -93,13 +95,13 @@ const Board = memo(function Board({
   };
   const handleEditTitleBoard = async (value: ITodoBoard['title']) => {
     try {
-      await patchBoardTitle({
-        id: status,
+      await updateBoardTitle({
+        boardId,
         title: value,
       });
       boardActions.updateBoardTitle({
         newTitle: value,
-        currentStatus: status,
+        currentStatus: boardId,
       });
     } catch (error) {
       alert('Sorry, We got an error on update the board title');
@@ -130,15 +132,15 @@ const Board = memo(function Board({
     updateUiStateToShowData && fetchTodoUiState.setUiStateStatus('hasData');
     updateUiStateToShowEmptyState &&
       fetchTodoUiState.setUiStateStatus('isEmpty');
-  }, [todoEntities]);
+  }, [todoEntities, boardActions.replaceBoardTodos]);
 
   const { setNodeRef } = useDroppable({
-    id: status,
+    id: boardId,
   });
 
   return (
     <SortableContext
-      id={status}
+      id={boardId}
       items={todoEntities}
       strategy={verticalListSortingStrategy}
     >
@@ -151,8 +153,8 @@ const Board = memo(function Board({
         />
         <Styles.Content
           ref={setNodeRef}
-          data-cy={todoCy.droppableArea + status}
-          id={status}
+          data-cy={todoCy.droppableArea + boardId}
+          id={boardId}
         >
           {fetchTodoUiState.uiStateStatus === 'hasData' &&
             todoEntities?.map?.((item) => (
@@ -176,7 +178,7 @@ const Board = memo(function Board({
         <Styles.BtnCreate
           onClick={() => setIsOpen(true)}
           shape="text"
-          data-cy={todoCy.createTask + status}
+          data-cy={todoCy.createTask + boardId}
         >
           <i
             title="click to create the task"
@@ -189,7 +191,7 @@ const Board = memo(function Board({
           className="danger"
           shape="text"
           isLoading={deleteBoardUiState.uiStateStatus === 'isLoading'}
-          data-cy={todoCy.deleteBoard + status}
+          data-cy={todoCy.deleteBoard + boardId}
         >
           <i
             title="click to delete the board"
@@ -207,7 +209,7 @@ const Board = memo(function Board({
               handleReset={handleReset}
               boardActions={boardActions}
               statusOptions={statusOptions}
-              status={status}
+              boardId={boardId}
             />
           )}
         </Suspense>

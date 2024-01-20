@@ -29,8 +29,12 @@ describe('Todo - empty state', () => {
     );
     cy.get(getDataCy(baseScreen.onEmpty)).click();
     cy.get(getDataCy(editableTypo.editableInput)).type('First board{Enter}');
-    cy.get(getDataCy(btn.float)).click();
     cy.contains('First board').should('exist');
     cy.contains('Sorry, there is nothing here yet');
+    cy.reload();
+    cy.contains('First board').should('exist');
+    cy.get(getDataCy(btn.float)).click();
+    cy.get(getDataCy(editableTypo.editableInput)).type('Second board{Enter}');
+    cy.contains('Second board').should('exist');
   });
 });

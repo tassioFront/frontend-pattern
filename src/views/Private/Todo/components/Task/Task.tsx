@@ -33,7 +33,7 @@ const Task = memo(function Task({
     useSortable({
       id,
       data: {
-        status: item.status,
+        boardId: item.boardId,
         task: {
           ...item,
         },
@@ -61,7 +61,7 @@ const Task = memo(function Task({
           shape="text"
           onClick={handleDelete}
           isLoading={isDeleteLoading}
-          data-cy={todoCy.taskBtn + item.status}
+          data-cy={todoCy.taskBtn + item.boardId}
         >
           <i
             title="Delete task"
@@ -72,7 +72,7 @@ const Task = memo(function Task({
       </Styles.Header>
       <hr />
       <Styles.Content title="Click to edit the task">
-        {item.description.length > 78
+        {item.description?.length > 78
           ? item.description.slice(0, 78) + '...'
           : item.description}
       </Styles.Content>

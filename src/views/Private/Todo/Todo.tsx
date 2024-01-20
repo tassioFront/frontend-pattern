@@ -7,7 +7,12 @@ import { todoUsersResolvedRouter } from '@/routes/resolvedRoutes';
 import { todoSelectedUser } from '@/store/todoUsers';
 
 import Styles from './styles';
-import { postBoard, getBoards } from '@/services/board.service';
+import {
+  createBoard,
+  readBoards,
+  updateTodoById,
+} from '@/services/todo.service';
+
 import { useNavigate } from 'react-router-dom';
 import BtnFloat from '@/components/BtnFloat/BtnFloat';
 import { useDescriptiveRequest } from '@/hooks/useDescriptiveRequest/useDescriptiveRequest';
@@ -20,10 +25,11 @@ import {
   DragOverlay,
   MouseSensor,
   DragOverEvent,
+  PointerSensor,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import Task from './components/Task/Task';
-import { putTodo } from '@/services/todo.service';
+
 const Board = lazy(async () => await import('./components/Board/Board'));
 const UserSelect = lazy(
   async () => await import('./components/UserSelect/UserSelect')
@@ -38,7 +44,7 @@ const Todo = (): JSX.Element => {
 
   const fetchBoardsUiState = useDescriptiveRequest({
     handleOnSuccess: async () => {
-      const response = await getBoards();
+      const response = await readBoards();
       setBoards(response);
       return response.length === 0 ? 'isEmpty' : 'hasData';
     },
@@ -47,9 +53,9 @@ const Todo = (): JSX.Element => {
 
   const createBoardUiState = useDescriptiveRequest({
     handleOnSuccess: async () => {
-      const response = await postBoard({
+      const response = await createBoard({
         title: '',
-        todoItems: [],
+        todosOrder: [],
       });
       setBoards([...boards, response]);
       !boards.length && fetchBoardsUiState.setUiStateStatus('hasData');
@@ -59,6 +65,9 @@ const Todo = (): JSX.Element => {
   // drag and drop state
   const [activeTaskDragged, setActiveTaskDragged] = useState<ITodo>();
   const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { delay: 100, tolerance: 100 },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
@@ -67,17 +76,17 @@ const Todo = (): JSX.Element => {
     })
   );
 
-  const copyBoardState = () =>
-    JSON.parse(JSON.stringify(boards)) as ITodoBoard[];
+  const copyBoardState = (): ITodoBoard[] => Object.assign([], boards);
 
   const handleDragEnd = (event: DragOverEvent) => {
-    console.log('🚀 ~ handleDragEnd ~ event:', event);
     const { active, over } = event;
     if (active.id === over?.id) return;
     const copyBoards = copyBoardState();
     const boardIdx = copyBoards.findIndex(
-      (item) => item.id === active?.data?.current?.status
+      (item) => item.id === active?.data?.current?.boardId
     );
+
+    if (!copyBoards[boardIdx].todoItems) return;
 
     const oldIndex = copyBoards[boardIdx].todoItems.findIndex(
       (item) => item.id === active.id
@@ -99,10 +108,9 @@ const Todo = (): JSX.Element => {
   };
 
   const handleDragOver = async (event: DragOverEvent) => {
-    console.log('🚀 ~ handleDragOver ~ event:', event);
     const { active, over } = event;
-    const id = active.data?.current?.status;
-    const overId = over?.data?.current?.status ?? over?.id;
+    const id = active.data?.current?.boardId;
+    const overId = over?.data?.current?.boardId ?? over?.id;
 
     const activeContainer = boards.findIndex((item) => item.id === id);
     const overContainer = boards.findIndex((item) => item.id === overId);
@@ -115,14 +123,18 @@ const Todo = (): JSX.Element => {
     }
 
     const task = active?.data?.current?.task;
+    console.log('🚀 ~ handleDragOver ~ task:', task);
     try {
-      await putTodo({ ...task, status: overId }, id);
+      await updateTodoById({
+        updatedTodo: { ...task, boardId: overId },
+        todoId: task.id,
+      });
       boardActions.updateTodoByBoardId({
-        itemEdit: { ...task, status: overId },
-        currentStatus: task?.status,
+        itemEdit: { ...task, boardId: overId },
+        currentStatus: task?.boardId,
       });
     } catch (error) {
-      console.log('🚀 ~ handleDragOver ~ error:', error);
+      console.error('🚀 ~ handleDragOver ~ error:', error);
     }
   };
 
@@ -131,14 +143,19 @@ const Todo = (): JSX.Element => {
       todoItems,
       currentStatus,
     }: {
-      todoItems: ITodo[];
+      todoItems: ITodo | ITodo[];
       currentStatus: string;
     }) => {
       const copyBoards = copyBoardState();
       const boardToUpdate = copyBoards.find(
         (copyBoard) => copyBoard.id === currentStatus
       ) as ITodoBoard;
-      boardToUpdate.todoItems = todoItems;
+
+      if ((todoItems as ITodo[])?.length !== undefined) {
+        boardToUpdate.todoItems = todoItems;
+      } else {
+        boardToUpdate?.todoItems?.push?.(todoItems);
+      }
 
       setBoards(copyBoards);
     },
@@ -158,13 +175,13 @@ const Todo = (): JSX.Element => {
         return item.id === itemEdit.id;
       });
 
-      const hasChangedStatus = currentStatus !== itemEdit.status;
+      const hasChangedStatus = currentStatus !== itemEdit.boardId;
       if (hasChangedStatus) {
         board.todoItems = board.todoItems.filter(
           (item: ITodo) => item.id !== itemEdit.id
         );
         const boardToUpdate = copyBoards.find(
-          (board) => board.id === itemEdit.status
+          (board) => board.id === itemEdit.boardId
         ) as ITodoBoard;
         boardToUpdate.todoItems.unshift(itemEdit);
       } else {
@@ -246,10 +263,10 @@ const Todo = (): JSX.Element => {
                 {boards.map((board) => (
                   <Board
                     key={board.id}
-                    status={board.id}
+                    boardId={board.id}
                     heading={board.title}
                     selectedUser={selectedUser}
-                    todoEntities={board.todoItems || []}
+                    todoEntities={board.todoItems ?? []}
                     color="var(--color-brand-primary-light-1)"
                     boardActions={boardActions}
                     statusOptions={boards.map(({ id, title }) => {
