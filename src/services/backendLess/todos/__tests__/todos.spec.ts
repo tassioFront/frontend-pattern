@@ -1,5 +1,7 @@
 import { describe, it, vi, expect } from 'vitest';
 import {
+  deleteBoardById,
+  deleteTodoById,
   getBoards,
   getTodos,
   getTodosByBoardId,
@@ -151,10 +153,16 @@ describe('todos - backendLess - happy cases', () => {
   const boardMock1 = { id: 123, title: 'Todo', todosOrder: [] };
   const boardMock3 = { id: 789, title: 'Todo', todosOrder: ['1', '2'] };
   const boardMock4 = { id: 115, title: 'In Progress', todosOrder: ['3'] };
+  const boardMock5 = { id: 897, title: 'Done', todosOrder: ['4', '5'] };
+  const boardMock6 = { id: 854, title: 'Done again', todosOrder: ['6', '7'] };
 
   const todoMock1 = { id: '1', title: 'first one', boardId: 789 };
   const todoMock2 = { id: '2', title: 'second one', boardId: 789 };
   const todoMock3 = { id: '3', title: 'third one', boardId: 115 };
+  const todoMock4 = { id: '4', title: '4th one', boardId: 897 };
+  const todoMock5 = { id: '5', title: '5th one', boardId: 897 };
+  const todoMock6 = { id: '6', title: '6th one', boardId: 854 };
+  const todoMock7 = { id: '7', title: '7th one', boardId: 854 };
 
   it('Should create the first board', async () => {
     await postBoard({
@@ -311,6 +319,55 @@ describe('todos - backendLess - happy cases', () => {
       { ...boardMock1 },
       { ...boardMock3, todosOrder: ['3', '1', '2'] },
       { ...boardMock4 },
+    ]);
+  });
+
+  it('Should delete todo by id', async () => {
+    localStorageGet.mockImplementationOnce(() => [
+      { ...boardMock1 },
+      { ...boardMock5 },
+    ]);
+    localStorageGet.mockImplementation(() => [
+      { ...todoMock4 },
+      { ...todoMock5 },
+    ]);
+
+    await deleteTodoById({
+      todoId: todoMock4.id,
+      boardId: todoMock4.boardId,
+    });
+
+    expect(localStorageSet).toHaveBeenNthCalledWith(1, 'tdbd', [
+      { ...boardMock1 },
+      { ...boardMock5, todosOrder: ['5'] },
+    ]);
+
+    expect(localStorageSet).toHaveBeenNthCalledWith(2, 'td', [
+      { ...todoMock5 },
+    ]);
+  });
+
+  it('Should delete board by id and its todos', async () => {
+    localStorageGet.mockImplementationOnce(() => [
+      { ...boardMock5 },
+      { ...boardMock6 },
+    ]);
+    localStorageGet.mockImplementation(() => [
+      { ...todoMock5 },
+      { ...todoMock6 },
+      { ...todoMock7 },
+    ]);
+
+    await deleteBoardById({
+      boardId: boardMock6.id,
+    });
+
+    expect(localStorageSet).toHaveBeenNthCalledWith(1, 'tdbd', [
+      { ...boardMock5 },
+    ]);
+
+    expect(localStorageSet).toHaveBeenNthCalledWith(2, 'td', [
+      { ...todoMock5 },
     ]);
   });
 });

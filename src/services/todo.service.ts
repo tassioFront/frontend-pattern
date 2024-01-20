@@ -1,9 +1,13 @@
 import { ITodo, ITodoBoard } from '@/models/Todo';
 import {
+  IDeleteBoardById,
+  IDeleteTodoById,
   IPutBoardTitle,
   IPutMoveTodoToAnotherBoard,
   IPutTodoById,
   IPutTodoToAnotherIndex,
+  deleteBoardById,
+  deleteTodoById,
   getBoards,
   getTodosByBoardId,
   postBoard,
@@ -78,14 +82,10 @@ export const updateMoveTodoToAnotherIndex = async (
   return response;
 };
 
-// export const removeBoard = async ({
-//   statusId,
-// }: {
-//   statusId: ITodoBoard['id'];
-// }): Promise<void> => {
-//   await fakeApi(statusId);
-//   let currentData = storageService.get<ITodoBoard[]>(StorageKeys.TodoBoardData);
-//   currentData = currentData.filter((board) => board.id !== statusId);
+export const removeBoardById = async (payload: IDeleteBoardById) => {
+  await deleteBoardById(payload);
+};
 
-//   storageService.set(StorageKeys.TodoBoardData, currentData);
-// };
+export const removeTodoById = async (payload: IDeleteTodoById) => {
+  await deleteTodoById(payload);
+};

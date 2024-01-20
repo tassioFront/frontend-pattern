@@ -54,6 +54,7 @@ export const postBoard = async ({
     id: Date.now().toString(),
     title,
     todosOrder: [],
+    todoItems: [],
   };
 
   const boards = await getBoards();
@@ -91,7 +92,7 @@ export const postTodo = async ({
   return todoUpdated;
 };
 
-interface IPutBoardTitle {
+export interface IPutBoardTitle {
   title: ITodoBoard['title'];
   boardId: ITodoBoard['id'];
 }
@@ -111,7 +112,7 @@ export const putBoardTitle = async ({
   return updatedBoardData;
 };
 
-interface IPutTodoById {
+export interface IPutTodoById {
   todoId: ITodo['id'];
   updatedTodo: ITodo;
 }
@@ -125,13 +126,31 @@ export const putTodoById = async ({
   if (todoIdx === -1) {
     throw new Error('Todo was not found');
   }
+  const hasChangedStatus = todos[todoIdx].boardId !== updatedTodo.boardId;
+
+  if (hasChangedStatus) {
+    const boards = await getBoards();
+    const boardIdxToRemover = boards.findIndex(
+      (board) => board.id === todos[todoIdx].boardId
+    );
+    const boardIdxToAdd = boards.findIndex(
+      (board) => board.id === updatedTodo.boardId
+    );
+
+    boards[boardIdxToRemover].todosOrder = boards[
+      boardIdxToRemover
+    ].todosOrder.filter((id) => id !== updatedTodo.id);
+    boards[boardIdxToAdd].todosOrder.unshift(updatedTodo.id);
+    storageService.set(StorageKeys.TodoBoardData, boards);
+  }
+
   const updatedTodoData = { ...todos[todoIdx], ...updatedTodo };
   todos[todoIdx] = updatedTodoData;
   storageService.set(StorageKeys.TodoData, todos);
   return updatedTodoData;
 };
 
-interface IPutMoveTodoToAnotherBoard {
+export interface IPutMoveTodoToAnotherBoard {
   todoId: ITodo['id'];
   sourceBoardId: ITodoBoard['id'];
   targetBoardId: ITodoBoard['id'];
@@ -167,17 +186,24 @@ export const putMoveTodoToAnotherBoard = async ({
     throw new Error('todoId todo not found');
   }
 
-  await putTodoById({
-    todoId,
-    updatedTodo: {
-      ...updatedTodo,
-      boardId: targetBoardId,
-    },
-  });
+  const todoIdx = todos.findIndex((todo) => todo.id === todoId);
+
+  if (todoIdx === -1) {
+    throw new Error('Todo was not found');
+  }
+
+  const updatedTodoData = {
+    ...todos[todoIdx],
+    ...updatedTodo,
+    boardId: targetBoardId,
+  };
+  todos[todoIdx] = updatedTodoData;
+
+  storageService.set(StorageKeys.TodoData, todos);
   storageService.set(StorageKeys.TodoBoardData, boards);
 };
 
-interface IPutTodoToAnotherIndex {
+export interface IPutTodoToAnotherIndex {
   todoId: ITodo['id'];
   boardId: ITodoBoard['id'];
   newIndex: number;
@@ -202,4 +228,49 @@ export const putMoveTodoToAnotherIndex = async ({
   boards[sourceIndex].todosOrder.splice(fromIdx, 1);
   boards[sourceIndex].todosOrder.splice(newIndex, 0, todoId);
   storageService.set(StorageKeys.TodoBoardData, boards);
+};
+
+export interface IDeleteTodoById {
+  todoId: ITodo['id'];
+  boardId: ITodo['boardId'];
+}
+export const deleteTodoById = async ({
+  todoId,
+  boardId,
+}: IDeleteTodoById): Promise<void> => {
+  const boards = await getBoards();
+  let todos = await getTodos();
+  const boardIdx = boards.findIndex((board) => board.id === boardId);
+
+  if (boardIdx === -1) {
+    throw new Error('boardId board not found');
+  }
+  boards[boardIdx].todosOrder = boards[boardIdx].todosOrder.filter(
+    (id) => id !== todoId
+  );
+  todos = todos.filter((todo) => todo.id !== todoId);
+
+  storageService.set(StorageKeys.TodoBoardData, boards);
+  storageService.set(StorageKeys.TodoData, todos);
+};
+
+export interface IDeleteBoardById {
+  boardId: ITodo['boardId'];
+}
+export const deleteBoardById = async ({
+  boardId,
+}: IDeleteBoardById): Promise<void> => {
+  const boards = await getBoards();
+  const todos = await getTodos();
+  const sourceIndex = boards.findIndex((board) => board.id === boardId);
+
+  if (sourceIndex === -1) {
+    throw new Error('boardId board not found');
+  }
+
+  const boardsUpdated = boards.filter((board) => board.id !== boardId);
+  const todosUpdated = todos.filter((todo) => todo.boardId !== boardId);
+
+  storageService.set(StorageKeys.TodoBoardData, boardsUpdated);
+  storageService.set(StorageKeys.TodoData, todosUpdated);
 };
