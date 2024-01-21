@@ -90,6 +90,7 @@ const Todo = (): JSX.Element => {
   const copyBoardState = (): ITodoBoard[] => Object.assign([], boards);
 
   const handleDragEnd = (event: DragOverEvent) => {
+    alert('we are working on drag and drop feat ;)');
     // const { active, over } = event;
     // if (active.id === over?.id) return;
     // const copyBoards = copyBoardState();
