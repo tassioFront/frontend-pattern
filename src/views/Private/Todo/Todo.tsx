@@ -1,4 +1,4 @@
-import { useEffect, lazy, useState } from 'react';
+import { useEffect, lazy, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import BaseScreen from '@/components/BaseScreen/BaseScreen';
 import { ITodo, ITodoBoard, ITodoUser } from '@/models/Todo';
@@ -21,21 +21,38 @@ import {
   DragOverlay,
   MouseSensor,
   DragOverEvent,
-  PointerSensor,
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import Task from './components/Task/Task';
 import { IBoardActions } from './types';
+import { useObserver } from '@/hooks/useObserver/useObserver';
 
 const Board = lazy(async () => await import('./components/Board/Board'));
 const UserSelect = lazy(
   async () => await import('./components/UserSelect/UserSelect')
 );
 
+const ITEMS_RENDER_PER_SCROLL = 1;
+const ITEMS_RENDER_PER_SCROLL_DESKTOP = 4;
 const Todo = (): JSX.Element => {
   const selectedUser = useSelector(todoSelectedUser) as ITodoUser;
   const navigate = useNavigate();
   const [boards, setBoards] = useState<ITodoBoard[]>([]);
+  const isDesktop = window.innerWidth > 768;
+  const itemsPerPage = isDesktop
+    ? ITEMS_RENDER_PER_SCROLL_DESKTOP
+    : ITEMS_RENDER_PER_SCROLL;
+  const [count, setCount] = useState(itemsPerPage);
+  const onVisible = useCallback(
+    (isVisible: boolean) => {
+      const isIncrease = isVisible && count < boards.length;
+      isIncrease && setCount((value) => value + itemsPerPage);
+    },
+    [count, boards]
+  );
+  const [observerElement] = useObserver({
+    onVisible,
+  });
 
   const fetchBoardsUiState = useDescriptiveRequest({
     handleOnSuccess: async () => {
@@ -60,9 +77,6 @@ const Todo = (): JSX.Element => {
   // drag and drop state [adjust]
   const [activeTaskDragged, setActiveTaskDragged] = useState<ITodo>();
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: { delay: 100, tolerance: 100 },
-    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
@@ -276,7 +290,7 @@ const Todo = (): JSX.Element => {
               onDragOver={handleDragOver}
             >
               <Styles.Boards>
-                {boards.map((board) => (
+                {boards.slice(0, count).map((board) => (
                   <Board
                     key={board.id}
                     boardId={board.id}
@@ -293,6 +307,7 @@ const Todo = (): JSX.Element => {
                     })}
                   />
                 ))}
+                <span ref={observerElement} />
                 <DragOverlay>
                   {activeTaskDragged ? (
                     <Task
@@ -306,7 +321,6 @@ const Todo = (): JSX.Element => {
                 </DragOverlay>
               </Styles.Boards>
             </DndContext>
-
             <BtnFloat
               label="Create new board"
               showNumber={1}
