@@ -8,6 +8,13 @@ export interface ITodo {
   description: string;
   authorId: string;
   assignedId: string;
-  status: 'todo' | 'inProgress' | 'done';
+  boardId: string;
   id: string;
+}
+
+export interface ITodoBoard {
+  title: string;
+  id: string;
+  todosOrder: Array<ITodo['id']>;
+  todoItems: ITodo[];
 }

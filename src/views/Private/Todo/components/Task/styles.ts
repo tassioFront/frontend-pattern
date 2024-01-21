@@ -1,23 +1,39 @@
 import styled from 'styled-components';
 
 export default {
-  Wrapper: styled.article<{ color: string }>`
-    background-color: ${(props) => props.color};
+  Wrapper: styled.article`
+    background-color: var(--color-neutral-light-1);
     border-radius: 4px;
-    height: 150px;
+    cursor: pointer;
+    flex-shrink: 0;
+    min-height: 120px;
     padding: var(--spacing-xxsmall) var(--spacing-small);
     position: relative;
-    max-width: 300px;
-    min-width: 250px;
-    cursor: pointer;
+    width: 100%;
+    animation: fadeIn 0.5s;
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
   `,
   Header: styled.div`
+    align-items: baseline;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+
+    & strong {
+      cursor: grab;
+      width: 100%;
+    }
   `,
   Content: styled.div`
     padding: var(--spacing-xsmall) 0;
+    height: fit-content;
   `,
   Footer: styled.div`
     bottom: 0;
@@ -26,13 +42,13 @@ export default {
     right: 0;
   `,
   Avatar: styled.span`
+    align-items: center;
+    color: white;
+    display: flex;
+    border-radius: 50%;
     height: 24px;
     width: 24px;
-    border: 1px solid var(--color-brand-secondary-regular);
-    border-radius: 50%;
     background-color: var(--color-brand-secondary-regular);
-    color: white;
-    display: block;
-    text-align: center;
+    justify-content: center;
   `,
 };

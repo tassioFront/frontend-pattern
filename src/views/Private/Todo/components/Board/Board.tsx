@@ -1,37 +1,49 @@
-import { lazy, memo, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import Typography from '@/components/Typography/Typography';
-import { ITodo, ITodoUser } from '@/models/Todo';
-import { Dictionary } from '@reduxjs/toolkit';
-import { AppDispatch } from '@/store';
-import { deleteTodo } from '@/services/todo.service';
-import { removeTodo } from '@/store/todo';
+import { Suspense, lazy, memo, useEffect, useRef, useState } from 'react';
+import { ITodo, ITodoBoard, ITodoUser } from '@/models/Todo';
 
 import Styles from './styles';
 import Task from '../Task/Task';
+
+import { todoCy } from '@/enums/dataCy';
+import { useDescriptiveRequest } from '@/hooks/useDescriptiveRequest/useDescriptiveRequest';
+import Spinner from '@/components/Spinner/Spinner';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { useDroppable } from '@dnd-kit/core';
+
+import {
+  readTodosByBoardId,
+  removeBoardById,
+  removeTodoById,
+  updateBoardTitle,
+} from '@/services/todo.service';
+import { IBoardActions } from '../../types';
 const TaskModal = lazy(async () => await import('../TaskModal/TaskModal'));
 export interface BoardTypes {
   className?: string;
-  heading?: string;
-  status?: 'todo' | 'inProgress' | 'done';
+  heading: string;
+  boardId: string;
   color?: string;
-  todoEntities: Dictionary<ITodo>;
+  todoEntities: ITodo[];
   selectedUser: ITodoUser;
-  order: string[];
+  boardActions: IBoardActions;
+  statusOptions: any;
 }
 
 const Board = memo(function Board({
-  heading = 'todo',
-  color = 'var(--color-neutral-light-1)',
-  status = 'todo',
-  todoEntities,
+  heading,
+  boardId,
   selectedUser,
-  order,
+  todoEntities,
+  boardActions,
+  statusOptions,
 }: BoardTypes) {
   const initState = {
     title: '',
     description: '',
-    status,
+    boardId,
     authorId: '',
     assignedId: selectedUser.id,
     id: '',
@@ -40,28 +52,68 @@ const Board = memo(function Board({
   const [task, setTask] = useState<ITodo>({
     ...initState,
   });
-  const [onDeleteUiState, setOnDeleteUiState] = useState<
-    'isLoading' | 'isError' | 'idle'
-  >('idle');
   const taskToDeleteId = useRef('');
-  const dispatch = useDispatch<AppDispatch>();
+
+  const fetchTodoUiState = useDescriptiveRequest({
+    handleOnSuccess: async () => {
+      const response = await readTodosByBoardId({ boardId });
+      boardActions.replaceBoardTodos({
+        todoItems: response,
+        currentStatus: boardId,
+      });
+      return response.length > 0 ? 'hasData' : 'isEmpty';
+    },
+    initialState: 'isLoading',
+  });
+
+  const deleteBoardUiState = useDescriptiveRequest({
+    handleOnSuccess: async () => {
+      await removeBoardById({
+        boardId,
+      });
+      boardActions.deleteBoard({
+        boardToUpdateId: boardId,
+      });
+    },
+  });
+
+  const deleteTodoUiState = useDescriptiveRequest({
+    handleOnSuccess: async () => {
+      await removeTodoById({
+        todoId: taskToDeleteId.current,
+        boardId,
+      });
+      boardActions.deleteTodo({
+        todoId: taskToDeleteId.current,
+        boardToUpdateId: boardId,
+      });
+    },
+  });
 
   const handleEditTask = (todoToEdit: ITodo) => {
     setTask({ ...todoToEdit });
     setIsOpen(true);
   };
-  const handleDelete = async (todoToDelete: ITodo) => {
-    taskToDeleteId.current = todoToDelete.id;
+  const handleEditTitleBoard = async (value: ITodoBoard['title']) => {
     try {
-      setOnDeleteUiState('isLoading');
-      await deleteTodo(todoToDelete.id);
-      dispatch(removeTodo(todoToDelete));
+      await updateBoardTitle({
+        boardId,
+        title: value,
+      });
+      boardActions.updateBoardTitle({
+        newTitle: value,
+        currentStatus: boardId,
+      });
     } catch (error) {
-      setOnDeleteUiState('isError');
-    } finally {
-      setOnDeleteUiState('idle');
+      alert('Sorry, We got an error on update the board title');
     }
   };
+
+  const handleDeleteTodo = async (todoToDelete: ITodo) => {
+    taskToDeleteId.current = todoToDelete.id;
+    await deleteTodoUiState.requestData();
+  };
+
   const handleReset = () => {
     setIsOpen(false);
     setTask({
@@ -69,49 +121,101 @@ const Board = memo(function Board({
     });
   };
 
-  const currentState = order.length > 0 ? 'hasData' : 'isEmpty';
+  useEffect(() => {
+    void fetchTodoUiState.requestData();
+  }, []);
+
+  useEffect(() => {
+    const updateUiStateToShowData =
+      fetchTodoUiState.uiStateStatus === 'isEmpty' && todoEntities.length > 0;
+    const updateUiStateToShowEmptyState =
+      fetchTodoUiState.uiStateStatus === 'hasData' && todoEntities.length === 0;
+    updateUiStateToShowData && fetchTodoUiState.setUiStateStatus('hasData');
+    updateUiStateToShowEmptyState &&
+      fetchTodoUiState.setUiStateStatus('isEmpty');
+  }, [todoEntities, boardActions.replaceBoardTodos]);
+
+  const { setNodeRef } = useDroppable({
+    id: boardId,
+  });
 
   return (
-    <Styles.Wrapper>
-      <Typography tag="h1" id={heading} label={heading} />
-      <Styles.Content>
-        {currentState === 'hasData' ? (
-          order?.map?.((item) => (
-            <Task
-              key={(todoEntities[item] as ITodo).id}
-              color={color}
-              item={todoEntities[item] as ITodo}
-              onClick={() => handleEditTask(todoEntities[item] as ITodo)}
-              handleDelete={async () =>
-                await handleDelete(todoEntities[item] as ITodo)
-              }
-              isDeleteLoading={
-                onDeleteUiState === 'isLoading' &&
-                taskToDeleteId.current === (todoEntities[item] as ITodo).id
-              }
-            />
-          ))
-        ) : (
-          <p>Sorry, there is nothing here yet</p>
-        )}
-      </Styles.Content>
-      <Styles.Btn
-        onClick={() => setIsOpen(true)}
-        className="secondary"
-        shape="text"
-      >
-        <i className="fa fa-plus" aria-label="Create a new task"></i>
-      </Styles.Btn>
-      {isOpen && (
-        <TaskModal
-          selectedUser={selectedUser}
-          isOpen={isOpen}
-          task={task}
-          setTask={setTask}
-          handleReset={handleReset}
+    <SortableContext
+      id={boardId}
+      items={todoEntities}
+      strategy={verticalListSortingStrategy}
+    >
+      <Styles.Wrapper>
+        <Styles.EditableTypography
+          tag="h1"
+          id={heading}
+          label={heading}
+          updateText={async (value) => await handleEditTitleBoard(value)}
         />
-      )}
-    </Styles.Wrapper>
+        <Styles.Content
+          ref={setNodeRef}
+          data-cy={todoCy.droppableArea + boardId}
+          id={boardId}
+        >
+          {fetchTodoUiState.uiStateStatus === 'hasData' &&
+            todoEntities?.map?.((item) => (
+              <Task
+                key={item.id}
+                item={item}
+                id={item.id}
+                onClick={() => handleEditTask(item)}
+                handleDelete={async () => await handleDeleteTodo(item)}
+                isDeleteLoading={
+                  deleteTodoUiState.uiStateStatus === 'isLoading' &&
+                  taskToDeleteId.current === item.id
+                }
+              />
+            ))}
+          {fetchTodoUiState.uiStateStatus === 'isEmpty' && (
+            <p>Sorry, there is nothing here yet</p>
+          )}
+          {fetchTodoUiState.uiStateStatus === 'isLoading' && <Spinner />}
+        </Styles.Content>
+        <Styles.BtnCreate
+          onClick={() => setIsOpen(true)}
+          shape="text"
+          data-cy={todoCy.createTask + boardId}
+        >
+          <i
+            title="click to create the task"
+            className="fa fa-plus"
+            aria-label="Create a new task"
+          ></i>
+        </Styles.BtnCreate>
+        <Styles.BtnDelete
+          onClick={deleteBoardUiState.requestData}
+          className="danger"
+          shape="text"
+          isLoading={deleteBoardUiState.uiStateStatus === 'isLoading'}
+          data-cy={todoCy.deleteBoard + boardId}
+        >
+          <i
+            title="click to delete the board"
+            className="fa fa-times-circle"
+            aria-label="Delete board"
+          ></i>
+        </Styles.BtnDelete>
+        <Suspense>
+          {isOpen && (
+            <TaskModal
+              selectedUser={selectedUser}
+              isOpen={isOpen}
+              task={task}
+              setTask={setTask}
+              handleReset={handleReset}
+              boardActions={boardActions}
+              statusOptions={statusOptions}
+              boardId={boardId}
+            />
+          )}
+        </Suspense>
+      </Styles.Wrapper>
+    </SortableContext>
   );
 });
 
