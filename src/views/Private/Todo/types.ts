@@ -1,34 +1,26 @@
 import { ITodo } from '@/models/Todo';
 
 export interface IBoardActions {
-  replaceBoardTodos: ({
-    todoItems,
-    currentStatus,
-  }: {
+  replaceBoardTodos: (payload: {
     todoItems: ITodo | ITodo[];
     currentStatus: string;
   }) => void;
-  updateTodoByBoardId: ({
-    itemEdit,
-    currentStatus,
-  }: {
+  updateTodoByBoardId: (payload: {
     itemEdit: ITodo;
     currentStatus: string;
   }) => void;
-  deleteTodo: ({
-    boardToUpdateId,
-    todoId,
-  }: {
-    boardToUpdateId: string;
-    todoId: string;
-  }) => void;
-
-  deleteBoard: ({ boardToUpdateId }: { boardToUpdateId: string }) => void;
-  updateBoardTitle: ({
-    currentStatus,
-    newTitle,
-  }: {
+  deleteTodo: (payload: { boardToUpdateId: string; todoId: string }) => void;
+  deleteBoard: (payload: { boardToUpdateId: string }) => void;
+  updateBoardTitle: (payload: {
     currentStatus: string;
     newTitle: string;
   }) => void;
+}
+
+export interface IWOAction {
+  action:
+    | 'replaceBoardTodos'
+    | 'updateTodoByBoardId'
+    | 'deleteTodo'
+    | 'updateBoardTitle';
 }

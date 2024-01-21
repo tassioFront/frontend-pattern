@@ -24,13 +24,15 @@ import {
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import Task from './components/Task/Task';
-import { IBoardActions } from './types';
+import { IBoardActions, IWOAction } from './types';
 import { useObserver } from '@/hooks/useObserver/useObserver';
 
 const Board = lazy(async () => await import('./components/Board/Board'));
 const UserSelect = lazy(
   async () => await import('./components/UserSelect/UserSelect')
 );
+
+const woTodos: Worker = new Worker(new URL('./woTodos.ts', import.meta.url));
 
 const ITEMS_RENDER_PER_SCROLL = 1;
 const ITEMS_RENDER_PER_SCROLL_DESKTOP = 4;
@@ -164,52 +166,59 @@ const Todo = (): JSX.Element => {
 
   const boardActions: IBoardActions = {
     replaceBoardTodos: ({ todoItems, currentStatus }) => {
-      const copyBoards = copyBoardState();
-      const boardToUpdate = copyBoards.find(
-        (copyBoard) => copyBoard.id === currentStatus
-      ) as ITodoBoard;
-
-      if ((todoItems as ITodo[])?.length !== undefined) {
-        boardToUpdate.todoItems = todoItems as ITodo[];
-      } else {
-        boardToUpdate?.todoItems?.push?.(todoItems as ITodo);
+      if (!window.Worker) {
+        return;
       }
-      setBoards(copyBoards);
+      woTodos.postMessage({
+        boards: copyBoardState(),
+        todoItems,
+        currentStatus,
+        action: 'replaceBoardTodos',
+      });
+
+      woTodos.onmessage = (
+        e: MessageEvent<{ action: IWOAction['action']; boards: ITodoBoard[] }>
+      ) => {
+        if (e.data.action === 'replaceBoardTodos') setBoards(e.data.boards);
+      };
     },
     updateTodoByBoardId: ({ itemEdit, currentStatus }) => {
-      const copyBoards = copyBoardState();
-      const sourceBoard = copyBoards.find(
-        (board) => board.id === currentStatus
-      ) as ITodoBoard;
-      const todo = sourceBoard.todoItems.findIndex((item) => {
-        return item.id === itemEdit.id;
-      });
-      const hasChangedStatus = currentStatus !== itemEdit.boardId;
-
-      if (hasChangedStatus) {
-        sourceBoard.todoItems = sourceBoard.todoItems.filter(
-          (item: ITodo) => item.id !== itemEdit.id
-        );
-        const destinationBoard = copyBoards.find(
-          (board) => board.id === itemEdit.boardId
-        ) as ITodoBoard;
-        destinationBoard.todoItems.unshift(itemEdit);
-      } else {
-        sourceBoard.todoItems[todo] = { ...itemEdit };
+      if (!window.Worker) {
+        return;
       }
+      woTodos.postMessage({
+        boards: copyBoardState(),
+        itemEdit,
+        currentStatus,
+        action: 'updateTodoByBoardId',
+      });
 
-      setBoards(copyBoards);
+      woTodos.onmessage = (
+        e: MessageEvent<{ action: IWOAction['action']; boards: ITodoBoard[] }>
+      ) => {
+        if (e.data.action === 'updateTodoByBoardId') {
+          setBoards(e.data.boards);
+        }
+      };
     },
     deleteTodo: ({ boardToUpdateId, todoId }) => {
-      const copyBoards = copyBoardState();
-      const boardIdx = copyBoards.findIndex(
-        (board) => board.id === boardToUpdateId
-      );
-      copyBoards[boardIdx].todoItems = copyBoards[boardIdx].todoItems.filter(
-        (todo) => todo.id !== todoId
-      );
+      if (!window.Worker) {
+        return;
+      }
+      woTodos.postMessage({
+        boards: copyBoardState(),
+        boardToUpdateId,
+        todoId,
+        action: 'deleteTodo',
+      });
 
-      setBoards(copyBoards);
+      woTodos.onmessage = (
+        e: MessageEvent<{ action: IWOAction['action']; boards: ITodoBoard[] }>
+      ) => {
+        if (e.data.action === 'deleteTodo') {
+          setBoards(e.data.boards);
+        }
+      };
     },
     deleteBoard: ({ boardToUpdateId }) => {
       let copyBoards = copyBoardState();
@@ -217,12 +226,23 @@ const Todo = (): JSX.Element => {
       setBoards(copyBoards);
     },
     updateBoardTitle: ({ currentStatus, newTitle }) => {
-      const copyBoards = copyBoardState();
-      const boardToUpdate = copyBoards.find(
-        (copyBoard) => copyBoard.id === currentStatus
-      ) as ITodoBoard;
-      boardToUpdate.title = newTitle;
-      setBoards(copyBoards);
+      if (!window.Worker) {
+        return;
+      }
+      woTodos.postMessage({
+        boards: copyBoardState(),
+        currentStatus,
+        newTitle,
+        action: 'updateBoardTitle',
+      });
+
+      woTodos.onmessage = (
+        e: MessageEvent<{ action: IWOAction['action']; boards: ITodoBoard[] }>
+      ) => {
+        if (e.data.action === 'updateBoardTitle') {
+          setBoards(e.data.boards);
+        }
+      };
     },
     // moveTodoToAnotherBoard: () =>
     //   // sourceBoardId,
@@ -259,7 +279,6 @@ const Todo = (): JSX.Element => {
   useEffect(() => {
     void fetchBoardsUiState.requestData();
   }, []);
-
   return (
     <BaseScreen
       heading="To-do List (Beta)"
