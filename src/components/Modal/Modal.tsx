@@ -35,7 +35,7 @@ const Modal = memo(function Modal({
       style={style}
       className={className}
     >
-      <Styles.Wrapper>
+      <Styles.Wrapper onClick={(e) => e.stopPropagation()}>
         <Styles.Header>
           <Typography id="modal" tag="h1" label={title} />
           <Btn className="secondary" shape="text" onClick={onClose}>

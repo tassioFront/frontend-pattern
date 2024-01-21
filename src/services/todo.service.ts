@@ -41,7 +41,7 @@ export const readTodosByBoardId = async ({
 };
 
 export const createBoard = async (
-  board: Omit<ITodoBoard, 'id'>
+  board: Omit<ITodoBoard, 'id' | 'todoItems'>
 ): Promise<ITodoBoard> => {
   const response = await postBoard(board);
   return response;

@@ -16,4 +16,5 @@ export interface ITodoBoard {
   title: string;
   id: string;
   todosOrder: Array<ITodo['id']>;
+  todoItems: ITodo[];
 }

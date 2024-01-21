@@ -71,7 +71,7 @@ interface IPostTodo {
 export const postTodo = async ({
   todo,
   boardId,
-}: IPostTodo): Promise<ITodo | null> => {
+}: IPostTodo): Promise<ITodo> => {
   await fakeApi(todo);
   const id = createFakeId();
   const todoUpdated = { ...todo, id };
@@ -119,7 +119,7 @@ export interface IPutTodoById {
 export const putTodoById = async ({
   todoId,
   updatedTodo,
-}: IPutTodoById): Promise<ITodo | null> => {
+}: IPutTodoById): Promise<ITodo> => {
   const todos = await getTodos();
   const todoIdx = todos.findIndex((todo) => todo.id === todoId);
 
@@ -177,6 +177,13 @@ export const putMoveTodoToAnotherBoard = async ({
   boards[sourceIndex].todosOrder = boards[sourceIndex].todosOrder.filter(
     (todo) => todo !== todoId
   );
+
+  const hasTodo = boards[targetIndex].todosOrder.indexOf(todoId);
+
+  if (hasTodo !== -1) {
+    throw new Error('todo is already there');
+  }
+
   boards[targetIndex].todosOrder.splice(newIndex, 0, todoId);
 
   const todos = await getTodos();

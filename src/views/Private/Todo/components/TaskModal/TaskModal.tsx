@@ -7,6 +7,7 @@ import { createTodo, updateTodoById } from '@/services/todo.service';
 import { todoCy } from '@/enums/dataCy';
 import Styles from './styles';
 import TextareaInput from '@/components/TextareaInput/TextareaInput';
+import { IBoardActions } from '../../types';
 
 const TextInput = lazy(
   async () => await import('@/components/TextInput/TextInput')
@@ -18,7 +19,7 @@ export interface TaskModalTypes {
   task: ITodo;
   setTask: (task: ITodo) => void;
   handleReset: () => void;
-  boardActions: any;
+  boardActions: IBoardActions;
   statusOptions: any;
   boardId: string;
 }
@@ -55,7 +56,6 @@ const TaskModal = memo(function TaskModal({
     const isInvalid = task.title === '' && task.description === '';
     if (isInvalid) return;
 
-    let hasSucceed = true;
     try {
       setOnSubmitUiState('isLoading');
       if (isEditModel) {
@@ -77,11 +77,9 @@ const TaskModal = memo(function TaskModal({
           currentStatus: boardId,
         });
       }
+      handleResetModal();
     } catch (error) {
-      hasSucceed = false;
       setOnSubmitUiState('isError');
-    } finally {
-      hasSucceed && handleResetModal();
     }
   };
 

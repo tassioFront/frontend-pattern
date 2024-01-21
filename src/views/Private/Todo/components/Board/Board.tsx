@@ -19,6 +19,7 @@ import {
   removeTodoById,
   updateBoardTitle,
 } from '@/services/todo.service';
+import { IBoardActions } from '../../types';
 const TaskModal = lazy(async () => await import('../TaskModal/TaskModal'));
 export interface BoardTypes {
   className?: string;
@@ -27,7 +28,7 @@ export interface BoardTypes {
   color?: string;
   todoEntities: ITodo[];
   selectedUser: ITodoUser;
-  boardActions: any;
+  boardActions: IBoardActions;
   statusOptions: any;
 }
 

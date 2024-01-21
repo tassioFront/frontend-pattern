@@ -9,20 +9,21 @@ export default {
     position: relative;
     width: 100%;
     flex-shrink: 0;
-    /* cursor: pointer; */
-    cursor: grab;
+    cursor: pointer;
   `,
   Header: styled.div`
+    align-items: baseline;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
 
-    /* & strong {
-    } */
+    & strong {
+      cursor: grab;
+      width: 100%;
+    }
   `,
   Content: styled.div`
     padding: var(--spacing-xsmall) 0;
-    cursor: pointer;
+    height: fit-content;
   `,
   Footer: styled.div`
     bottom: 0;

@@ -7,11 +7,7 @@ import { todoUsersResolvedRouter } from '@/routes/resolvedRoutes';
 import { todoSelectedUser } from '@/store/todoUsers';
 
 import Styles from './styles';
-import {
-  createBoard,
-  readBoards,
-  updateTodoById,
-} from '@/services/todo.service';
+import { createBoard, readBoards } from '@/services/todo.service';
 
 import { useNavigate } from 'react-router-dom';
 import BtnFloat from '@/components/BtnFloat/BtnFloat';
@@ -27,16 +23,15 @@ import {
   DragOverEvent,
   PointerSensor,
 } from '@dnd-kit/core';
-import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import Task from './components/Task/Task';
+import { IBoardActions } from './types';
 
 const Board = lazy(async () => await import('./components/Board/Board'));
 const UserSelect = lazy(
   async () => await import('./components/UserSelect/UserSelect')
 );
 
-// Nice drag and drop example
-// https://www.youtube.com/watch?v=CYKDtVZr_Jw
 const Todo = (): JSX.Element => {
   const selectedUser = useSelector(todoSelectedUser) as ITodoUser;
   const navigate = useNavigate();
@@ -62,7 +57,7 @@ const Todo = (): JSX.Element => {
     },
   });
 
-  // drag and drop state
+  // drag and drop state [adjust]
   const [activeTaskDragged, setActiveTaskDragged] = useState<ITodo>();
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -79,28 +74,25 @@ const Todo = (): JSX.Element => {
   const copyBoardState = (): ITodoBoard[] => Object.assign([], boards);
 
   const handleDragEnd = (event: DragOverEvent) => {
-    const { active, over } = event;
-    if (active.id === over?.id) return;
-    const copyBoards = copyBoardState();
-    const boardIdx = copyBoards.findIndex(
-      (item) => item.id === active?.data?.current?.boardId
-    );
-
-    if (!copyBoards[boardIdx].todoItems) return;
-
-    const oldIndex = copyBoards[boardIdx].todoItems.findIndex(
-      (item) => item.id === active.id
-    );
-    const newIndex = copyBoards[boardIdx].todoItems.findIndex(
-      (item) => item.id === over?.id
-    );
-
-    copyBoards[boardIdx].todoItems = arrayMove(
-      copyBoards[boardIdx].todoItems,
-      oldIndex,
-      newIndex
-    );
-    setBoards(copyBoards);
+    // const { active, over } = event;
+    // if (active.id === over?.id) return;
+    // const copyBoards = copyBoardState();
+    // const boardIdx = copyBoards.findIndex(
+    //   (item) => item.id === active?.data?.current?.boardId
+    // );
+    // if (!copyBoards[boardIdx].todoItems) return;
+    // const oldIndex = copyBoards[boardIdx].todoItems.findIndex(
+    //   (item) => item.id === active.id
+    // );
+    // const newIndex = copyBoards[boardIdx].todoItems.findIndex(
+    //   (item) => item.id === over?.id
+    // );
+    // copyBoards[boardIdx].todoItems = arrayMove(
+    //   copyBoards[boardIdx].todoItems,
+    //   oldIndex,
+    //   newIndex
+    // );
+    // setBoards(copyBoards);
   };
 
   const handleDragStart = (event: DragOverEvent) => {
@@ -108,94 +100,93 @@ const Todo = (): JSX.Element => {
   };
 
   const handleDragOver = async (event: DragOverEvent) => {
-    const { active, over } = event;
-    const id = active.data?.current?.boardId;
-    const overId = over?.data?.current?.boardId ?? over?.id;
-
-    const activeContainer = boards.findIndex((item) => item.id === id);
-    const overContainer = boards.findIndex((item) => item.id === overId);
-    if (
-      activeContainer === -1 ||
-      overContainer === -1 ||
-      activeContainer === overContainer
-    ) {
-      return;
-    }
-
-    const task = active?.data?.current?.task;
-    console.log('🚀 ~ handleDragOver ~ task:', task);
-    try {
-      await updateTodoById({
-        updatedTodo: { ...task, boardId: overId },
-        todoId: task.id,
-      });
-      boardActions.updateTodoByBoardId({
-        itemEdit: { ...task, boardId: overId },
-        currentStatus: task?.boardId,
-      });
-    } catch (error) {
-      console.error('🚀 ~ handleDragOver ~ error:', error);
-    }
+    // const { active, over } = event;
+    // const activeBoardId = active.data?.current?.boardId;
+    // const overId = over?.data?.current?.task.boardId ?? over.id;
+    // // const taskOverdId = over?.data?.current?.task?.id;
+    // const activeContainer = boards.findIndex(
+    //   (item) => item.id === activeBoardId
+    // );
+    // const overContainer = boards.findIndex((item) => item.id === overId);
+    // const taskOverdId = boards[overContainer].todosOrder.indexOf(over?.id);
+    // if (
+    //   activeContainer === -1 ||
+    //   overContainer === -1 ||
+    //   activeContainer === overContainer ||
+    //   active?.data?.current?.task?.boardId === overId
+    // ) {
+    //   return;
+    // }
+    // const task = active?.data?.current?.task;
+    // try {
+    //   if (activeBoardId === overId) {
+    //     // await updateTodoById({
+    //     //   updatedTodo: { ...task, boardId: overId },
+    //     //   todoId: task.id,
+    //     // });
+    //     // boardActions.updateTodoByBoardId({
+    //     //   itemEdit: { ...task, boardId: overId },
+    //     //   currentStatus: task?.boardId,
+    //     // });
+    //   } else {
+    //     // await updateMoveTodoToAnotherBoard({
+    //     //   sourceBoardId: task.boardId,
+    //     //   targetBoardId: overId,
+    //     //   todoId: task.id,
+    //     //   newIndex: taskOverdId,
+    //     // });
+    //     boardActions.moveTodoToAnotherBoard({
+    //       sourceBoardId: task.boardId,
+    //       targetBoardId: overId,
+    //       todoId: task.id,
+    //       newIndex: taskOverdId === -1 ? 0 : taskOverdId,
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.error('🚀 ~ handleDragOver ~ error:', error);
+    // }
   };
+  // drag and drop state [adjust]
 
-  const boardActions = {
-    replaceBoardTodos: ({
-      todoItems,
-      currentStatus,
-    }: {
-      todoItems: ITodo | ITodo[];
-      currentStatus: string;
-    }) => {
+  const boardActions: IBoardActions = {
+    replaceBoardTodos: ({ todoItems, currentStatus }) => {
       const copyBoards = copyBoardState();
       const boardToUpdate = copyBoards.find(
         (copyBoard) => copyBoard.id === currentStatus
       ) as ITodoBoard;
 
       if ((todoItems as ITodo[])?.length !== undefined) {
-        boardToUpdate.todoItems = todoItems;
+        boardToUpdate.todoItems = todoItems as ITodo[];
       } else {
-        boardToUpdate?.todoItems?.push?.(todoItems);
+        boardToUpdate?.todoItems?.push?.(todoItems as ITodo);
       }
-
       setBoards(copyBoards);
     },
-    updateTodoByBoardId: ({
-      itemEdit,
-      currentStatus,
-    }: {
-      itemEdit: ITodo;
-      currentStatus: string;
-    }) => {
+    updateTodoByBoardId: ({ itemEdit, currentStatus }) => {
       const copyBoards = copyBoardState();
-
-      const board = copyBoards.find(
+      const sourceBoard = copyBoards.find(
         (board) => board.id === currentStatus
       ) as ITodoBoard;
-      const todo = board.todoItems.findIndex((item) => {
+      const todo = sourceBoard.todoItems.findIndex((item) => {
         return item.id === itemEdit.id;
       });
-
       const hasChangedStatus = currentStatus !== itemEdit.boardId;
+
       if (hasChangedStatus) {
-        board.todoItems = board.todoItems.filter(
+        sourceBoard.todoItems = sourceBoard.todoItems.filter(
           (item: ITodo) => item.id !== itemEdit.id
         );
-        const boardToUpdate = copyBoards.find(
+        const destinationBoard = copyBoards.find(
           (board) => board.id === itemEdit.boardId
         ) as ITodoBoard;
-        boardToUpdate.todoItems.unshift(itemEdit);
+        destinationBoard.todoItems.unshift(itemEdit);
       } else {
-        board.todoItems[todo] = { ...itemEdit };
+        sourceBoard.todoItems[todo] = { ...itemEdit };
       }
+
       setBoards(copyBoards);
     },
-    deleteTodo: ({
-      boardToUpdateId,
-      todoId,
-    }: {
-      boardToUpdateId: string;
-      todoId: string;
-    }) => {
+    deleteTodo: ({ boardToUpdateId, todoId }) => {
       const copyBoards = copyBoardState();
       const boardIdx = copyBoards.findIndex(
         (board) => board.id === boardToUpdateId
@@ -203,20 +194,15 @@ const Todo = (): JSX.Element => {
       copyBoards[boardIdx].todoItems = copyBoards[boardIdx].todoItems.filter(
         (todo) => todo.id !== todoId
       );
+
       setBoards(copyBoards);
     },
-    deleteBoard: ({ boardToUpdateId }: { boardToUpdateId: string }) => {
+    deleteBoard: ({ boardToUpdateId }) => {
       let copyBoards = copyBoardState();
       copyBoards = copyBoards.filter((board) => board.id !== boardToUpdateId);
       setBoards(copyBoards);
     },
-    updateBoardTitle: async ({
-      currentStatus,
-      newTitle,
-    }: {
-      currentStatus: string;
-      newTitle: string;
-    }) => {
+    updateBoardTitle: ({ currentStatus, newTitle }) => {
       const copyBoards = copyBoardState();
       const boardToUpdate = copyBoards.find(
         (copyBoard) => copyBoard.id === currentStatus
@@ -224,6 +210,36 @@ const Todo = (): JSX.Element => {
       boardToUpdate.title = newTitle;
       setBoards(copyBoards);
     },
+    // moveTodoToAnotherBoard: () =>
+    //   // sourceBoardId,
+    //   // targetBoardId,
+    //   // todoId,
+    //   // newIndex,
+    //   {
+    //     // const copyBoards = copyBoardState();
+    //     // const sourceIndex = copyBoards.findIndex(
+    //     //   (board) => board.id === sourceBoardId
+    //     // );
+    //     // const targetIndex = copyBoards.findIndex(
+    //     //   (board) => board.id === targetBoardId
+    //     // );
+    //     // const todoIdx = copyBoards[sourceIndex].todoItems.findIndex((item) => {
+    //     //   return item.id === todoId;
+    //     // });
+    //     // if (todoIdx === -1) return;
+    //     // copyBoards[sourceIndex].todosOrder = copyBoards[
+    //     //   sourceIndex
+    //     // ].todosOrder.filter((todo) => todo !== todoId);
+    //     // copyBoards[targetIndex].todosOrder.splice(newIndex, 0, todoId);
+    //     // copyBoards[targetIndex].todoItems.splice(newIndex, 0, {
+    //     //   ...copyBoards[sourceIndex].todoItems[todoIdx],
+    //     //   boardId: targetBoardId,
+    //     // });
+    //     // copyBoards[sourceIndex].todoItems = copyBoards[
+    //     //   sourceIndex
+    //     // ].todoItems.filter((todo) => todo.id !== todoId);
+    //     // setBoards(copyBoards);
+    //   },
   };
 
   useEffect(() => {
