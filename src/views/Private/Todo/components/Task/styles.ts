@@ -4,12 +4,22 @@ export default {
   Wrapper: styled.article`
     background-color: var(--color-neutral-light-1);
     border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
     min-height: 120px;
     padding: var(--spacing-xxsmall) var(--spacing-small);
     position: relative;
     width: 100%;
-    flex-shrink: 0;
-    cursor: pointer;
+    animation: fadeIn 0.5s;
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
   `,
   Header: styled.div`
     align-items: baseline;
