@@ -7,7 +7,7 @@ import { createFakeId } from '../createFakeId';
 /*
  * BACKEND_LESS
  * This is just to simulate a backend and make dynamic todos (please ignore for frontend purposes)
- * I might create a real service in the future
+ * I might create a real service in the future and take care of if
  */
 export const getTodos = async () => {
   const currentData = storageService.get<ITodo[]>(StorageKeys.TodoData) ?? [];
