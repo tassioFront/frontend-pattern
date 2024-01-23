@@ -87,7 +87,7 @@ self.onmessage = (
       (copyBoard) => copyBoard.id === currentStatus
     ) as ITodoBoard;
     boardToUpdate.title = newTitle;
-
+    boards = copyBoards;
     self.postMessage({ boards: copyBoards, action: 'updateBoardTitle' });
   }
 };
