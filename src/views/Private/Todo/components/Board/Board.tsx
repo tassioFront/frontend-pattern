@@ -180,6 +180,7 @@ const Board = memo(function Board({
           onClick={() => setIsOpen(true)}
           shape="text"
           data-cy={todoCy.createTask + boardId}
+          disabled={heading === ''}
         >
           <i
             title="click to create the task"
