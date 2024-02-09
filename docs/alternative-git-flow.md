@@ -12,9 +12,9 @@ The `develop` branch is the branch for ongoing development and it is used as bra
 
 Alternatively, this git flow also can have the staging environment. Each branch base has an environment, but it keeps using master as base to create all other branches.
 
-## Feature Branches
+## Feature/Fix Branches
 
-Feature branches are used to develop new features or enhancements for the project. They should always be created from the `master` branch and merged back into the `develop` branch when completed. Feature branches should be named descriptively, reflecting the feature or enhancement being developed.
+Feature branches are used to develop new features or enhancements for the project. They (feat and fix branches) should always be created from the `master`. They should be named descriptively, reflecting the feature or enhancement being developed.
 
 ## Here's an example of a workflow:
 
