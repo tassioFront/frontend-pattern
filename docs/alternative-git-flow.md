@@ -19,7 +19,7 @@ Feature branches are used to develop new features or enhancements for the projec
 ## Here's an example of a workflow:
 
 1. Creating the branches \
-1.1 `git checkout master` \
+1.1 `git checkout master && git pull origin master` -> checkout and updates master branch locally \
 1.2 `git checkout -b feat/branch-a`
 
 ...after development
@@ -46,7 +46,7 @@ Once everything goes right and validated, it's time to deploy on PRD
 NOTE: 
 Once all branches are created from master, every branch created has independently code. The key point to it is: \
 3.1 `git checkout develop` \
-3.2 `git pull origin feat/branch-a` \
+3.2 `git pull origin feat/branch-a`
 
 It means `feat/branch-a` updates `develop` branch and not the contrary. So even if `develop` has other code in (`feat/*`), `feat/branch-a` is not impacted for it.
 
