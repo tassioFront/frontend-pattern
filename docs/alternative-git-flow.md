@@ -55,4 +55,4 @@ It means `feat/branch-a` updates `develop` branch and not the contrary. So even 
 
 See the image example: 
 
-![image showing alternative git flow]("./git-flow-example.png")
+![image showing alternative git flow](./git-flow-example.png)
