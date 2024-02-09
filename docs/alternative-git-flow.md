@@ -4,22 +4,19 @@ Git Flow is a branching model for Git that helps teams manage their codebase and
 
 ### Master Branch
 
-The `master` branch represents the stable and production-ready code. It should always contain the latest release version of the project. Every commit on the `master` branch should be a tagged release.
+The `master` branch represents the stable and production-ready code. It should always contain the latest release version of the project.
 
 ### Develop Branch
 
-The `develop` branch is the branch for ongoing development and it is used as branch base to deploy on development environment. 
+The `develop` branch is the branch for ongoing development and it is used as branch base to deploy on DEV environment. 
 
-Alternatively, this git flow also can have the staging environment. Each branch base has a environment, but it keep using master as base to create all other branches.
+Alternatively, this git flow also can have the staging environment. Each branch base has an environment, but it keeps using master as base to create all other branches.
 
 ## Feature Branches
 
 Feature branches are used to develop new features or enhancements for the project. They should always be created from the `master` branch and merged back into the `develop` branch when completed. Feature branches should be named descriptively, reflecting the feature or enhancement being developed.
 
 ## Here's an example of a workflow involving two branches:
-
-Developer A (*DA*) creates a branch `feat/branch-a` from `master`.
-Developer B (*DB*) creates a branch `fix/branch-b` from `master`.
 
 1. Creating the branches \
 1.1 `git checkout master` \
