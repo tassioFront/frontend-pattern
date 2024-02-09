@@ -56,3 +56,6 @@ See the image example:
 
 # Conflicts
 ... coming soon
+
+# Credits
+[felipefialho](https://github.com/felipefialho)
