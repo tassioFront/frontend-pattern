@@ -21,35 +21,35 @@ Feature branches are used to develop new features or enhancements for the projec
 Developer A (*DA*) creates a branch `feat/branch-a` from `master`.
 Developer B (*DB*) creates a branch `fix/branch-b` from `master`.
 
-1. Creating the branches
-1.1 `git checkout master`
+1. Creating the branches \
+1.1 `git checkout master` \
 1.2 `git checkout -b feat/branch-a`
 
 ...after development
 
-2. Pull Request
-2.1 Open a pull request using `master` as base -> this pull request will still open until the deploy on PRD environment and the whole review will be done here (no reviews in other branches are needed)
+2. Pull Request \
+2.1 Open a pull request using `master` as base -> this pull request will still open until the deploy on PRD environment and the whole review will be done here (no reviews in other branches are needed) \
 2.2 Ask for reviewers (recommendation: 2 approvals)
 
 Once having two approvals, the developer can deploy their code on DEV environment and validate the code on a https environment
 
-3. Deploy in `develop`
-3.1 `git checkout develop`
-3.2 `git pull origin feat/branch-a` -> notice: the code goes from `feat/branch-a` to `develop`, so `feat/branch-a` only has its code. Nothing more!
-3.3 `git push origin develop`
+3. Deploy in `develop` \
+3.1 `git checkout develop`\
+3.2 `git pull origin feat/branch-a` -> notice: the code goes from `feat/branch-a` to `develop`, so `feat/branch-a` only has its code. Nothing more! \
+3.3 `git push origin develop` \
 3.4 deploy on DEV environment
 
 Once everything goes right and validated, it's time to deploy on PRD
 
-4. Deploy in `master`
-4.1 merge the pull request created on section `2` - master branch is updated
+4. Deploy in `master` \
+4.1 merge the pull request created on section `2` - master branch is updated \
 4.2 Deploy on PRD environment
 
 
 NOTE: 
-Once all branches are created from master, every branch created has independently code. The key point to it is:
-3.1 `git checkout develop`
-3.2 `git pull origin feat/branch-a`
+Once all branches are created from master, every branch created has independently code. The key point to it is: \
+3.1 `git checkout develop` \
+3.2 `git pull origin feat/branch-a` \
 
 It means `feat/branch-a` updates `develop` branch and not the contrary. So even if `develop` has other code in (`feat/*`), `feat/branch-a` is not impacted for it.
 
