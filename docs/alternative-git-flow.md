@@ -16,7 +16,7 @@ Alternatively, this git flow also can have the staging environment. Each branch 
 
 Feature branches are used to develop new features or enhancements for the project. They should always be created from the `master` branch and merged back into the `develop` branch when completed. Feature branches should be named descriptively, reflecting the feature or enhancement being developed.
 
-## Here's an example of a workflow involving two branches:
+## Here's an example of a workflow:
 
 1. Creating the branches \
 1.1 `git checkout master` \
