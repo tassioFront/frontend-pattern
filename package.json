@@ -12,6 +12,8 @@
     "preview": "vite preview",
     "visualizer": "VITE_VISUALIZER=true yarn build",
     "e2e": "cypress run --browser chrome",
+    "pre-commit": "lint-staged",
+    "pre-push": "yarn test:ci && yarn build",
     "prepare": "husky install"
   },
   "dependencies": {

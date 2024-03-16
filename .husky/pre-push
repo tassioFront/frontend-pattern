@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+yarn run pre-push

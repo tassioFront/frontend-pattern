@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx lint-staged
-  yarn test:ci
-  yarn build
+if [ ! $(git rev-parse -q --verify MERGE_HEAD) ]; then
+  yarn run pre-commit
+fi
