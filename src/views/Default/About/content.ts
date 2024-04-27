@@ -220,4 +220,14 @@ export const challenges: IContent['challenges'] = [
     ],
     tags: [Techs.Vite],
   },
+    {
+    title: 'Achieving a Zero-Downtime Migration from Azure to AWS',
+    desc: [`I nice description is coming soon...`],
+    tags: [Techs.Akamai, Techs.AWS, Techs.Azure]
+  },
+  {
+    title: 'Embarking on a Journey in a Major E-commerce Company',
+    desc: [`I nice description regarding my current job is coming soon...`],
+    tags: [Techs.Next, Techs.React, Techs.Jest, Techs.TS, Techs.DD]
+  }
 ];
