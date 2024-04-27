@@ -98,12 +98,12 @@ export const challenges: IContent['challenges'] = [
     ],
   },
   {
-    title: 'Second (and current) job - B2B Marketplace',
+    title: 'Second job - B2B Marketplace',
     desc: [
-      `In Mar 2020, I got my second (and current) opportunity as a FrontEnd Developer (${linkBtnFromString(
+      `In Mar 2020, I got my second opportunity as a FrontEnd Developer (${linkBtnFromString(
         'At Juntos Somos Mais',
         'https://loja.juntossomosmais.com.br/'
-      )} - or just JSM). At that moment, my challenge was to get into a more stable company with a legacy project created by a third-party company. Let's split it to explain:`,
+      )} - or just JSM). When I joined, I faced the challenge of working on a legacy project that was created by a third-party company. Let me explain the situation:`,
       `1st: Before I got in, the JSM contracted a third-party company to create the project (which is a B2B marketplace);`,
       `2nd: The third-party company didn't have a cultural fit with JSM and the project wasn't created using their principles and beliefs. As result, we had a legacy 6 months project - a lot of bugs and a lot of people without the JSM's culture.`,
 
@@ -111,8 +111,8 @@ export const challenges: IContent['challenges'] = [
         "my challenge wasn't just coding, as a junior JSM developer I also needed to bring the JSM's culture inside the project"
       )}.`,
 
-      `Nowadays, we have a project ${highlighText(
-        '5x times bigger and with a great culture and focus on quality'
+      `Today, we have successfully transformed the project into a much larger and more robust system, with a ${highlighText(
+        'strong focus on quality.'
       )}.`,
     ],
     tags: [Techs.Vue, Techs.TS, Techs.React, Techs.Sentry, Techs.RA],
@@ -220,4 +220,14 @@ export const challenges: IContent['challenges'] = [
     ],
     tags: [Techs.Vite],
   },
+    {
+    title: 'Achieving a Zero-Downtime Migration from Azure to AWS',
+    desc: [`I nice description is coming soon...`],
+    tags: [Techs.Akamai, Techs.AWS, Techs.Azure]
+  },
+  {
+    title: 'Embarking on a Journey in a Major E-commerce Company',
+    desc: [`I nice description regarding my current job is coming soon...`],
+    tags: [Techs.Next, Techs.React, Techs.Jest, Techs.TS, Techs.DD]
+  }
 ];

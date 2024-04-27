@@ -11,6 +11,8 @@ export enum Techs {
   RA = 'React-admin',
   Nx = 'Nx',
   AD = 'Azure DevOps',
+  Azure = 'Azure',
+  AWS = 'AWS',
   AS = 'App Service',
   SWA = 'Static Web Apps',
   Amplify = 'Amplify',
@@ -22,4 +24,6 @@ export enum Techs {
   Vite = 'Vite',
   WP = 'Webpack',
   Nuxt = 'Nuxt',
+  Next = 'Next',
+  DD = 'datadog'
 }
