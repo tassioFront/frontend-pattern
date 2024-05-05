@@ -30,16 +30,19 @@ const Footer = ({ children, href, ...rest }: FooterTypes): JSX.Element => {
           <i className="fa fa-linkedin"></i>
         </a>
       </Styles.SocialMedia>
-      <a
-        href="https://github.com/tassioFront"
-        title="Go to web site creator GitHub"
-        className="secondary"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Made with ❤️ by Tássio Jordão{' '}
-        <i className="fa fa-external-link-square" aria-hidden="true"></i>
-      </a>
+      <Styles.Author>
+        <p>Made with ❤️ by Tássio Jordão </p>
+        <a
+          href="https://ko-fi.com/tjordao"
+          title="Go to web site creator GitHub"
+          className="secondary"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Buy me a coffee ☕
+          <i className="fa fa-external-link-square" aria-hidden="true"></i>
+        </a>
+      </Styles.Author>
     </Styles.Footer>
   );
 };
