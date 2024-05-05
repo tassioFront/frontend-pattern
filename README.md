@@ -45,6 +45,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 - `yarn build`
 
+
 # About author
 
+> [Buy me a coffee](https://ko-fi.com/tjordao) ☕. Hope I have helped you somehow. 🤗
+
 Hi, I'm Tássio Jordão (TJ), a Chemical with Front-End experience. Actually, I'm a Frontend developer with some Chemistry knowledge. [See more here](https://frontend-pattern.vercel.app/about)
+
+Just starting on ko-fi. Checkout my articles about system development, front-end and more: https://frontend-pattern.vercel.app/articles
