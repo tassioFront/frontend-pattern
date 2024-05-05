@@ -1,17 +1,31 @@
-vi.mock('@/hooks/useClickOutside/useClickOutside', () => {
-  return {
-    useClickOutside: vi.fn(),
-  };
-});
-
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { vi } from 'vitest';
 
 import EditableTypography from './EditableTypography';
 
+const user = userEvent.setup();
+
+const WrapperWithLabelState = ({ labelInit = '' }) => {
+  const [label, setLabel] = React.useState(labelInit);
+  return (
+    <div>
+      <button data-testid="click-outside">click outside</button>
+      <EditableTypography
+        label={label}
+        id="testId"
+        tag="h1"
+        className="testClass"
+        updateText={setLabel}
+      />
+    </div>
+  );
+};
+
 describe('<EditableTypography />', () => {
-  it('Should render validate empty state mode, showing fallback', () => {
+  it('Should enter edit mode and render placeholder as there is no label value - showing fallback to empty label state', () => {
     const updateTextMock = vi.fn();
     render(
       <EditableTypography
@@ -23,10 +37,10 @@ describe('<EditableTypography />', () => {
       />
     );
 
-    expect(screen.queryByTestId('editable__input')).toBeInTheDocument();
-    expect(
-      (screen.queryByTestId('editable__input') as HTMLInputElement)?.value
-    ).toBe('Edit me');
+    const input = screen.getByTestId('editable__input') as HTMLInputElement;
+
+    expect(input).toBeInTheDocument();
+    expect(input.placeholder).toBe('Edit me');
   });
 
   it('Should render label as it is not edit mode', () => {
@@ -45,7 +59,7 @@ describe('<EditableTypography />', () => {
     expect(screen.queryByTestId('editable__input')).not.toBeInTheDocument();
   });
 
-  it('Should enters edit mode when clicked and close it when Esc btn is clicked', () => {
+  it('Should enter edit mode and close it when Esc btn is clicked', async () => {
     const updateTextMock = vi.fn();
     render(
       <EditableTypography
@@ -57,31 +71,25 @@ describe('<EditableTypography />', () => {
       />
     );
 
-    fireEvent.click(screen.getByTitle('Click to edit'));
-    const input = screen.getByTitle('Press Esc or click outside to cancel');
+    const typographyElement = screen.getByTitle('Click to edit');
 
-    expect(input).toBeInTheDocument();
+    await user.click(typographyElement);
 
-    fireEvent.change(input, {
-      target: { value: 'New Text' },
-    });
+    const inputElement = screen.getByTestId('editable__input');
 
-    fireEvent.keyDown(input, {
-      key: 's',
-    });
+    await user.type(inputElement, 'New Title{shift}');
 
     expect(updateTextMock).not.toHaveBeenCalled();
+    expect(inputElement).toBeInTheDocument();
 
-    fireEvent.keyDown(input, {
-      key: 'Escape',
-    });
+    await user.type(inputElement, '{escape}');
 
     expect(updateTextMock).not.toHaveBeenCalled();
-    expect(input).not.toBeInTheDocument();
+    expect(inputElement).not.toBeInTheDocument();
     expect(screen.getByText('Old title')).toBeInTheDocument();
   });
 
-  it('Should enters edit mode and calls updateText on Enter key press', () => {
+  it('Should enter edit mode and calls updateText on Enter key pressed', async () => {
     const updateTextMock = vi.fn();
     render(
       <EditableTypography
@@ -93,19 +101,52 @@ describe('<EditableTypography />', () => {
       />
     );
 
-    fireEvent.click(screen.getByTitle('Click to edit'));
-    const input = screen.getByTitle('Press Esc or click outside to cancel');
+    const typographyElement = screen.getByTitle('Click to edit');
 
-    expect(input).toBeInTheDocument();
+    await user.click(typographyElement);
 
-    fireEvent.change(input, {
-      target: { value: 'New Text' },
-    });
+    const inputElement = screen.getByTestId('editable__input');
 
-    fireEvent.keyDown(input, {
-      key: 'Enter',
-    });
+    await user.clear(inputElement);
+    await user.type(inputElement, 'New Title{enter}');
 
-    expect(updateTextMock).toHaveBeenCalledWith('New Text');
+    expect(inputElement).not.toBeInTheDocument();
+    expect(updateTextMock).toHaveBeenCalledWith('New Title');
+  });
+
+  it('Should not close edit mode as there is no label value and user clicked outside', async () => {
+    render(<WrapperWithLabelState />);
+
+    const inputElement = screen.getByTestId('editable__input');
+    const btn = screen.getByTestId('click-outside');
+
+    await user.click(btn);
+
+    expect(inputElement).toBeInTheDocument();
+
+    await user.type(inputElement, 'New Title');
+
+    await user.click(btn);
+
+    expect(inputElement).toBeInTheDocument();
+    expect(screen.queryByText('New Title')).not.toBeInTheDocument();
+  });
+
+  it('Should close edit mode and restore label value as user clicked outside', async () => {
+    render(<WrapperWithLabelState labelInit="Old title" />);
+
+    const typographyElement = screen.getByTitle('Click to edit');
+
+    await user.click(typographyElement);
+
+    const inputElement = screen.getByTestId('editable__input');
+    const btn = screen.getByTestId('click-outside');
+
+    await user.type(inputElement, 'New Title');
+
+    await user.click(btn);
+
+    expect(screen.queryByTestId('editable__input')).not.toBeInTheDocument();
+    expect(screen.getByText('Old title')).toBeInTheDocument();
   });
 });
