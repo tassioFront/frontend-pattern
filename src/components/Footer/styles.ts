@@ -24,6 +24,16 @@ const Styles = {
     padding-bottom: var(--spacing-giant);
     gap: var(--spacing-small);
   `,
+  Author: styled.div`
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    ${media.lessThan('tablet')`
+      align-self: flex-start;
+      align-items: flex-start;
+  `}
+  `,
 };
 
 export default Styles;
