@@ -32,6 +32,11 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+    watch: false,
+    coverage: {
+      provider: 'istanbul',
+      reporter: ['html'],
+    },
   },
   server: {
     port: 3000,
