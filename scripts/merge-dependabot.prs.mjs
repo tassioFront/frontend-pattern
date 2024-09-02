@@ -11,13 +11,14 @@ import path from 'path';
  * 4. Run the script with node scripts/merge-dependabot.prs.mjs
  */
 
-// Constants
+// Constants (update it according to your needs)
 const REPO_URL = 'https://github.com/tassioFront/frontend-pattern.git';
 const COMBINED_BRANCH = 'ci/combined-dependabot-updates';
 const MAIN_BRANCH = 'main';
 const GITHUB_TOKEN = 'YOUR_TOKEN';
 const REPO_OWNER = 'tassioFront';
 const REPO_NAME = 'frontend-pattern';
+// Constants (update it according to your needs)
 
 const colors = {
   reset: '\x1b[0m',
@@ -32,7 +33,7 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
 // Fetch open Dependabot pull requests
 async function getDependabotPRs() {
   console.log(
-    `${colors.blue}Fetching open Dependabot pull requests...${colors.reset}`,
+    `${colors.blue}Fetching open Dependabot pull requests...${colors.reset}`
   );
   const { data: pullRequests } = await octokit.pulls.list({
     owner: REPO_OWNER,
@@ -41,10 +42,10 @@ async function getDependabotPRs() {
   });
 
   const dependabotPRs = pullRequests.filter(
-    (pr) => pr.user.login === 'dependabot[bot]',
+    (pr) => pr.user.login === 'dependabot[bot]'
   );
   console.log(
-    `${colors.green}Found ${dependabotPRs.length} Dependabot pull requests. 🤖 ${colors.reset}`,
+    `${colors.green}Found ${dependabotPRs.length} Dependabot pull requests. 🤖 ${colors.reset}`
   );
   return dependabotPRs;
 }
@@ -52,7 +53,7 @@ async function getDependabotPRs() {
 // Extract dependency updates from the pull requests (presents in package.json)
 async function extractDependencies(prs) {
   console.log(
-    `${colors.blue}Extracting dependencies from Dependabot pull requests...${colors.reset}`,
+    `${colors.blue}Extracting dependencies from Dependabot pull requests...${colors.reset}`
   );
   const dependencies = {};
 
@@ -61,7 +62,7 @@ async function extractDependencies(prs) {
       owner: REPO_OWNER,
       repo: REPO_NAME,
       pull_number: pr.number,
-    }),
+    })
   );
 
   const filesArray = await Promise.all(filePromises);
@@ -82,7 +83,7 @@ async function extractDependencies(prs) {
   });
 
   console.log(
-    `${colors.green}Dependencies extracted successfully.${colors.reset}`,
+    `${colors.green}Dependencies extracted successfully.${colors.reset}`
   );
   return dependencies;
 }
@@ -90,14 +91,14 @@ async function extractDependencies(prs) {
 // Update package.json with new dependencies
 function updatePackageJson(dependencies) {
   console.log(
-    `${colors.blue}Updating package.json with new dependencies...${colors.reset}`,
+    `${colors.blue}Updating package.json with new dependencies...${colors.reset}`
   );
   const packageJsonPath = path.resolve('package.json');
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
   for (const [name, version] of Object.entries(dependencies)) {
     console.log(
-      `${colors.yellow}Updating ${name} to ${version}${colors.reset}`,
+      `${colors.yellow}Updating ${name} to ${version}${colors.reset}`
     );
     if (packageJson.dependencies && packageJson.dependencies[name]) {
       packageJson.dependencies[name] = version;
@@ -111,7 +112,7 @@ function updatePackageJson(dependencies) {
 
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
   console.log(
-    `${colors.green}package.json updated successfully.${colors.reset}`,
+    `${colors.green}package.json updated successfully.${colors.reset}`
   );
 }
 
@@ -124,7 +125,7 @@ async function main() {
   console.log(`${colors.blue}Installing new dependencies...${colors.reset}`);
   execSync('yarn install');
   console.log(
-    `${colors.blue}Creating new branch ${COMBINED_BRANCH}...${colors.reset}`,
+    `${colors.blue}Creating new branch ${COMBINED_BRANCH}...${colors.reset}`
   );
   execSync(`git checkout -b ${COMBINED_BRANCH}`);
 
@@ -154,7 +155,7 @@ async function main() {
 main().catch((error) => {
   if (error.message.includes('@octokit/rest')) {
     console.error(
-      `${colors.red}Please install @octokit/rest package as DevDependencies.${colors.reset}`,
+      `${colors.red}Please install @octokit/rest package as DevDependencies.${colors.reset}`
     );
     process.exit;
   }
