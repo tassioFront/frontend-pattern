@@ -35,7 +35,7 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.NPM_TOKEN }}
           branch: combined-dependabot-updates
           title: 'Combined Dependabot Updates'
           body: 'This pull request combines all Dependabot updates for this month.'
