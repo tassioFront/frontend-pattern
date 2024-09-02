@@ -3,6 +3,7 @@ registries:
   npm-registry-npm-pkg-github-com:
     type: npm-registry
     url: https://npm.pkg.github.com
+    token: '${{secrets.DEPENDABOT_TOKEN}}'
 updates:
   - package-ecosystem: npm
     directory: '/'
@@ -12,3 +13,5 @@ updates:
     open-pull-requests-limit: 10
     rebase-strategy: 'disabled'
     target-branch: main
+    registries:
+      - npm-registry-npm-pkg-github-com
