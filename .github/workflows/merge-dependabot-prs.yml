@@ -26,7 +26,7 @@ jobs:
           git checkout -b ci/combined-dependabot-updates
           for branch in $(git branch -r | grep 'dependabot/npm_and_yarn' | sed 's/origin\///'); do
             echo $branch
-            git pull origin $branch --no-rebase || true
+            git pull origin $branch --no-rebase --allow-unrelated-histories || true
           done
 
       - name: Push combined branch
