@@ -1,0 +1,16 @@
+version: 2
+registries:
+  npm-registry-npm-pkg-github-com:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: monthly
+      time: '08:00'
+    open-pull-requests-limit: 10
+    rebase-strategy: 'disabled'
+    target-branch: main
+    registries:
+      - npm-registry-npm-pkg-github-com
