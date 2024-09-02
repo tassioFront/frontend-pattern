@@ -23,14 +23,14 @@ jobs:
 
       - name: Create combined branch
         run: |
-          git checkout -b combined-dependabot-updates
+          git checkout -b ci/combined-dependabot-updates
           for branch in $(git branch -r | grep dependabot | sed 's/origin\///'); do
             git merge --no-edit $branch || true
           done
 
       - name: Push combined branch
         run: |
-          git push origin combined-dependabot-updates
+          git push origin ci/combined-dependabot-updates
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
@@ -39,4 +39,4 @@ jobs:
           branch: combined-dependabot-updates
           title: 'Combined Dependabot Updates'
           body: 'This pull request combines all Dependabot updates for this month.'
-          base: master
+          base: main
