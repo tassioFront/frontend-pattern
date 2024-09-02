@@ -26,3 +26,6 @@ yarn-error.log*
 .eslintcache
 .npmrc
 chunks-*.html
+
+#scripts
+/scripts
