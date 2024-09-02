@@ -73,7 +73,7 @@
     "eslint-plugin-react": "^7.31.8",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
+    "prettier": "^3.3.3",
     "rollup-plugin-visualizer": "^5.9.2",
     "styled-components": "^5.3.6",
     "styled-media-query": "^2.1.2",
