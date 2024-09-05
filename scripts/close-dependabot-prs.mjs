@@ -1,5 +1,6 @@
-import { Octokit } from '@octokit/rest';
 import readline from 'readline';
+
+import { Octokit } from '@octokit/rest';
 
 /* requirements
  * 0. Install Node.js
@@ -40,12 +41,14 @@ async function getDependabotPRs() {
   const dependabotPRs = pullRequests.filter(
     (pr) => pr.user.login === 'dependabot[bot]'
   );
+
   console.log(
     `${colors.green}Found ${dependabotPRs.length} Dependabot pull requests. 🤖 ${colors.reset}`
   );
   dependabotPRs.forEach((pr) => {
-    console.log(`${colors.yellow}${pr.title}${colors.reset}`);
+    console.log(`${colors.yellow}[${pr.title}](${pr.html_url})${colors.reset}`);
   });
+
   return dependabotPRs;
 }
 
@@ -95,12 +98,14 @@ async function main() {
     console.log(
       `${colors.green}No open Dependabot pull requests found.${colors.reset}`
     );
+
     return;
   }
 
   const confirm = await promptUser(
     `${colors.blue}Do you want to close all open Dependabot pull requests? (yes/no): ${colors.reset}`
   );
+
   if (confirm) {
     await closeDependabotPRs(dependabotPRs);
   } else {
@@ -117,6 +122,7 @@ main().catch((error) => {
     );
     process.exit;
   }
+
   console.error(`${colors.red}${error}${colors.reset}`);
   process.exit(1);
 });
