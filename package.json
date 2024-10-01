@@ -61,7 +61,7 @@
     "@types/styled-components": "^5.1.26",
     "@types/uniqid": "^5.3.2",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@vitejs/plugin-react": "^4.0.0",
+    "@vitejs/plugin-react": "^4.3.2",
     "@vitest/coverage-istanbul": "^1.6.0",
     "cypress": "^12.9.0",
     "eslint": "^8.0.1",
