@@ -20,7 +20,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "skipDefaultLibCheck": true,
-    "suppressImplicitAnyIndexErrors": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -29,6 +28,6 @@
     },
     "types": ["vitest/globals", "vite/client"]
   },
-  "include": ["src","**/*.config.js", "**/*.config.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx"]
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx", "**/*.config.js", "**/*.config.ts"]
 }

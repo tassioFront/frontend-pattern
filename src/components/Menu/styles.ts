@@ -50,9 +50,9 @@ const Styles = {
     display: flex;
     text-align: left;
 
-    ${media.lessThan<HandleMenu>('tablet')`
+    ${media.lessThan('tablet')`
       background: var(--color-neutral-regular);
-      transform: ${({ open }) =>
+      transform: ${({ open }: HandleMenu) =>
         open ? 'translateX(0)' : 'translateX(-100%)'};
       height: 100vh;
       flex-direction: column;

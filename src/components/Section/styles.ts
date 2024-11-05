@@ -1,8 +1,12 @@
 import { media } from '@/styles/media';
 import styled from 'styled-components';
 
+interface HandleSection {
+  space: number;
+}
+
 const Styles = {
-  Wrapper: styled.section<{ space: number }>`
+  Wrapper: styled.section<HandleSection>`
     display: flex;
     height: 100%;
     width: 100%;
@@ -17,8 +21,8 @@ const Styles = {
     & > article, > div, > section {
       margin: ${(props) => String(props.space) + 'px'} 0;
 
-      ${media.greaterThan<{ space: number }>('tablet')`
-        margin: ${(props) => String(props.space * 1.5)}px 0;
+      ${media.greaterThan('tablet')`
+        margin: ${(props: HandleSection) => String(props.space * 1.5)}px 0;
       `}
     }
   `,
