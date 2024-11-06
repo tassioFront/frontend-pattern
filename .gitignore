@@ -26,3 +26,4 @@ yarn-error.log*
 .eslintcache
 .npmrc
 chunks-*.html
+*.env
