@@ -1,0 +1,67 @@
+name: Merge and Close Dependabot PRs
+
+on:
+  schedule:
+    - cron: '0 9 * * 1' 
+  workflow_dispatch: 
+  issue_comment:
+    types: [created]
+
+jobs:
+  merge-dependabot-prs:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "dependabot[bot]"
+          git config --global user.email "49699333+dependabot[bot]@users.noreply.github.com"
+
+      - name: Run merge-dependabot-prs
+        run: |
+          npx merge-dependabot-prs \
+            --repoUrl=https://github.com/tassioFront/frontend-pattern.git \
+            --combinedBranch=ci/combined-dependabot-updates \
+            --mainBranch=main \
+            --githubToken=${{ secrets.NPM_TOKEN }} \
+            --repoOwner=tassioFront \
+            --repoName=frontend-pattern
+
+  close-dependabot-prs:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '[frontend-pattern] close prs')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run close-dependabot-prs
+        run: |
+          npx close-dependabot-prs \
+            --githubToken=${{ secrets.NPM_TOKEN }} \
+            --repoOwner=tassioFront \
+            --repoName=frontend-pattern
