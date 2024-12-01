@@ -72,7 +72,7 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.37.2",
-    "husky": "^8.0.1",
+    "husky": "^9.1.7",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "rollup-plugin-visualizer": "^5.9.2",
