@@ -2,7 +2,7 @@ name: Merge and Close Dependabot PRs
 
 on:
   schedule:
-    - cron: '0 9 * * 1' 
+    - cron: '0 9 1-7 * 1' 
   workflow_dispatch: 
   issue_comment:
     types: [created]
