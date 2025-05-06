@@ -25,8 +25,8 @@ jobs:
 
       - name: Authenticate with GitHub Packages
         run: |
-          echo "@open-ish:registry=https://npm.pkg.github.com" >> ~/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+          echo "@open-ish:registry=https://npm.pkg.github.com" >> .npmrc
 
       - name: Install Yarn
         run: npm install -g yarn
