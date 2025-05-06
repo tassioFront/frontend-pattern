@@ -19,9 +19,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-
+          
       - name: Install Yarn
         run: npm install -g yarn
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install dependencies
         run: yarn install
