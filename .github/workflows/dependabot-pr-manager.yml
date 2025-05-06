@@ -48,7 +48,7 @@ jobs:
             --repoUrl=https://github.com/tassioFront/frontend-pattern.git \
             --combinedBranch=ci/combined-dependabot-updates \
             --mainBranch=main \
-            --githubToken=${{ secrets.NPM_TOKEN }} \
+            --githubToken=${{ secrets.GH_TOKEN }} \
             --repoOwner=tassioFront \
             --repoName=frontend-pattern
 
@@ -64,15 +64,20 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Authenticate with GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.UTILITY_TOKEN_2 }}" >> .npmrc
+          echo "@open-ish:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "engine-strict = true" >> .npmrc
+
       - name: Install Yarn
         run: npm install -g yarn
-
-      - name: Install dependencies
-        run: yarn install
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Run close-dependabot-prs
         run: |
           npx close-dependabot-prs \
-            --githubToken=${{ secrets.NPM_TOKEN }} \
+            --githubToken=${{ secrets.GH_TOKEN }} \
             --repoOwner=tassioFront \
             --repoName=frontend-pattern
