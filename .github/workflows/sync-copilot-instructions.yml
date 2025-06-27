@@ -75,12 +75,15 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet .github/copilot-instructions.md; then
+          if [ ! -f .github/copilot-instructions.md ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "New file created - changes detected"
+          elif git diff --quiet .github/copilot-instructions.md; then
             echo "changed=false" >> $GITHUB_OUTPUT
             echo "No changes detected"
           else
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "Changes detected"
+            echo "Changes detected in existing file"
           fi
 
       - name: Create Pull Request
