@@ -86,6 +86,11 @@ jobs:
           fi
 
 
+      - name: Clean up
+        run: |
+          rm -f generic-instructions.md
+          rm -f merge-instructions.js
+
       - name: Create Pull Request
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v5
@@ -116,11 +121,6 @@ jobs:
             **Triggered:** Monthly sync (1st of each month)
           branch: update/copilot-instructions
           delete-branch: true
-
-      - name: Clean up
-        run: |
-          rm -f generic-instructions.md
-          rm -f merge-instructions.js
 
       - name: Summary
         run: |
