@@ -1,0 +1,139 @@
+name: Sync Copilot Instructions
+
+on:
+  schedule:
+    # Run monthly on the 1st at 9:00 AM UTC
+    - cron: "0 9 1 * *"
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  sync-copilot-instructions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Download generic instructions from juntos guideline (change real URL later)
+        run: |
+          curl -s -H "Accept: application/vnd.github.v3.raw" \
+            "https://api.github.com/repos/juntossomosmais/frontend-guideline/contents/.github/copilot-instructions.md?ref=chore/add-generic-copilot-instructions" \
+            -o generic-instructions.md
+
+      - name: Create merge script
+        run: |
+          cat > merge-instructions.js << 'EOF'
+          const fs = require('fs');
+
+          const GENERIC_FILE = 'generic-instructions.md';
+          const LOCAL_FILE = '.github/copilot-instructions-local.md';
+          const OUTPUT_FILE = '.github/copilot-instructions.md';
+
+          function mergeInstructions() {
+            try {
+
+              const genericContent = fs.readFileSync(GENERIC_FILE, 'utf8');
+              console.log('Loaded generic instructions');
+
+              let localContent = '';
+              if (fs.existsSync(LOCAL_FILE)) {
+                localContent = fs.readFileSync(LOCAL_FILE, 'utf8');
+                console.log('Found local instructions file');
+              } else {
+                console.log('No local instructions file found, using only generic instructions');
+              }
+
+              let finalContent = genericContent;
+              
+              if (localContent.trim()) {
+                finalContent += '\n\n---\n\n' + localContent;
+              }
+              
+              fs.writeFileSync(OUTPUT_FILE, finalContent);
+              console.log('Successfully merged copilot instructions');
+              
+            } catch (error) {
+              console.error('Error merging instructions:', error);
+              process.exit(1);
+            }
+          }
+
+          mergeInstructions();
+          EOF
+
+      - name: Merge instructions
+        id: merge
+        run: node merge-instructions.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet .github/copilot-instructions.md; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected"
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feat: update copilot instructions"
+          title: "🤖 Update Copilot Instructions"
+          body: |
+            ## 🤖 Automated Copilot Instructions Update
+
+            This PR updates the GitHub Copilot instructions by combining:
+            - **Generic guidelines** from [frontend-guideline](https://github.com/juntossomosmais/frontend-guideline)
+            - **Repository-specific rules** from `.github/copilot-instructions-local.md`
+
+            ### Structure
+            ```
+            Generic Instructions (from central repo)
+            ---
+            Repository-Specific Instructions (local rules)
+            ```
+
+            ### Files involved
+            - **Source:** `juntossomosmais/frontend-guideline/.github/copilot-instructions.md`
+            - **Local rules:** `.github/copilot-instructions-local.md`
+            - **Output:** `.github/copilot-instructions.md`
+
+            ---
+            **Triggered:** Monthly sync (1st of each month)
+          branch: update/copilot-instructions
+          delete-branch: true
+
+      - name: Clean up
+        run: |
+          rm -f generic-instructions.md
+          rm -f merge-instructions.js
+
+      - name: Summary
+        run: |
+          echo "## 🤖 Copilot Instructions Sync Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Changes detected:** ${{ steps.changes.outputs.changed }}" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.changes.outputs.changed }}" == "true" ]]; then
+            echo "- **Action:** Pull request created for review" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Action:** No changes needed" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Structure" >> $GITHUB_STEP_SUMMARY
+          echo "Generic Instructions + Repository-Specific Rules" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review the created PR" >> $GITHUB_STEP_SUMMARY
+          echo "2. Check that repository-specific rules are preserved" >> $GITHUB_STEP_SUMMARY
+          echo "3. Merge when satisfied" >> $GITHUB_STEP_SUMMARY
